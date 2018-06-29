@@ -587,15 +587,23 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      *
      * @param string $id ID to parse.
      *
+     * @throws ILSException
      * @return array
      */
     protected function parseId($id)
     {
         if (count($this->bib) == 1) {
-            return [$this->bib[0], $id];
+            $retval = [$this->bib[0], $id];
         } else {
-            return explode('-', $id);
+            $retval = explode('-', $id);
         }
+        if (count($retval) != 2) {
+            throw new ILSException("The resulting array has an incorrect size");
+        }
+        if (not in_array($retval[0], $this->bib)) {
+            throw new ILSException("The resulting array contains an unknown library ID");
+        }
+        return $retval
     }
 
     /**

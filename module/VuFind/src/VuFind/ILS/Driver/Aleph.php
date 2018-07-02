@@ -595,7 +595,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         if (count($this->bib) == 1) {
             $retval = [$this->bib[0], $id];
         } else {
-            $retval = explode('-', $id);
+            $retval = str_split($id, 4);
         }
         if (count($retval) != 2) {
             throw new ILSException("The resulting array has an incorrect size");

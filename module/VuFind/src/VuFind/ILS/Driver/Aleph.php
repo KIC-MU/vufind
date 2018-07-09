@@ -596,7 +596,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         if (!in_array($retval[0], $this->bib)) {
             throw new ILSException("The resulting array contains an unknown library ID");
         }
-        return $retval
+        return $retval;
     }
 
     /**

@@ -513,6 +513,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $ex->setXmlResponse($result);
             throw $ex;
         }
+        $errors = $result->xpath('note[@type="error"]');
+        if (!empty($errors)) {
+            $this->debug("DLF request warning: " . (string)array_values($errors)[0]);
+        }
         return $result;
     }
 

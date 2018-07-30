@@ -39,6 +39,7 @@ namespace VuFind\ILS\Driver;
 
 use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
+use VuFind\I18n\Translator\TranslatorAwareInterface;
 
 /**
  * Aleph Translator Class
@@ -301,10 +302,11 @@ class AlephRestfulException extends ILSException
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
 class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
-    \VuFindHttp\HttpServiceAwareInterface
+    \VuFindHttp\HttpServiceAwareInterface, TranslatorAwareInterface
 {
     use \VuFind\Log\LoggerAwareTrait;
     use \VuFindHttp\HttpServiceAwareTrait;
+    use \VuFind\I18n\Translator\TranslatorAwareTrait;
 
     /**
      * Duedate configuration
@@ -498,6 +500,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         } else {
             $url = $this->dlfbaseurl . $path;
         }
+        if ($this->getTranslatorLocale() == "cs")
+            $params["lang"] = "cze";
+        else
+            $params["lang"] = "eng";
         $url = $this->appendQueryString($url, $params);
         $result = $this->doHTTPRequest($url, $method, $body);
         $replyCode = (string)$result->{'reply-code'};

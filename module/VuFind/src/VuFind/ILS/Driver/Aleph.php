@@ -369,7 +369,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     {
         // Validate config
         $required = [
-            'host', 'bib', 'useradm', 'admlib', 'dlfport', 'available_statuses'
+            'host', 'bib', 'useradm', 'admlib', 'dlfport'
         ];
         foreach ($required as $current) {
             if (!isset($this->config['Catalog'][$current])) {
@@ -404,8 +404,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         if (isset($this->config['duedates'])) {
             $this->duedates = $this->config['duedates'];
         }
-        $this->available_statuses
-            = explode(',', $this->config['Catalog']['available_statuses']);
         $this->quick_availability
             = isset($this->config['Catalog']['quick_availability'])
             ? $this->config['Catalog']['quick_availability'] : false;
@@ -797,8 +795,16 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $duedate = '';
             $addLink = false;
             $status = (string)$item->{'status'};
-            if (in_array($status, $this->available_statuses)) {
-                $availability = true;
+            $href = (string)$item["href"];
+            // If the item status is a datetime, make the item unavailable.
+            // Otherwise, make the item available iff it isn't loaned in Aleph.
+            if (!preg_match('#\d{2}/\d{2}/\d{2} \d{2}:\d{2}#', $status)) {
+                $non_loaned_xml = $this->doRestDLFRequest(['record', $resource, 'items'],
+                                                          ['loaned' => 'NO']);
+                if (!empty($non_loaned_xml->{'items'}))
+                    foreach ($non_loaned_xml->{'items'}->{'item'} as $non_loaned_item)
+                        if ((string)$non_loaned_item["href"] == $href)
+                            $availability = true;
             }
             if ($item_status['request'] == 'Y' && $availability == false) {
                 $addLink = true;

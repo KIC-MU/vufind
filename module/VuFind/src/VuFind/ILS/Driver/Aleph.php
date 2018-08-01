@@ -498,10 +498,11 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         } else {
             $url = $this->dlfbaseurl . $path;
         }
-        if ($this->getTranslatorLocale() == "cs")
+        if ($this->getTranslatorLocale() == "cs") {
             $params["lang"] = "cze";
-        else
+        } else {
             $params["lang"] = "eng";
+        }
         $url = $this->appendQueryString($url, $params);
         $result = $this->doHTTPRequest($url, $method, $body);
         $replyCode = (string)$result->{'reply-code'};
@@ -806,10 +807,14 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                         ['loaned' => 'NO']
                     );
                 }
-                if (!empty($non_loaned_xml->{'items'}))
-                    foreach ($non_loaned_xml->{'items'}->{'item'} as $non_loaned_item)
-                        if ((string)$non_loaned_item["href"] == $href)
+                if (!empty($non_loaned_xml->{'items'})) {
+                    foreach ($non_loaned_xml->{'items'}->{'item'}
+                        as $non_loaned_item) {
+                        if ((string)$non_loaned_item["href"] == $href) {
                             $availability = true;
+                        }
+                    }
+                }
             }
             if ($item_status['request'] == 'Y' && $availability == false) {
                 $addLink = true;

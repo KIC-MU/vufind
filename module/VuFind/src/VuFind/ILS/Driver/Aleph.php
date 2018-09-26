@@ -1454,7 +1454,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     public function patronLogin($user, $password)
     {
         if ($password == null) {
-            $temp = ["id" => $user];
+            preg_match('/^(.*)@muni\.cz$/', $user, $matches);
+            $id = $matches[1];
+            $temp = ["id" => $id];
             $temp['college'] = $this->useradm;
             return $this->getMyProfile($temp);
         }

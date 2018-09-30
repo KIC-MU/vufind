@@ -1403,25 +1403,45 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $address1 = (string)$address->{'z304-address-1'};
         $address2 = (string)$address->{'z304-address-2'};
         $address3 = (string)$address->{'z304-address-3'};
-        //$address4 = (string)$address->{'z304-address-4'};
+        $address4 = (string)$address->{'z304-address-4'};
         //$address5 = (string)$address->{'z304-address-5'};
         $zip = (string)$address->{'z304-zip'};
-        $phone = (string)$address->{'z304-telephone-1'};
+        $telephone1 = (string)$address->{'z304-telephone-1'};
+        //$telephone2 = (string)$address->{'z304-telephone-2'};
+        //$telephone3 = (string)$address->{'z304-telephone-3'};
+        //$telephone4 = (string)$address->{'z304-telephone-4'};
         $email = (string)$address->{'z404-email-address'};
         $dateFrom = (string)$address->{'z304-date-from'};
         $dateTo = (string)$address->{'z304-date-to'};
-        if (strpos($address2, ",") === false) {
-            $recordList['lastname'] = $address2;
-            $recordList['firstname'] = "";
-        } else {
-            list($recordList['lastname'], $recordList['firstname'])
-                = explode(",", $address2);
+
+        // Parsing out the first and last names out of a string such as
+        // "doc. RNDr. John Smith, CSc.".
+        $names = preg_split('/\s+/', trim($address1));
+        $name_state = 'titles';
+        $firstname = array();
+        foreach ($names as $name) {
+            if ($name_state == 'titles') {
+                if ($name[strlen($name) - 1] != '.') {
+                    $recordList['lastname'] = $name;
+                    $name_state = 'firstname';
+                }
+            } else if ($name_state == 'firstname') {
+                if ($name[strlen($name) - 1] == ',') {
+                    array_push($firstname, substr($name, 0, -1));
+                    break;
+                } else {
+                    array_push($firstname, $name);
+                }
+            }
         }
-        $recordList['address1'] = $address2;
-        $recordList['address2'] = $address3;
-        $recordList['barcode'] = $address1;
+        $recordList['firstname'] = join(' ', $firstname);
+
+        $recordList['address1'] = $address1;
+        $recordList['address2'] = $address2;
+        $recordList['city'] = $address3;
+        $recordList['country'] = $address4;
         $recordList['zip'] = $zip;
-        $recordList['phone'] = $phone;
+        $recordList['phone'] = $telephone1;
         $recordList['email'] = $email;
         $recordList['dateFrom'] = $dateFrom;
         $recordList['dateTo'] = $dateTo;
@@ -1429,10 +1449,11 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $xml = $this->doRestDLFRequest(
             ['patron', $user['id'], 'patronStatus', 'registration']
         );
-        $status = $xml->xpath("//institution/z305-bor-status");
-        $expiry = $xml->xpath("//institution/z305-expiry-date");
-        $recordList['expire'] = $this->parseDate($expiry[0]);
-        $recordList['group'] = $status[0];
+        //$status = $xml->xpath("//institution/z305-bor-status");
+        //$expiry = $xml->xpath("//institution/z305-expiry-date");
+        //$recordList['expire'] = $this->parseDate($expiry[0]);
+        //$recordList['group'] = $status[0];
+
         return $recordList;
     }
 

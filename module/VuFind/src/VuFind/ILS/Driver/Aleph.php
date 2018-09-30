@@ -1761,7 +1761,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      */
     public function getConfig($func, $params = null)
     {
-        if ($func == "Holds") {
+        if ($func == 'Holds') {
             if (isset($this->config['Holds'])) {
                 return $this->config['Holds'];
             }
@@ -1770,7 +1770,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 "extraHoldFields" => "comments:requiredByDate:pickUpLocation",
                 "defaultRequiredDate" => "0:1:0"
             ];
-        } elseif ('getMyTransactionHistory' === $func) {
+        } elseif ($func == 'getMyTransactionHistory') {
             if (empty($this->config['TransactionHistory']['enabled'])) {
                 return false;
             }

@@ -1427,7 +1427,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     $recordList['lastname'] = $name;
                     $name_state = 'firstname';
                 }
-            } else if ($name_state == 'firstname') {
+            } elseif ($name_state == 'firstname') {
                 if ($name[strlen($name) - 1] == ',') {
                     array_push($firstname, substr($name, 0, -1));
                     break;

@@ -1258,7 +1258,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $title = (string)$z13->{'z13-title'};
             $transactiondate = date('d-m-Y', strtotime((string)$z31->{'z31-date'}));
             $transactiontype = (string)$z31->{'z31-credit-debit'};
-            $id = (string)$z13->{'z13-doc-number'};
             $barcode = (string)$z30->{'z30-barcode'};
             $checkout = (string)$z31->{'z31-date'};
             $id = $this->barcodeToID($barcode);

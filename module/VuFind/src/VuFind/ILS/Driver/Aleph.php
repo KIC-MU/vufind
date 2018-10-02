@@ -757,7 +757,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         if (!empty($xml->{'items'})) {
             $items = $xml->{'items'}->{'item'};
         } else {
-            $items = array();
+            $items = [];
         }
         foreach ($items as $item) {
             $item_status         = (string)$item->{'z30-item-status-code'}; // $isc
@@ -1420,7 +1420,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         // "doc. RNDr. John Smith, CSc.".
         $names = preg_split('/\s+/', trim($address1));
         $name_state = 'titles';
-        $firstname = array();
+        $firstname = [];
         foreach ($names as $name) {
             if ($name_state == 'titles') {
                 if ($name[strlen($name) - 1] != '.') {

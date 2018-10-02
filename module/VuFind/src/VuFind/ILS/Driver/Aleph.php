@@ -906,6 +906,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z36h = $item->z36h;
             $z13 = $item->z13;
             $z30 = $item->z30;
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $group = $item->xpath('@href');
             $group = substr(strrchr($group[0], "/"), 1);
             $location = (string)$z36h->{'z36_pickup_location'};
@@ -922,7 +923,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $barcode = (string)$z30->{'z30-barcode'};
 
             $historicLoans[] = [
-                'id' => (string)$z30->{'z30-doc-number'},
+                'id' => $id,
                 'item_id' => $group,
                 'location' => $location,
                 'title' => $title,
@@ -1007,6 +1008,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z36 = $item->z36;
             $z13 = $item->z13;
             $z30 = $item->z30;
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $group = $item->xpath('@href');
             $group = substr(strrchr($group[0], "/"), 1);
             //$renew = $item->xpath('@renew');
@@ -1028,7 +1030,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
 
             $transList[] = [
                 //'type' => $type,
-                'id' => $this->barcodeToID($barcode),
+                'id' => $id,
                 'item_id' => $group,
                 'location' => $location,
                 'title' => $title,
@@ -1121,6 +1123,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z37 = $item->z37;
             $z13 = $item->z13;
             $z30 = $item->z30;
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $delete = $item->xpath('@delete');
             $href = $item->xpath('@href');
             $item_id = substr($href[0], strrpos($href[0], '/') + 1);
@@ -1156,7 +1159,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     'isbn' => [$isbn],
                     'reqnum' => $reqnum,
                     'barcode' => $barcode,
-                    'id' => $this->barcodeToID($barcode),
+                    'id' => $id,
                     'expire' => $this->parseDate($expire),
                     'holddate' => $holddate,
                     'delete' => $delete,
@@ -1255,12 +1258,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z13 = $item->z13;
             $z30 = $item->z30;
             //$delete = $item->xpath('@delete');
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $title = (string)$z13->{'z13-title'};
             $transactiondate = date('d-m-Y', strtotime((string)$z31->{'z31-date'}));
             $transactiontype = (string)$z31->{'z31-credit-debit'};
             $barcode = (string)$z30->{'z30-barcode'};
             $checkout = (string)$z31->{'z31-date'};
-            $id = $this->barcodeToID($barcode);
             $mult = ($transactiontype == "Credit") ? 100 : -100;
             $amount
                 = (float)(preg_replace("/[\(\)]/", "", (string)$z31->{'z31-sum'}))
@@ -1666,40 +1669,16 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     }
 
     /**
-     * Convert a barcode to an item ID.
+     * Convert a document number to an item ID.
      *
-     * @param string $bar Barcode
+     * @param string $docNumber Document number
      *
      * @return string
      */
-    public function barcodeToID($bar)
+    public function docNumberToId($docNumber)
     {
-        if (!$this->xserver_enabled) {
-            return null;
-        }
-        foreach ($this->bib as $base) {
-            try {
-                $xml = $this->doXRequest(
-                    "find", ["base" => $base, "request" => "BAR=$bar"], false
-                );
-                $docs = (int)$xml->{"no_records"};
-                if ($docs == 1) {
-                    $set = (string)$xml->{"set_number"};
-                    $result = $this->doXRequest(
-                        "present", ["set_number" => $set, "set_entry" => "1"],
-                        false
-                    );
-                    $id = $result->xpath('//doc_number/text()');
-                    if (count($this->bib) == 1) {
-                        return $id[0];
-                    } else {
-                        return $base . "-" . $id[0];
-                    }
-                }
-            } catch (\Exception $ex) {
-            }
-        }
-        throw new ILSException('barcode not found');
+        $id = 'MUB01' . $docNumber;
+        return $id;
     }
 
     /**

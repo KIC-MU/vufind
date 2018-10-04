@@ -320,7 +320,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      *
      * @var AlephTranslator
      */
-    protected $aleph_translator = false;
+    protected $alephTranslator = false;
 
     /**
      * Cache manager
@@ -418,12 +418,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             ) {
                 $cache = $this->cacheManager
                     ->getCache($this->config['Cache']['type']);
-                $this->aleph_translator = $cache->getItem('alephTranslator');
+                $this->alephTranslator = $cache->getItem('alephTranslator');
             }
-            if ($this->aleph_translator == false) {
-                $this->aleph_translator = new AlephTranslator($this->config);
+            if ($this->alephTranslator == false) {
+                $this->alephTranslator = new AlephTranslator($this->config);
                 if (isset($cache)) {
-                    $cache->setItem('alephTranslator', $this->aleph_translator);
+                    $cache->setItem('alephTranslator', $this->alephTranslator);
                 }
             }
         }
@@ -489,7 +489,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     protected function doRestDLFRequest($path_elements, $params = null,
         $method = 'GET', $body = null
     ) {
-        $path = join('/', $path_elements);
+        $path = implode('/', $path_elements);
         if ($this->dlfbaseurl === null) {
             $url = "http://$this->host:$this->dlfport/rest-dlf/" . $path;
         } else {
@@ -753,7 +753,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $params['patron'] = $this->defaultPatronId;
         }
         $xml = $this->doRestDLFRequest(['record', $resource, 'items'], $params);
-        $non_loaned_xml = null;
         if (!empty($xml->{'items'})) {
             $items = $xml->{'items'}->{'item'};
         } else {
@@ -765,8 +764,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $item_process_status = (string)$item->{'z30-item-process-status-code'};
             $sub_library_code    = (string)$item->{'z30-sub-library-code'}; // $slc
             $z30 = $item->z30;
-            if ($this->aleph_translator) {
-                $item_status = $this->aleph_translator->tab15Translate(
+            if ($this->alephTranslator) {
+                $item_status = $this->alephTranslator->tab15Translate(
                     $sub_library_code, $item_status, $item_process_status
                 );
             } else {
@@ -784,9 +783,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             //$reserve = ($item_status['request'] == 'C')?'N':'Y';
             $collection = (string)$z30->{'z30-collection'};
             $collection_desc = ['desc' => $collection];
-            if ($this->aleph_translator) {
+            if ($this->alephTranslator) {
                 $collection_code = (string)$item->{'z30-collection-code'};
-                $collection_desc = $this->aleph_translator->tab40Translate(
+                $collection_desc = $this->alephTranslator->tab40Translate(
                     $collection_code, $sub_library_code
                 );
             }

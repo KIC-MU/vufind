@@ -797,12 +797,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
             if (!preg_match('#\d{2}/\d{2}/\d{2} \d{2}:\d{2}#', $status)) {
-                if (is_null($non_loaned_xml)) {
-                    $non_loaned_xml = $this->doRestDLFRequest(
-                        ['record', $resource, 'items'],
-                        ['loaned' => 'NO']
-                    );
-                }
+                $non_loaned_xml = $this->doRestDLFRequest(
+                    ['record', $resource, 'items'],
+                    ['loaned' => 'NO']
+                );
                 if (!empty($non_loaned_xml->{'items'})) {
                     foreach ($non_loaned_xml->{'items'}->{'item'}
                         as $non_loaned_item) {

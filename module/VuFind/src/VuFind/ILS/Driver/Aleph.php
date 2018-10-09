@@ -42,212 +42,6 @@ use VuFind\Exception\ILS as ILSException;
 use VuFind\I18n\Translator\TranslatorAwareInterface;
 
 /**
- * Aleph Translator Class
- *
- * @category VuFind
- * @package  ILS_Drivers
- * @author   Vaclav Rosecky <vufind-tech@lists.sourceforge.net>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
- */
-class AlephTranslator
-{
-    /**
-     * Constructor
-     *
-     * @param array $configArray Aleph configuration
-     */
-    public function __construct($configArray)
-    {
-        $this->charset = $configArray['util']['charset'];
-        $this->table15 = $this->parsetable(
-            $configArray['util']['tab15'],
-            get_class($this) . "::tab15Callback"
-        );
-        $this->table40 = $this->parsetable(
-            $configArray['util']['tab40'],
-            get_class($this) . "::tab40Callback"
-        );
-        $this->table_sub_library = $this->parsetable(
-            $configArray['util']['tab_sub_library'],
-            get_class($this) . "::tabSubLibraryCallback"
-        );
-    }
-
-    /**
-     * Parse a table
-     *
-     * @param string $file     Input file
-     * @param string $callback Callback routine for parsing
-     *
-     * @return string
-     */
-    public function parsetable($file, $callback)
-    {
-        $result = [];
-        $file_handle = fopen($file, "r, ccs=UTF-8");
-        $rgxp = "";
-        while (!feof($file_handle)) {
-            $line = fgets($file_handle);
-            $line = chop($line);
-            if (preg_match("/!!/", $line)) {
-                $line = chop($line);
-                $rgxp = AlephTranslator::regexp($line);
-            }
-            if (preg_match("/!.*/", $line) || $rgxp == "" || $line == "") {
-            } else {
-                $line = str_pad($line, 80);
-                $matches = "";
-                if (preg_match($rgxp, $line, $matches)) {
-                    call_user_func_array(
-                        $callback, [$matches, &$result, $this->charset]
-                    );
-                }
-            }
-        }
-        fclose($file_handle);
-        return $result;
-    }
-
-    /**
-     * Get a tab40 collection description
-     *
-     * @param string $collection Collection
-     * @param string $sublib     Sub-library
-     *
-     * @return string
-     */
-    public function tab40Translate($collection, $sublib)
-    {
-        $findme = $collection . "|" . $sublib;
-        $desc = $this->table40[$findme];
-        if ($desc == null) {
-            $findme = $collection . "|";
-            $desc = $this->table40[$findme];
-        }
-        return $desc;
-    }
-
-    /**
-     * Support method for tab15Translate -- translate a sub-library name
-     *
-     * @param string $sl Text to translate
-     *
-     * @return string
-     */
-    public function tabSubLibraryTranslate($sl)
-    {
-        return $this->table_sub_library[$sl];
-    }
-
-    /**
-     * Get a tab15 item status
-     *
-     * @param string $slc  Sub-library
-     * @param string $isc  Item status code
-     * @param string $ipsc Item process status code
-     *
-     * @return string
-     */
-    public function tab15Translate($slc, $isc, $ipsc)
-    {
-        $tab15 = $this->tabSubLibraryTranslate($slc);
-        if ($tab15 == null) {
-            echo "tab15 is null!<br>";
-        }
-        $findme = $tab15["tab15"] . "|" . $isc . "|" . $ipsc;
-        $result = $this->table15[$findme];
-        if ($result == null) {
-            $findme = $tab15["tab15"] . "||" . $ipsc;
-            $result = $this->table15[$findme];
-        }
-        $result["sub_lib_desc"] = $tab15["desc"];
-        return $result;
-    }
-
-    /**
-     * Callback for tab15 (modify $tab15 by reference)
-     *
-     * @param array  $matches preg_match() return array
-     * @param array  $tab15   result array to generate
-     * @param string $charset character set
-     *
-     * @return void
-     */
-    public static function tab15Callback($matches, &$tab15, $charset)
-    {
-        $lib = $matches[1];
-        $no1 = $matches[2];
-        if ($no1 == "##") {
-            $no1 = "";
-        }
-        $no2 = $matches[3];
-        if ($no2 == "##") {
-            $no2 = "";
-        }
-        $desc = iconv($charset, 'UTF-8', $matches[5]);
-        $key = trim($lib) . "|" . trim($no1) . "|" . trim($no2);
-        $tab15[trim($key)] = [
-            "desc" => trim($desc), "loan" => $matches[6], "request" => $matches[8],
-            "opac" => $matches[10]
-        ];
-    }
-
-    /**
-     * Callback for tab40 (modify $tab40 by reference)
-     *
-     * @param array  $matches preg_match() return array
-     * @param array  $tab40   result array to generate
-     * @param string $charset character set
-     *
-     * @return void
-     */
-    public static function tab40Callback($matches, &$tab40, $charset)
-    {
-        $code = trim($matches[1]);
-        $sub = trim($matches[2]);
-        $sub = trim(preg_replace("/#/", "", $sub));
-        $desc = trim(iconv($charset, 'UTF-8', $matches[4]));
-        $key = $code . "|" . $sub;
-        $tab40[trim($key)] = [ "desc" => $desc ];
-    }
-
-    /**
-     * Sub-library callback (modify $tab_sub_library by reference)
-     *
-     * @param array  $matches         preg_match() return array
-     * @param array  $tab_sub_library result array to generate
-     * @param string $charset         character set
-     *
-     * @return void
-     */
-    public static function tabSubLibraryCallback($matches, &$tab_sub_library,
-        $charset
-    ) {
-        $sublib = trim($matches[1]);
-        $desc = trim(iconv($charset, 'UTF-8', $matches[5]));
-        $tab = trim($matches[6]);
-        $tab_sub_library[$sublib] = [ "desc" => $desc, "tab15" => $tab ];
-    }
-
-    /**
-     * Apply standard regular expression cleanup to a string.
-     *
-     * @param string $string String to clean up.
-     *
-     * @return string
-     */
-    public static function regexp($string)
-    {
-        $string = preg_replace("/\\-/", ")\\s(", $string);
-        $string = preg_replace("/!/", ".", $string);
-        $string = preg_replace("/[<>]/", "", $string);
-        $string = "/(" . $string . ")/";
-        return $string;
-    }
-}
-
-/**
  * ILS Exception
  *
  * @category VuFind
@@ -314,13 +108,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * @var array
      */
     protected $duedates = false;
-
-    /**
-     * Translator object
-     *
-     * @var AlephTranslator
-     */
-    protected $alephTranslator = false;
 
     /**
      * Cache manager
@@ -418,13 +205,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             ) {
                 $cache = $this->cacheManager
                     ->getCache($this->config['Cache']['type']);
-                $this->alephTranslator = $cache->getItem('alephTranslator');
-            }
-            if ($this->alephTranslator == false) {
-                $this->alephTranslator = new AlephTranslator($this->config);
-                if (isset($cache)) {
-                    $cache->setItem('alephTranslator', $this->alephTranslator);
-                }
             }
         }
         if (isset($this->config['Catalog']['preferred_pick_up_locations'])) {
@@ -760,39 +540,15 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $items = [];
         }
         foreach ($items as $item) {
-            $item_status         = (string)$item->{'z30-item-status-code'}; // $isc
-            // $ipsc:
-            $item_process_status = (string)$item->{'z30-item-process-status-code'};
-            $sub_library_code    = (string)$item->{'z30-sub-library-code'}; // $slc
             $z30 = $item->z30;
-            if ($this->alephTranslator) {
-                $item_status = $this->alephTranslator->tab15Translate(
-                    $sub_library_code, $item_status, $item_process_status
-                );
-            } else {
-                $item_status = [
-                    'opac'         => 'Y',
-                    'request'      => 'C',
-                    'desc'         => (string)$z30->{'z30-item-status'},
-                    'sub_lib_desc' => (string)$z30->{'z30-sub-library'}
-                ];
-            }
-            if ($item_status['opac'] != 'Y') {
-                continue;
-            }
+            $item_status = (string)$z30->{'z30-item-status'};
+            $sub_library_code = (string)$item->{'z30-sub-library-code'};
+            $sub_library_desc = (string)$z30->{'z30-sub-library'};
             $availability = false;
-            //$reserve = ($item_status['request'] == 'C')?'N':'Y';
             $collection = (string)$z30->{'z30-collection'};
             $collection_desc = ['desc' => $collection];
-            if ($this->alephTranslator) {
-                $collection_code = (string)$item->{'z30-collection-code'};
-                $collection_desc = $this->alephTranslator->tab40Translate(
-                    $collection_code, $sub_library_code
-                );
-            }
             $requested = false;
             $duedate = '';
-            $addLink = false;
             $status = (string)$item->{'status'};
             $href = (string)$item["href"];
             // If the item status is a datetime, make the item unavailable.
@@ -813,9 +569,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     }
                 }
             }
-            if ($item_status['request'] == 'Y' && $availability == false) {
-                $addLink = true;
-            }
+            $addLink = false;
             if (!empty($patron)) {
                 $hold_request = $item->xpath('info[@type="HoldRequest"]/@allowed');
                 $addLink = ($hold_request[0] == 'Y');
@@ -835,13 +589,13 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             if ($availability) {
                 if ($this->duedates) {
                     foreach ($this->duedates as $key => $value) {
-                        if (preg_match($value, $item_status['desc'])) {
+                        if (preg_match($value, $item_status)) {
                             $duedate = $key;
                             break;
                         }
                     }
                 } else {
-                    $duedate = $item_status['desc'];
+                    $duedate = $item_status;
                 }
             } else {
                 if ($status == "On Hold" || $status == "Requested") {
@@ -855,7 +609,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'id'                => $id,
                 'item_id'           => $item_id,
                 'availability'      => $availability,
-                'status'            => (string)$item_status['desc'],
+                'status'            => $item_status,
                 'location'          => $sub_library_code,
                 'reserve'           => 'N',
                 'callnumber'        => (string)$z30->{'z30-call-no'},
@@ -871,7 +625,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'collection'        => (string)$collection,
                 'collection_desc'   => (string)$collection_desc['desc'],
                 'callnumber_second' => (string)$z30->{'z30-call-no-2'},
-                'sub_lib_desc'      => (string)$item_status['sub_lib_desc'],
+                'sub_lib_desc'      => (string)$sub_library_desc,
                 'no_of_loans'       => (string)$z30->{'$no_of_loans'},
                 'requested'         => (string)$requested
             ];

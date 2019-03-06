@@ -23,6 +23,7 @@ chmod 777 $VUFIND_LOCAL_DIR/cache/cli
 # Create the Apache configuration
 cd $VUFIND_HOME
 php install.php --use-defaults
+patch local/httpd-vufind.conf < httpd-vufind.conf.diff
 
 # Set up Apache for VuFind and reload configuration
 APACHE_CONF_DIR=/etc/apache2/conf.d

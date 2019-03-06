@@ -1,0 +1,24 @@
+37c37
+<     Require all granted
+---
+>     # Require all granted
+45,46c45,46
+<   #AuthType shibboleth
+<   #Require shibboleth
+---
+>   AuthType shibboleth
+>   Require shibboleth
+48a49,52
+> <Location />
+>   RedirectMatch ^/$ /vufind/
+> </Location>
+> 
+49a54,57
+>   # Ensure that we are under SSL:
+>   RewriteCond   %{SERVER_PORT} !^443$
+>   RewriteRule   ^.*$                          https://%{SERVER_NAME}%{REQUEST_URI}  [L,R]
+> 
+59c67
+<   #SetEnv VUFIND_ENV development
+---
+>   SetEnv VUFIND_ENV development

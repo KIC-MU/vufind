@@ -845,7 +845,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     null, 'POST', null
                 );
                 $due = (string)$xml->xpath('//new-due-date');
-                $result[$id] = ['success' => true, 'new_date' => $this->parseDate($due)];
+                $result[$id] = [
+                    'success' => true, 'new_date' => $this->parseDate($due)
+                ];
             } catch (AlephRestfulException $ex) {
                 $result[$id] = [
                     'success' => false, 'sysMessage' => $ex->getMessage()

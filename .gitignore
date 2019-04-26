@@ -15,3 +15,6 @@ node_modules
 public/swagger-ui
 .vagrant
 lessphp_*.list
+/local/config/vufind/config.ini
+/local/httpd-vufind.conf
+/module/muni

@@ -18,3 +18,4 @@ lessphp_*.list
 /local/config/vufind/config.ini
 /local/httpd-vufind.conf
 /module/muni
+/nbproject

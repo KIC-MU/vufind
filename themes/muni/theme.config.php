@@ -1,4 +1,7 @@
 <?php
 return [
-    'extends' => 'bootstrap3'
+	'extends' => 'bootstrap3',
+	'css' => [
+			'muni.css'
+    ]
 ];

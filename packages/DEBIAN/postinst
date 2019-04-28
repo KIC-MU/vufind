@@ -37,7 +37,7 @@ patch local/httpd-vufind.conf < local/httpd-vufind.conf.diff
 patch import/log4j.properties < local/import/log4j.properties.diff
 
 # Install Cronjob
-echo "15 4 * * * chronic bash -o pipefail -c '/usr/local/vufind/vufind-reindex.sh |& tee -a /usr/local/vufind/vufind-reindex.sh.log'" > /etc/cron.d/vufind-reindex
+echo "15 4 * * * root chronic bash -o pipefail -c '/usr/local/vufind/vufind-reindex.sh |& tee -a /usr/local/vufind/vufind-reindex.sh.log'" > /etc/cron.d/vufind-reindex
 chown root:root /etc/cron.d/vufind-reindex
 chmod u=rw,go=r /etc/cron.d/vufind-reindex
 

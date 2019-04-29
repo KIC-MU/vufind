@@ -40,6 +40,7 @@ patch import/log4j.properties < local/import/log4j.properties.diff
 echo "15 4 * * * root chronic bash -o pipefail -c '/usr/local/vufind/vufind-reindex.sh |& tee -a /usr/local/vufind/vufind-reindex.sh.log'" > /etc/cron.d/vufind-reindex
 chown root:root /etc/cron.d/vufind-reindex
 chmod u=rw,go=r /etc/cron.d/vufind-reindex
+systemctl restart cron
 
 # Disable autocommit in the biblio Solr core
 sed -ni '/<autoCommit>/,/<\/autoCommit>/!p' solr/vufind/biblio/conf/solrconfig.xml

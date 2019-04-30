@@ -57,12 +57,72 @@ a:focus {
     background-color: white!important;
 }
 
+.btn {
+    border-radius: 0;
+    text-decoration: none;
+}
+
+.btn:hover {
+    border-radius: 0;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #0000dc;
+    color: white;
+    font-weight: bold;
+    border: #0000dc solid 2px;    
+}
+
+.btn-primary:hover, .btn-default:hover {
+    background-color: black;
+    color: white;
+    border: black solid 2px;
+}
+
+a.btn-link, a.btn-link:hover {
+    border: 0;
+    
+}
+
+.btn-default {
+    border: #0000dc solid 2px;
+    background-color: white;
+    color: #0000dc;
+    font-weight: bold;
+}
+
+
+
 #feedbackLink {
     display: none;
 }
 
+#content {
+    margin-bottom: 2rem;
+}
+
 .container, footer {
     border: none;
+}
+
+
+div.banner {
+    padding-bottom: 1rem;
+}
+
+img.muni-logo {
+    width: auto;
+    height: 32px;
+}
+
+i.fa-sign-in {
+    display: none;
+}
+
+.breadcrumb {
+    background-color: white;
+    margin-top: 0;
 }
 
 #content h1, #content p {
@@ -100,10 +160,22 @@ div.home-facet h2 {
     margin-right: auto;
 }
 
+.form-control {
+    border-radius: 0;
+}
+
+#main {
+    margin-top: 1rem;
+}
+
 .inner-but-full-line {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
     height: 2px;
     background: #DCDCDC;
     margin-bottom: 0.5rem;
+}
+
+.thin-line {
+    height: 1px;
 }

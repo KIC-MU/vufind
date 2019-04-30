@@ -11,7 +11,7 @@
             </a>
         <?php } else { ?>
             <a class="navbar-brand lang-<?= $this->layout()->userLang ?>" href="<?= $this->url('home') ?>">
-                <img class="muni-logo" src="themes/muni/images/muni-knihovni-katalog-en.svg" />
+                <img class="muni-logo" src="<?= $this->url('home') ?>themes/muni/images/muni-knihovni-katalog-en.svg" />
             </a>
         <?php } ?>
     </div>
@@ -24,8 +24,10 @@
                             <a id="feedbackLink" data-lightbox href="<?= $this->url('feedback-home') ?>"><i class="fa fa-envelope" aria-hidden="true"></i> <?= $this->transEsc("Feedback") ?></a>
                         </li>
                     <?php endif; ?>
-                    <?php $cart = $this->cart();
-                    if ($cart->isActive()): ?>
+                    <?php
+                    $cart = $this->cart();
+                    if ($cart->isActive()):
+                        ?>
                         <li id="cartSummary">
                             <a id="cartItems" data-lightbox title="<?= $this->transEsc('View Book Bag') ?>" href="<?= $this->url('cart-home') ?>">
                                 <i class="fa fa-suitcase" aria-hidden="true"></i> <strong><?= count($cart->getItems()) ?></strong> <?= $this->transEsc('items') ?>
@@ -33,7 +35,7 @@
                             </a>
                         </li>
                     <?php endif; ?>
-    <?php if (is_object($account) && $account->loginEnabled()): // hide login/logout if unavailable  ?>
+    <?php if (is_object($account) && $account->loginEnabled()): // hide login/logout if unavailable    ?>
                         <li class="logoutOptions<?php if ($account->dropdownEnabled()): ?> with-dropdown<?php endif ?><?php if (!$account->isLoggedIn()): ?> hidden<?php endif ?>">
                             <a href="<?= $this->url('myresearch-home', [], ['query' => ['redirect' => 0]]) ?>"><i id="account-icon" class="fa fa-user-circle" aria-hidden="true"></i> <?= $this->transEsc("Your Account") ?></a>
                         </li>
@@ -64,26 +66,26 @@
                             </form>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= $this->transEsc("Theme") ?> <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <?php foreach ($this->layout()->themeOptions as $current): ?>
+                                                                                           <?php foreach ($this->layout()->themeOptions as $current): ?>
                                     <li<?= $current['selected'] ? ' class="active"' : '' ?>><a href="#" onClick="document.themeForm.ui.value = '<?= $this->escapeHtmlAttr($current['name']) ?>';
                                             document.themeForm.submit()"><?= $this->transEsc($current['desc']) ?></a></li>
-                        <?php endforeach; ?>
+        <?php endforeach; ?>
                             </ul>
                         </li>
                     <?php endif; ?>
 
     <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
-                        <li class="language dropdown">
+                        <li class="language">
                             <form method="post" name="langForm" id="langForm">
                                 <input type="hidden" name="mylang"/>
-                            </form>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= $this->transEsc("Language") ?> <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
-                                    <li<?= $this->layout()->userLang == $langCode ? ' class="active"' : '' ?>><a href="#" onClick="document.langForm.mylang.value = '<?= $langCode ?>';document.langForm.submit()"><?= $this->displayLanguageOption($langName) ?></a></li>
-                        <?php endforeach; ?>
-                            </ul>
+                            </form>      
+                            <?php if ($this->layout()->userLang == 'cs') { ?>
+                                <a href="#" onClick="document.langForm.mylang.value = 'en';document.langForm.submit()">English</a>           
+                            <?php } else { ?>
+                                <a href="#" onClick="document.langForm.mylang.value = 'cs';document.langForm.submit()">Česky</a>           
+        <?php } ?>
                         </li>
+
     <?php endif; ?>
                 </ul>
             </nav>
@@ -91,7 +93,7 @@
 <?php endif; ?>
 </div>
 <div class="inner-but-full-line"></div>
-        <?php if ($this->layout()->searchbox !== false): ?>
+<?php if ($this->layout()->searchbox !== false): ?>
     <div class="search container navbar">
         <nav class="nav searchbox hidden-print">
     <?= $this->layout()->searchbox ?>

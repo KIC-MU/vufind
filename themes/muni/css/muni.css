@@ -92,7 +92,15 @@ a.btn-link, a.btn-link:hover {
     font-weight: bold;
 }
 
+ul.navbar-right a {
+    text-decoration: none;
+    font-size: 1.2rem;
+}
 
+.nav li a:hover, .nav li a:focus {
+    outline: none;
+    background-color: white;
+} 
 
 #feedbackLink {
     display: none;

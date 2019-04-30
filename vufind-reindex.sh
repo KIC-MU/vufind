@@ -4,7 +4,7 @@ print_info() {
   printf '%s:\t%s\n' "$(date --rfc-3339=seconds)" "$@"
 }
 
-fix_aleph_marc() {
+usmarc_to_marcmaker() {
   perl -e '
     use strict;
     use warnings;
@@ -27,19 +27,18 @@ fix_aleph_marc() {
     s/(^=...) */\1  /
 
     # Replace incorrectly parsed non-standard tags.
-    /^=Z30/ { N; s/(^=Z30)  \r\n *-([0-9])/\1  \\\2/ }
+    /^=[zZ]30/ { N; s/(^=[zZ]30)  \r\n *-([0-9])/\1  \\\2/ }
     /^=... *\r$/ { N; s/(^=...)  \r\n */\1  / }
 
     # Replace non-standard indicator values with spaces.
-    s/(^=...)  [^0-9\\]/\1  \\/
-    s/(^=...)  ([0-9\\])[^0-9\\]/\1  \2\\/
+    s/(^=([^0-9lL]..|[0-9lL][^0-9dD].|[0-9lL][0-9dD][^0-9rR]))  [^0-9\\]/\1  \\/
+    s/(^=([^0-9lL]..|[0-9lL][^0-9dD].|[0-9lL][0-9dD][^0-9rR]))  ([0-9\\])[^0-9\\]/\1  \2\\/
 
     # Replace some non-standard tags produced by Aleph with local data tags.
-    s/^=AVA/=901/
-    s/^=M53/=902/
+    s/^=[zZ]30/=901/
     # The following is a catch-all for any other non-standard tags other
     # than LDR, which is part of the MARCBreaker syntax.
-    s/^=([^0-9L]..|[0-9L][^0-9D].|[0-9L][0-9D][^0-9R])/=949/
+    s/^=([^0-9lL]..|[0-9lL][^0-9dD].|[0-9lL][0-9dD][^0-9rR])/=949/
 
     # Add missing character $ after indicators in non-control fields.
     s/(^=([1-9]..|0[1-9].)  [0-9\\][0-9\\])([^$])/\1$\3/
@@ -63,21 +62,29 @@ fix_aleph_marc() {
   '
 }
 
+usmarc_to_xml() {
+  java -jar import/lib/marc4j*.jar to_xml |
+  sed -r '{
+    # Replace some non-standard tags produced by Aleph with local data tags.
+    s/datafield tag="Z30"/datafield tag="901"/g
+  }'
+}
+
 download_dumps() {
   cd "$VUFIND_HOME"
   for BASENAME in mu-aleph-mub{01..03}.dump; do
     curl -L https://aleph.muni.cz/vufind-dump/${BASENAME}.mrc > ${BASENAME}.mrc.new
     mv ${BASENAME}.mrc{.new,}
-    fix_aleph_marc < ${BASENAME}.mrc > ${BASENAME}.mrk8.new
-    mv ${BASENAME}.mrk8{.new,}
+    usmarc_to_xml < ${BASENAME}.mrc > ${BASENAME}.xml.new
+    mv ${BASENAME}.xml{.new,}
   done
 }
 
 reindex_solr() {
   cd "$VUFIND_HOME"
   curl http://localhost:8080/solr/biblio/update --data "<delete><query>*:*</query></delete>" -H "Content-type:text/xml; charset=utf-8" |
-    grep -qF '<int name="status">0</int>'
-  ./import-marc.sh <(cat mu-aleph-mub0?.dump.mrk8)
+  grep -qF '<int name="status">0</int>'
+  ./import-marc.sh <(cat mu-aleph-mub0?.dump.xml)
   sudo -u solr ./index-alphabetic-browse.sh
   cd util
   php optimize.php

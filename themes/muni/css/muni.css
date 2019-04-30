@@ -92,6 +92,10 @@ a.btn-link, a.btn-link:hover {
     font-weight: bold;
 }
 
+.badge {
+    background-color: #0000dc;
+}
+
 ul.navbar-right a {
     text-decoration: none;
     font-size: 1.2rem;
@@ -175,6 +179,20 @@ div.home-facet h2 {
 #main {
     margin-top: 1rem;
 }
+
+.pagination li:first-child span, .pagination li:last-child a {
+    border-radius: 0;
+}
+
+.pagination li.active span, .pagination li.active span:hover  {
+    background-color: #0000dc;
+}
+
+.pagination li a {
+    color: #0000dc;
+}
+
+
 
 .inner-but-full-line {
     margin-left: calc(-50vw + 50%);

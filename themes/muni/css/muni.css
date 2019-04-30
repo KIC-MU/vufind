@@ -91,10 +91,21 @@ a.btn-link, a.btn-link:hover {
     color: #0000dc;
     font-weight: bold;
 }
-
 .badge {
     background-color: #0000dc;
 }
+
+.footer-row {
+    font-size: 0.9rem;
+    border-top: #DCDCDC 1px solid;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+#logo-uvt {
+    width: 78px;
+}
+
 
 ul.navbar-right a {
     text-decoration: none;

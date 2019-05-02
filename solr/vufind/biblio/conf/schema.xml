@@ -119,6 +119,7 @@
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="building" type="string" indexed="true" stored="true" multiValued="true"/>
    <!-- Generic Fields -->
+   <field name="barcode" type="textFacet" indexed="true" stored="true" multiValued="false" termVectors="true"/>
    <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="author" type="textProper" indexed="true" stored="true" multiValued="true" termVectors="true"/>

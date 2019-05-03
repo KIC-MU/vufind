@@ -29,14 +29,16 @@
     </div>
     <div class="poweredby">
         <?= $this->layout()->poweredBy ?>
+        <?= $this->transEsc('nejakytext') ?>
     </div>
 
     <div class="row footer-row">
         <div class="col-xs-6 col-sm-6 col-md-6 footer-col">
 
             <div class="mu-copyright" style="margin-top: 1rem;">
-                &copy;&nbsp;2019&nbsp;Masarykova&nbsp;univerzita<br/>
-                <a href="mailto:kic_admins@ics.muni.cz">Správce stránek</a>
+                &copy;&nbsp;2019&nbsp;<?= $this->transEsc('muni') ?>&nbsp;
+                <br/>
+                <a href="mailto:kic_admins@ics.muni.cz"></a>
             </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-5 footer-col">

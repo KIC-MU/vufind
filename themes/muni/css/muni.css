@@ -138,6 +138,10 @@ ul.navbar-right a {
     background-color: white;
 } 
 
+.nav li.active a {
+    background-color: white;
+}
+
 #feedbackLink {
     display: none;
 }

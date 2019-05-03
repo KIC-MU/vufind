@@ -1,0 +1,255 @@
+/*
+ * Copyright (C) 2019 Institute of Computer Science, Masaryk university
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author: Vlastimil Krejcir <krejcir@ics.muni.cz>, Institute of Computer Science
+ */
+
+/* 
+ * The "muni" theme implements the Masaryk University webs default design.
+ *
+ */
+
+@media (max-width: 992px) {
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 1rem;
+    background-color: white;
+    border-top: #0000dc solid 6px;
+    border-bottom: #0000dc solid 6px;
+}
+
+a, .search-hero a {
+    color: #0000dc;
+    text-decoration: underline;
+}
+
+a:hover, .search-hero a:hover {
+    color: black;
+    text-decoration: underline;
+    border: none;
+    background-color: inherit;
+}
+
+a:focus {
+    box-shadow: none!important;
+    border-color: #ced4da!important;
+    background-color: white!important;
+}
+
+.btn {
+    border-radius: 0;
+    text-decoration: none;
+}
+
+.btn:hover {
+    border-radius: 0;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #0000dc;
+    color: white;
+    font-weight: bold;
+    border: #0000dc solid 2px;    
+}
+
+.btn-primary:hover, .btn-default:hover {
+    background-color: black;
+    color: white;
+    border: black solid 2px;
+}
+
+a.btn-link, a.btn-link:hover {
+    border: 0;
+    color: #0000dc;
+}
+
+a.btn-link:hover {
+    color: black;
+}
+
+.btn-default {
+    border: #0000dc solid 2px;
+    background-color: white;
+    color: #0000dc;
+    font-weight: bold;
+}
+
+.badge {
+    background-color: #0000dc;
+}
+
+.navbar-toggle {
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.navbar-toggler-icon  {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 220, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h16M8 15h12M4 23h16'/%3E%3C/svg%3E");
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+        background-size: auto;
+    background-size: 100% 100%;
+}
+
+.footer-row {
+    font-size: 0.9rem;
+    border-top: #DCDCDC 1px solid;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+#logo-uvt {
+    width: 78px;
+}
+
+
+ul.navbar-right a {
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.nav li a:hover, .nav li a:focus {
+    outline: none;
+    background-color: white;
+} 
+
+#feedbackLink {
+    display: none;
+}
+
+#content {
+    margin-bottom: 2rem;
+}
+
+.container, footer {
+    border: none;
+}
+
+
+div.banner {
+    padding-bottom: 1rem;
+}
+
+img.muni-logo {
+    width: auto;
+    height: 32px;
+}
+
+i.fa-sign-in {
+    display: none;
+}
+
+.breadcrumb {
+    background-color: white;
+    margin-top: 0;
+}
+
+#content h1, #content p {
+    display: none;
+}
+
+.search-hero {
+    background-image: none;
+    font-size: 1rem;
+    color: black;
+    padding: 4rem 2rem;
+}
+
+div.image-credit {
+    display: none;
+}
+
+div.home-facet {
+    padding: 1rem;
+}
+
+div.home-facet h2 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.searchHomeContent {
+     
+}
+
+.searchForm {
+    margin: 1rem auto;
+    width: 100%;
+    text-align: center;
+    margin-right: auto;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.search-home-facets {
+    display: none;
+}
+
+#main {
+    margin-top: 1rem;
+}
+
+.pagination li:first-child span, .pagination li:last-child a {
+    border-radius: 0;
+}
+
+.pagination li.active span, .pagination li.active span:hover  {
+    background-color: #0000dc;
+}
+
+.pagination li a {
+    color: #0000dc;
+}
+
+.slider-container .slider-handle {
+    background-color: #0000dc;
+}
+
+.label-info, .result .format, .sidebar .format {
+    background-color: #0000dc;
+}
+
+
+.myresearch-menu a.active {
+   background-color: #0000dc; 
+}
+
+
+.inner-but-full-line {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    height: 2px;
+    background: #DCDCDC;
+    margin-bottom: 0.5rem;
+}
+
+.thin-line {
+    height: 1px;
+}

@@ -16,6 +16,7 @@ public/swagger-ui
 .vagrant
 lessphp_*.list
 /local/config/vufind/config.ini
+/local/config/vufind/Aleph.ini
 /local/httpd-vufind.conf
 /module/muni
 /nbproject

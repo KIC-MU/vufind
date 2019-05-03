@@ -82,7 +82,11 @@ a:focus {
 
 a.btn-link, a.btn-link:hover {
     border: 0;
-    
+    color: #0000dc;
+}
+
+a.btn-link:hover {
+    color: black;
 }
 
 .btn-default {
@@ -204,6 +208,10 @@ div.home-facet h2 {
     border-radius: 0;
 }
 
+.search-home-facets {
+    display: none;
+}
+
 #main {
     margin-top: 1rem;
 }
@@ -220,6 +228,18 @@ div.home-facet h2 {
     color: #0000dc;
 }
 
+.slider-container .slider-handle {
+    background-color: #0000dc;
+}
+
+.label-info, .result .format, .sidebar .format {
+    background-color: #0000dc;
+}
+
+
+.myresearch-menu a.active {
+   background-color: #0000dc; 
+}
 
 
 .inner-but-full-line {

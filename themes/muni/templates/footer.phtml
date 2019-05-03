@@ -29,28 +29,29 @@
     </div>
     <div class="poweredby">
         <?= $this->layout()->poweredBy ?>
-        <?= $this->transEsc('nejakytext') ?>
     </div>
 
     <div class="row footer-row">
         <div class="col-xs-6 col-sm-6 col-md-6 footer-col">
 
             <div class="mu-copyright" style="margin-top: 1rem;">
-                &copy;&nbsp;2019&nbsp;<?= $this->transEsc('muni') ?>&nbsp;
+                &copy;&nbsp;2019&nbsp;<?= $this->transEsc('muni::masaryk') ?>&nbsp;<?= $this->transEsc('muni::university') ?>
                 <br/>
-                <a href="mailto:kic_admins@ics.muni.cz"></a>
+                <a href="mailto:kic_admins@ics.muni.cz"><?= $this->transEsc('muni::contact') ?></a>
             </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-5 footer-col">
             <p class="text-right" style="margin-top: 1rem;">
-                Provozováno a vyvíjeno<br />
+                <?= $this->transEsc('muni::powered_by') ?><br />
                 <a href="https://www.ics.muni.cz/" target="_blank">
-                    Ústavem výpočetní techniky Masarykovy&nbsp;univerzity
+                    <?= $this->transEsc('muni::ics7p') ?> <?= $this->transEsc('muni::masaryk7p') ?>&nbsp;<?= $this->transEsc('muni::university7p') ?>
                 </a>
             </p>
         </div>
         <div class="hidden-xs hidden-sm col-md-1">
-            <img class="media-object" style="width: 78px; height: 60px" src="<?= $this->url('home') ?>themes/muni/images/UVT-lg-eng-rgb.png" alt="ÚVT MU" />
+            <img class="media-object" style="width: 78px; height: 60px" 
+                 src="<?= $this->url('home') ?>themes/muni/images/UVT-lg-eng-rgb.png" 
+                 alt="<?= $this->transEsc('muni::ics_logo_desc') ?>" />
         </div>
 
         <!--

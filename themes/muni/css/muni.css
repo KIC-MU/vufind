@@ -100,6 +100,95 @@ a.btn-link:hover {
     background-color: #0000dc;
 }
 
+.label-success {
+    background-color: #00af3f; /* PriF */
+}
+
+.text-success {
+    color: #00af3f;
+}
+
+.label-danger {
+    background-color: #f01928; /* LF */
+}
+
+.text-danger {
+    color: #f01928;
+}
+
+.nav-tabs {
+    border-bottom: #0000dc 1px solid;
+}
+
+
+.nav-tabs > li > a {
+    text-decoration: none;
+}
+
+.nav-tabs > li > a {
+    border: #0000dc 1px solid;
+    border-radius: 0;
+}
+
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+    background-color: #0000dc !important;
+    color: white;
+    border: #0000dc 1px solid;
+}
+
+.nav-tabs > li.active > a {
+    border: #0000dc 1px solid;
+    border-radius: 0;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: #0000dc;
+    color: white;
+    border: #0000dc 1px solid;
+}
+
+.pager li > a, .pager li > span {
+    border: #0000dc 2px solid;
+    border-radius: 0;
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+.pager li > a:hover, .pager li > a:focus {
+
+    text-decoration: none;
+    background-color: black;
+    border-color: black;
+    color: white;
+
+}
+
+.list-group-item:first-child,  .list-group-item:last-child {
+    border-radius: 0;
+}
+
+
+.alert-info {
+    background-color: white;
+    border: none;
+    padding: 1rem;
+}
+
+.alert.alert-info a {
+    background-color: #0000dc;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.alert.alert-info a:hover {
+    text-decoration: none;
+    background-color: black;
+    border-color: black;
+    color: white;
+}
+
 .navbar-toggle {
     padding: 0;
     margin: 1rem 0;
@@ -171,6 +260,15 @@ i.fa-sign-in {
 .breadcrumb {
     background-color: white;
     margin-top: 0;
+    font-size: .9rem;
+}
+
+.breadcrumb > li + li::before {
+
+    padding: 0 5px;
+    color: #0000dc;
+    content: ">";
+
 }
 
 #content h1, #content p {

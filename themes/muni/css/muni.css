@@ -150,6 +150,10 @@ a.btn-link:hover {
     margin: 0 1rem;
 }
 
+.pager li.disabled > a, .pager li.disabled > span {
+    border-color: #777;
+}
+
 .pager li > a:hover, .pager li > a:focus {
 
     text-decoration: none;

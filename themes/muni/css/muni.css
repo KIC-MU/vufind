@@ -136,15 +136,11 @@ a.btn-link:hover {
     border: #0000dc 1px solid;
 }
 
-.nav-tabs > li.active > a {
-    border: #0000dc 1px solid;
-    border-radius: 0;
-}
-
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    background-color: #0000dc;
+    background-color: #0000dc !important;
     color: white;
     border: #0000dc 1px solid;
+    border-radius: 0;
 }
 
 .pager li > a, .pager li > span {
@@ -174,7 +170,7 @@ a.btn-link:hover {
     padding: 1rem;
 }
 
-.alert.alert-info a {
+.holdings-tab .alert.alert-info a {
     background-color: #0000dc;
     color: white;
     padding: 1rem;
@@ -182,7 +178,7 @@ a.btn-link:hover {
     font-weight: bold;
 }
 
-.alert.alert-info a:hover {
+.holdings-tab .alert.alert-info a:hover {
     text-decoration: none;
     background-color: black;
     border-color: black;

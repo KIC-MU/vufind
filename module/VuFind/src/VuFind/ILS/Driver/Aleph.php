@@ -386,15 +386,16 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * This is responsible for retrieving the status information of a certain
      * record.
      *
-     * @param string $id The record id to retrieve the holdings for
+     * @param string $id     The record id to retrieve the holdings for
+     * @param bool   $cache  Whether the holding should be loaded from a quick cache
      *
      * @throws ILSException
      * @return mixed     On success, an associative array with the following keys:
      * id, availability (boolean), status, location, reserve, callnumber.
      */
-    public function getStatus($id)
+    public function getStatus($id, $cache = false)
     {
-        $statuses = $this->getHolding($id);
+        $statuses = $this->getHolding($id, null, $cache);
         foreach ($statuses as &$status) {
             $status['status']
                 = ($status['availability'] == 1) ? 'available' : 'unavailable';
@@ -486,7 +487,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             }
             $result = [];
             foreach ($idList as $id) {
-                $items = $this->getStatus($id);
+                $items = $this->getStatus($id, true);
                 $result[] = $items;
             }
             return $result;
@@ -514,6 +515,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      *
      * @param string $id     The record id to retrieve the holdings for
      * @param array  $patron Patron data
+     * @param bool   $cache  Whether the holding should be loaded from a quick cache
      *
      * @throws DateException
      * @throws ILSException
@@ -521,12 +523,15 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * keys: id, availability (boolean), status, location, reserve, callnumber,
      * duedate, number, barcode.
      */
-    public function getHolding($id, array $patron = null)
+    public function getHolding($id, array $patron = null, $cache = false)
     {
         $holding = [];
         list($bib, $sys_no) = $this->parseId($id);
         $resource = $bib . $sys_no;
         $params = ['view' => 'full'];
+        if ($cache) {
+            $params['cache'] = 'true';
+        }
         if (!empty($patron['id'])) {
             $params['patron'] = $patron['id'];
         } elseif (isset($this->defaultPatronId)) {
@@ -554,10 +559,14 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
             if (!preg_match('#\d{2}/\d{2}/\d{2} \d{2}:\d{2}#', $status)) {
+                $params = ['loaned' => 'NO'];
+                if ($cache) {
+                    $params['cache'] = 'true';
+                }
                 if (is_null($non_loaned_xml)) {
                     $non_loaned_xml = $this->doRestDLFRequest(
                         ['record', $resource, 'items'],
-                        ['loaned' => 'NO']
+                        $params
                     );
                 }
                 if (!empty($non_loaned_xml->{'items'})) {
@@ -845,9 +854,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     null, 'POST', null
                 );
                 $due = (string)$xml->xpath('//new-due-date');
-                $result[$id] = [
-                    'success' => true, 'new_date' => $this->parseDate($due)
-                ];
+                $result[$id] = ['success' => true, 'new_date' => $this->parseDate($due)];
             } catch (AlephRestfulException $ex) {
                 $result[$id] = [
                     'success' => false, 'sysMessage' => $ex->getMessage()

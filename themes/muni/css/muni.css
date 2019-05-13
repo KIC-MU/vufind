@@ -159,30 +159,27 @@ a.btn-link:hover {
 
 }
 
+.pager li.disabled > a {
+    border-color: #DCDCDC;
+}
+
+
 .list-group-item:first-child,  .list-group-item:last-child {
     border-radius: 0;
 }
 
 
 .alert-info {
-    background-color: white;
+    background-color: #EFEFEF;
     border: none;
     padding: 1rem;
+    border-radius: 0;
 }
 
 .holdings-tab .alert.alert-info a {
-    background-color: #0000dc;
-    color: white;
-    padding: 1rem;
-    text-decoration: none;
-    font-weight: bold;
 }
 
 .holdings-tab .alert.alert-info a:hover {
-    text-decoration: none;
-    background-color: black;
-    border-color: black;
-    color: white;
 }
 
 .navbar-toggle {
@@ -303,6 +300,10 @@ div.home-facet h2 {
 
 #muni-homepage-advsearch-right {
     display: none;
+}
+
+#muni-homepage-advsearch-bottom a {
+    text-decoration: underline;
 }
 
 div.search-controls {

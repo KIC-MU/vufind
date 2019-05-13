@@ -287,15 +287,22 @@ div.home-facet h2 {
     font-weight: bold;
 }
 
-.searchHomeContent {
-     
+#searchForm {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.searchForm {
-    margin: 1rem auto;
-    width: 100%;
-    text-align: center;
-    margin-right: auto;
+#muniHomepageSearchForm {
+    list-style-type: none;
+    width: auto;
+    list-style-position: inside;
+    margin:0;
+    padding:0;
+}
+
+#muni-homepage-advsearch-right {
+    display: none;
 }
 
 div.search-controls {
@@ -328,11 +335,17 @@ div.search-controls {
         width: 100%;
         max-width: 100%;
     }
+    
+    #muniHomepageSearchForm {
+        width: 100%;
+    }   
 }
 
+/*
 .search-controls {
     flex-grow: 3;
 }
+*/
 
 #main {
     margin-top: 1rem;

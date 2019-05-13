@@ -298,12 +298,40 @@ div.home-facet h2 {
     margin-right: auto;
 }
 
+div.search-controls {
+    padding-left: 2rem;
+}
+
 .form-control {
     border-radius: 0;
 }
 
 .search-home-facets {
     display: none;
+}
+
+#searchForm_lookfor {
+    width: 600px;
+    max-width: 600px;
+}
+
+@media (max-width: 767px) {
+    #searchForm button.btn-primary {
+        margin-top: .5rem;
+    }
+    
+    #searchForm_type {
+        width: 100%;
+    }
+    
+    #searchForm_lookfor {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.search-controls {
+    flex-grow: 3;
 }
 
 #main {
@@ -330,11 +358,40 @@ div.home-facet h2 {
     background-color: #0000dc;
 }
 
+.groupCallnumber {
+    display: none;
+}
 
 .myresearch-menu a.active {
    background-color: #0000dc; 
 }
 
+mark {
+    background-color: transparent;
+    color: inherit;
+}
+
+
+.result-links {
+    color: #0000dc;
+    /*border: #0000dc 1px solid;*/
+    padding: .5rem;
+}
+
+.result {
+    /*
+    border-bottom: white 2px solid;
+    margin-bottom: 1rem;
+    */
+    padding-bottom: 1rem;
+}
+
+/*
+.mainbody {
+    background-color: #EFEFEF;
+    padding: 1rem;
+}
+*/
 
 .inner-but-full-line {
     margin-left: calc(-50vw + 50%);

@@ -163,30 +163,27 @@ a.btn-link:hover {
 
 }
 
+.pager li.disabled > a {
+    border-color: #DCDCDC;
+}
+
+
 .list-group-item:first-child,  .list-group-item:last-child {
     border-radius: 0;
 }
 
 
 .alert-info {
-    background-color: white;
+    background-color: #EFEFEF;
     border: none;
     padding: 1rem;
+    border-radius: 0;
 }
 
 .holdings-tab .alert.alert-info a {
-    background-color: #0000dc;
-    color: white;
-    padding: 1rem;
-    text-decoration: none;
-    font-weight: bold;
 }
 
 .holdings-tab .alert.alert-info a:hover {
-    text-decoration: none;
-    background-color: black;
-    border-color: black;
-    color: white;
 }
 
 .navbar-toggle {
@@ -291,15 +288,30 @@ div.home-facet h2 {
     font-weight: bold;
 }
 
-.searchHomeContent {
-     
+#searchForm {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.searchForm {
-    margin: 1rem auto;
-    width: 100%;
-    text-align: center;
-    margin-right: auto;
+#muniHomepageSearchForm {
+    list-style-type: none;
+    width: auto;
+    list-style-position: inside;
+    margin:0;
+    padding:0;
+}
+
+#muni-homepage-advsearch-right {
+    display: none;
+}
+
+#muni-homepage-advsearch-bottom a {
+    text-decoration: underline;
+}
+
+div.search-controls {
+    padding-left: 2rem;
 }
 
 .form-control {
@@ -309,6 +321,36 @@ div.home-facet h2 {
 .search-home-facets {
     display: none;
 }
+
+#searchForm_lookfor {
+    width: 600px;
+    max-width: 600px;
+}
+
+@media (max-width: 767px) {
+    #searchForm button.btn-primary {
+        margin-top: .5rem;
+    }
+    
+    #searchForm_type {
+        width: 100%;
+    }
+    
+    #searchForm_lookfor {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    #muniHomepageSearchForm {
+        width: 100%;
+    }   
+}
+
+/*
+.search-controls {
+    flex-grow: 3;
+}
+*/
 
 #main {
     margin-top: 1rem;
@@ -334,11 +376,40 @@ div.home-facet h2 {
     background-color: #0000dc;
 }
 
+.groupCallnumber {
+    display: none;
+}
 
 .myresearch-menu a.active {
    background-color: #0000dc; 
 }
 
+mark {
+    background-color: transparent;
+    color: inherit;
+}
+
+
+.result-links {
+    color: #0000dc;
+    /*border: #0000dc 1px solid;*/
+    padding: .5rem;
+}
+
+.result {
+    /*
+    border-bottom: white 2px solid;
+    margin-bottom: 1rem;
+    */
+    padding-bottom: 1rem;
+}
+
+/*
+.mainbody {
+    background-color: #EFEFEF;
+    padding: 1rem;
+}
+*/
 
 .inner-but-full-line {
     margin-left: calc(-50vw + 50%);

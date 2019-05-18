@@ -17,7 +17,7 @@ usmarc_to_xml() {
 
 download_dumps() {
   cd "$VUFIND_HOME"
-  for BASENAME in mu-aleph-mub{01..03}.dump; do
+  for BASENAME in mu-aleph-mub{01..02}.dump; do
     # Download the Aleph database dump.
     curl -L https://aleph.muni.cz/vufind-dump/${BASENAME}.mrc > ${BASENAME}.mrc.new
     mv ${BASENAME}.mrc{.new,}

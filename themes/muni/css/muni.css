@@ -284,6 +284,11 @@ div.home-facet h2 {
     font-weight: bold;
 }
 
+
+div.search {
+	margin-top: 2rem;
+}
+
 #searchForm {
     width: 100%;
     display: flex;

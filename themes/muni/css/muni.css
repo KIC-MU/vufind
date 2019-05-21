@@ -288,6 +288,11 @@ div.home-facet h2 {
     font-weight: bold;
 }
 
+
+div.search {
+	margin-top: 2rem;
+}
+
 #searchForm {
     width: 100%;
     display: flex;
@@ -387,6 +392,7 @@ div.search-controls {
 mark {
     background-color: transparent;
     color: inherit;
+		padding: 0;
 }
 
 
@@ -421,4 +427,8 @@ mark {
 
 .thin-line {
     height: 1px;
+}
+
+tr.marc-row-CAT {
+	display: none;
 }

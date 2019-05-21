@@ -424,3 +424,7 @@ mark {
 .thin-line {
     height: 1px;
 }
+
+tr.marc-row-CAT {
+	display: none;
+}

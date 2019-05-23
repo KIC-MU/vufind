@@ -11,7 +11,7 @@ usmarc_to_xml() {
     s/&#([0-8bcefBCEF]|1.)//g
 
     # Replace some non-standard tags produced by Aleph with local data tags.
-    s/datafield tag="Z30"/datafield tag="904"/g
+    s/datafield tag="Z30"/datafield tag="994"/g
   }'
 }
 

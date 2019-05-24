@@ -59,7 +59,9 @@
       <table class="table table-striped">
         <caption class="sr-only"><?=$this->transEsc('Bibliographic Details')?></caption>
         <?php foreach ($coreFields as $current): ?>
-          <?php if ($current['label'] != 'Subjects'): ?>
+          <?php if ($current['label'] == 'Language'): ?>
+            <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$this->transEsc($current['value'])?></td></tr>
+          <?php elseif ($current['label'] != 'Subjects'): ?>
             <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
           <?php endif; ?>
         <?php endforeach; ?>

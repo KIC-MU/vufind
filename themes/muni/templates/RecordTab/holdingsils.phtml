@@ -57,7 +57,7 @@
 <?php endif; ?>
 <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
 <h3>
-  <?php $locationText = $this->transEsc($holding['location']); ?>
+  <?php $locationText = $this->transEsc('location_' . $holding['location'], [], $holding['location']); ?>
   <?php if (isset($holding['locationhref']) && $holding['locationhref']): ?>
     <a href="<?=$holding['locationhref']?>" target="_blank"><?=$locationText?></a>
   <?php else: ?>

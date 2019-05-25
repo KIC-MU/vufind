@@ -33,7 +33,7 @@
     <?php if (!$user): ?>
       <div class="alert alert-info">
 				<?=$this->transEsc("muni::ils_login_info")?>
-        <a href="<?=$this->recordLink()->getTabUrl($this->driver, 'Holdings')?>?login=true&amp;catalogLogin=true" data-lightbox><?=$this->transEsc("muni::ils_login_login")?></a>.
+        <a href="<?=$this->url('myresearch-userlogin')?>"><?=$this->transEsc("muni::ils_login_login")?></a>.
       </div>
     <?php elseif (!$user->cat_username): ?>
       <div class="alert alert-info">

@@ -55,70 +55,63 @@
   <?php if ($openUrlActive): ?><?=$openUrl->renderTemplate()?><?php endif; ?>
   <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
 <?php endif; ?>
-<?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
-<h3>
-  <?php $locationText = $this->transEsc('location_' . $holding['location'], [], $holding['location']); ?>
-  <?php if (isset($holding['locationhref']) && $holding['locationhref']): ?>
-    <a href="<?=$holding['locationhref']?>" target="_blank"><?=$locationText?></a>
-  <?php else: ?>
-    <?=$locationText?>
-  <?php endif; ?>
-</h3>
-<table class="table table-striped">
-  <caption class="sr-only"><?=$this->transEsc('holdings_details_from', ['%%location%%' => $this->transEsc($holding['location'])]) ?></caption>
-  <?php $callNos = $this->tab->getUniqueCallNumbers($holding['items']); if (!empty($callNos)): ?>
+
+<table class="table table-view">
   <tr>
-    <th><?=$this->transEsc("Call Number")?>: </th>
-    <td width="50%">
-      <?php foreach ($callNos as $callNo): ?>
-        <?php if ($this->callnumberHandler): ?>
-          <a href="<?=$this->url('alphabrowse-home') ?>?source=<?=$this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?=$this->escapeHtmlAttr($callNo) ?>"><?=$this->escapeHtml($callNo)?></a>
-        <?php else: ?>
-          <?=$this->escapeHtml($callNo)?>
-        <?php endif; ?>
-        <br />
-      <?php endforeach; ?>
-    </td>
+    <th><?=$this->transEsc("Call Number")?></th>
+    <th><?=$this->transEsc("Barcode")?></th>
+    <th><?=$this->transEsc("Status")?></th>
+    <th><?=$this->transEsc("Library")?></th>
+    <th><?=$this->transEsc("Holdings_notes")?></th>
   </tr>
-  <?php endif; ?>
-  <?php if (isset($holding['textfields'])): foreach ($holding['textfields'] as $textFieldName => $textFields): ?>
-    <tr>
-      <?php // Translation for summary is a special case for backwards-compatibility ?>
-      <th><?=$textFieldName == 'summary' ? $this->transEsc("Volume Holdings") : $this->transEsc(ucfirst($textFieldName))?>:</th>
-      <td>
-        <?php foreach ($textFields as $current): ?>
-          <?=$this->escapeHtml($current)?><br/>
-        <?php endforeach; ?>
-      </td>
-    </tr>
-  <?php endforeach; endif; ?>
-  <?php foreach ($holding['items'] as $row): ?>
-    <?php
-        try {
-            echo $this->context($this)->renderInContext(
-                'RecordTab/holdingsils/' . $this->tab->getTemplate() . '.phtml',
-                ['holding' => $row]
-            );
-        } catch (Exception $e) {
-            echo $this->context($this)->renderInContext(
-                'RecordTab/holdingsils/standard.phtml',
-                ['holding' => $row]
-            );
-        }
-    ?>
+  <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
+    <?php foreach ($holding['items'] as $item): ?>
+      <tr>
+        <td>
+          <?php $callNo = $item['callnumber']; ?>
+          <?php if ($this->callnumberHandler): ?>
+            <a href="<?=$this->url('alphabitemse-home') ?>?source=<?=$this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?=$this->escapeHtmlAttr($callNo) ?>"><?=$this->escapeHtml($callNo)?></a>
+          <?php else: ?>
+            <?=$this->escapeHtml($callNo)?>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php if (isset($item['barcode'])): ?>
+            <?=$item['barcode']?>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php
+              try {
+                  echo $this->context($this)->renderInContext(
+                      'RecordTab/holdingsils/' . $this->tab->getTemplate() . '.phtml',
+                      ['holding' => $item]
+                  );
+              } catch (Exception $e) {
+                  echo $this->context($this)->renderInContext(
+                      'RecordTab/holdingsils/standard.phtml',
+                      ['holding' => $item]
+                  );
+              }
+          ?>
+        </td>
+        <td>
+          <?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
+          <?php if (isset($item['locationhref']) && $item['locationhref']): ?>
+            <a href="<?=$item['locationhref']?>" target="_blank"><?=$locationText?></a>
+          <?php else: ?>
+            <?=$locationText?>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php if (isset($item['notes'])): foreach ($item['notes'] as $note): ?>
+            <?=$this->escapeHtml($note)?><br/>
+          <?php endforeach; endif; ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
   <?php endforeach; ?>
-  <?php if (!empty($holding['purchase_history'])): ?>
-    <tr>
-      <th><?=$this->transEsc("Most Recent Received Issues")?>:</th>
-      <td>
-        <?php foreach ($holding['purchase_history'] as $current): ?>
-          <?=$this->escapeHtml($current['issue'])?><br/>
-        <?php endforeach; ?>
-      </td>
-    </tr>
-  <?php endif; ?>
 </table>
-<?php endforeach; ?>
 
 <?php $history = $this->driver->getRealTimeHistory(); ?>
 <?php if (is_array($history) && !empty($history)): ?>

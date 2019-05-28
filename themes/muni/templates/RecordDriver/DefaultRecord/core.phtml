@@ -60,7 +60,13 @@
         <caption class="sr-only"><?=$this->transEsc('Bibliographic Details')?></caption>
         <?php foreach ($coreFields as $current): ?>
           <?php if ($current['label'] == 'Language'): ?>
-            <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$this->transEsc($current['value'])?></td></tr>
+						<?php
+              $languages = explode("<br />", $current['value']);
+              foreach ($languages as $index => $language):
+                $languages[$index] = $this->transEsc($language);
+              endforeach;
+            ?>
+            <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=implode("<br />", $languages)?></td></tr>
           <?php elseif ($current['label'] != 'Subjects'): ?>
             <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
           <?php endif; ?>

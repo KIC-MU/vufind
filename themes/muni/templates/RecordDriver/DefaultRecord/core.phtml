@@ -67,7 +67,7 @@
               endforeach;
             ?>
             <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=implode("<br />", $languages)?></td></tr>
-          <?php elseif ($current['label'] != 'Subjects'): ?>
+          <?php else: ?>
             <tr><th><?=$this->transEsc($current['label'])?>:</th><td><?=$current['value']?></td></tr>
           <?php endif; ?>
         <?php endforeach; ?>

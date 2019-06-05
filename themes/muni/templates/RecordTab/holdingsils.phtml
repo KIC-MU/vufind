@@ -32,8 +32,8 @@
   <?php if ($account->loginEnabled() && $offlineMode != 'ils-offline'): ?>
     <?php if (!$user): ?>
       <div class="alert alert-info">
-				<?=$this->transEsc("muni::ils_login_info")?>
-        <a href="<?=$this->url('myresearch-userlogin')?>"><?=$this->transEsc("muni::ils_login_login")?></a>.
+				<?=$this->transEsc("muni::ils_login_pretext")?>
+        <a href="<?=$this->url('myresearch-userlogin')?>"><?=$this->transEsc("muni::ils_login_link")?></a>.
       </div>
     <?php elseif (!$user->cat_username): ?>
       <div class="alert alert-info">

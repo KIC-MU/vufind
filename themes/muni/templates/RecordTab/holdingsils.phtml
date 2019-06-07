@@ -58,26 +58,20 @@
 
 <table class="table table-view">
   <tr>
-    <th><?=$this->transEsc("Call Number")?></th>
-    <th><?=$this->transEsc("Barcode")?></th>
+    <th><?=$this->transEsc("Description")?></th>
     <th><?=$this->transEsc("Status")?></th>
     <th><?=$this->transEsc("Library")?></th>
+    <th><?=$this->transEsc("Collection")?></th>
+    <th><?=$this->transEsc("Call Number")?></th>
     <th><?=$this->transEsc("Holdings_notes")?></th>
+    <th><?=$this->transEsc("Barcode")?></th>
   </tr>
   <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
     <?php foreach ($holding['items'] as $item): ?>
       <tr>
         <td>
-          <?php $callNo = $item['callnumber']; ?>
-          <?php if ($this->callnumberHandler): ?>
-            <a href="<?=$this->url('alphabitemse-home') ?>?source=<?=$this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?=$this->escapeHtmlAttr($callNo) ?>"><?=$this->escapeHtml($callNo)?></a>
-          <?php else: ?>
-            <?=$this->escapeHtml($callNo)?>
-          <?php endif; ?>
-        </td>
-        <td>
-          <?php if (isset($item['barcode'])): ?>
-            <?=$item['barcode']?>
+          <?php if (isset($item['description'])): ?>
+            <?=$item['description']?>
           <?php endif; ?>
         </td>
         <td>
@@ -104,9 +98,27 @@
           <?php endif; ?>
         </td>
         <td>
+          <?php if (isset($item['collection'])): ?>
+            <?=$item['collection']?>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php $callNo = $item['callnumber']; ?>
+          <?php if ($this->callnumberHandler): ?>
+            <a href="<?=$this->url('alphabitemse-home') ?>?source=<?=$this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?=$this->escapeHtmlAttr($callNo) ?>"><?=$this->escapeHtml($callNo)?></a>
+          <?php else: ?>
+            <?=$this->escapeHtml($callNo)?>
+          <?php endif; ?>
+        </td>
+        <td>
           <?php if (isset($item['notes'])): foreach ($item['notes'] as $note): ?>
             <?=$this->escapeHtml($note)?><br/>
           <?php endforeach; endif; ?>
+        </td>
+        <td>
+          <?php if (isset($item['barcode'])): ?>
+            <?=$item['barcode']?>
+          <?php endif; ?>
         </td>
       </tr>
     <?php endforeach; ?>

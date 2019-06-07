@@ -553,12 +553,13 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $collection = (string)$z30->{'z30-collection'};
             $collection_desc = ['desc' => $collection];
             $requested = false;
-            $duedate = '';
+            $duedate = null;
             $status = (string)$item->{'status'};
             $href = (string)$item["href"];
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
-            if (!preg_match('#\d{2}/\d{2}/\d{2} \d{2}:\d{2}#', $status)) {
+            $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
+            if (!preg_match($dueDateRegEx, $status)) {
                 $params = ['loaned' => 'NO'];
                 if ($cache) {
                     $params['cache'] = 'true';
@@ -584,32 +585,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $addLink = ($hold_request[0] == 'Y');
             }
             $matches = [];
-            $dueDateWithStatusRegEx = "/([0-9]*\\/[a-zA-Z]*\\/[0-9]*);([a-zA-Z ]*)/";
-            $dueDateRegEx = "/([0-9]*\\/[a-zA-Z]*\\/[0-9]*)/";
-            if (preg_match($dueDateWithStatusRegEx, $status, $matches)) {
+            if (preg_match($dueDateRegEx, $status, $matches)) {
                 $duedate = $this->parseDate($matches[1]);
-                $requested = (trim($matches[2]) == "Requested");
-            } elseif (preg_match($dueDateRegEx, $status, $matches)) {
-                $duedate = $this->parseDate($matches[1]);
-            } else {
-                $duedate = null;
-            }
-            // process duedate
-            if ($availability) {
-                if ($this->duedates) {
-                    foreach ($this->duedates as $key => $value) {
-                        if (preg_match($value, $item_status)) {
-                            $duedate = $key;
-                            break;
-                        }
-                    }
-                } else {
-                    $duedate = $item_status;
-                }
-            } else {
-                if ($status == "On Hold" || $status == "Requested") {
-                    $duedate = "requested";
-                }
             }
             $item_id = $item->attributes()->href;
             $item_id = substr($item_id, strrpos($item_id, '/') + 1);
@@ -1463,6 +1440,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             return $this->dateConverter->convertToDisplayDate('d/M/Y', $date);
         } elseif (preg_match("/^[0-9]+\/[0-9]+\/[0-9]{4}$/", $date) === 1) {
             // 13/7/2012
+            return $this->dateConverter->convertToDisplayDate('d/m/Y', $date);
+        } elseif (preg_match("/^[0-9]+\/[0-9]+\/[0-9]{2}$/", $date) === 1) {
+            // 13/7/12
+            $date = substr($date, 0, -2) . "20" . substr($date, -2);
             return $this->dateConverter->convertToDisplayDate('d/m/Y', $date);
         } else {
             throw new \Exception("Invalid date: $date");

@@ -23,7 +23,7 @@ download_dumps() {
     mv ${BASENAME}.mrc{.new,}
     # Convert the database dump to XML and check that the XML is well-formed.
     usmarc_to_xml < ${BASENAME}.mrc > ${BASENAME}.xml.new
-    xmllint --stream --noout < ${BASENAME}.xml.new
+    xmllint --stream --noout - < ${BASENAME}.xml.new
     mv ${BASENAME}.xml{.new,}
   done
 }
@@ -32,7 +32,7 @@ reindex_solr() {
   cd "$VUFIND_HOME"
   curl http://localhost:8080/solr/biblio/update --data "<delete><query>*:*</query></delete>" -H "Content-type:text/xml; charset=utf-8" |
   grep -qF '<int name="status">0</int>'
-  ./import-marc.sh <(cat mu-aleph-mub0?.dump.xml)
+  ./import-marc.sh <(head -n -1 mu-aleph-mub01.dump.xml && tail -n +2 mu-aleph-mub02.dump.xml)
   sudo -u solr ./index-alphabetic-browse.sh
   cd util
   php optimize.php

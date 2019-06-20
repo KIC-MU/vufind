@@ -27,9 +27,9 @@
     <?php else: ?>
       <?php /* Begin Unavailable Items (Recalls) */ ?>
       <span class="text-danger"><?=$this->transEsc($holding['status'])?><link property="availability" href="http://schema.org/OutOfStock" /></span><br />
-      <?php if ($holding['returnDate'] ?? false): ?>&ndash; <span class="small"><?=$this->escapeHtml($holding['returnDate'])?></span><?php endif; ?>
+      <?php if ($holding['returnDate'] ?? false): ?><span class="small"><?=$this->escapeHtml($holding['returnDate'])?></span><?php endif; ?>
       <?php if ($holding['duedate'] ?? false): ?>
-        &ndash; <span class="small"><?=$this->transEsc("Due")?>: <?=$this->escapeHtml($holding['duedate'])?></span><br />
+        <span class="small"><?=$this->transEsc("Due")?> <?=$this->escapeHtml($holding['duedate'])?></span><br />
       <?php endif; ?>
       <?php if (($holding['requests_placed'] ?? 0) > 0): ?>
         <span><?=$this->transEsc("Requests")?>: <?=$this->escapeHtml($holding['requests_placed'])?></span>

@@ -1782,7 +1782,7 @@ case_sensitive_tags =
 ; in the tag screens; this is recommended when using a Solr-only configuration.
 show_solr_options_in_tag_search = 
 ;[Shibboleth]
-;username         = "persistent-id"
+;username         = "eppn"
 ;login            = "https://vufind.ics.muni.cz/Shibboleth.sso/Login"
 ;logout           = "https://vufind.ics.muni.cz/Shibboleth.sso/Logout"
 ;provider_id      = "https://idp2.ics.muni.cz/idp/shibboleth"

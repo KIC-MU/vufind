@@ -1,3 +1,19 @@
+2,4c2,4
+< AliasMatch ^/vufind/themes/([0-9a-zA-Z-_]*)/css/(.*)$ /usr/local/vufind/themes/$1/css/$2
+< AliasMatch ^/vufind/themes/([0-9a-zA-Z-_]*)/images/(.*)$ /usr/local/vufind/themes/$1/images/$2
+< AliasMatch ^/vufind/themes/([0-9a-zA-Z-_]*)/js/(.*)$ /usr/local/vufind/themes/$1/js/$2
+---
+> AliasMatch ^/themes/([0-9a-zA-Z-_]*)/css/(.*)$ /usr/local/vufind/themes/$1/css/$2
+> AliasMatch ^/themes/([0-9a-zA-Z-_]*)/images/(.*)$ /usr/local/vufind/themes/$1/images/$2
+> AliasMatch ^/themes/([0-9a-zA-Z-_]*)/js/(.*)$ /usr/local/vufind/themes/$1/js/$2
+17c17
+< AliasMatch ^/vufind/cache/(.*)$ /usr/local/vufind/local/cache/public/$1
+---
+> AliasMatch ^/cache/(.*)$ /usr/local/vufind/local/cache/public/$1
+30c30
+< Alias /vufind /usr/local/vufind/public
+---
+> AliasMatch ^/(?!sitemap)(.*) /usr/local/vufind/public/$1$2
 37c37
 <     Require all granted
 ---
@@ -8,17 +24,15 @@
 ---
 >   AuthType shibboleth
 >   Require shibboleth
-48a49,52
+49c49,53
+< <Location /vufind>
+---
 > <Location />
->   RedirectMatch ^/$ /vufind/
-> </Location>
-> 
-49a54,57
 >   # Ensure that we are under SSL:
 >   RewriteCond   %{SERVER_PORT} !^443$
 >   RewriteRule   ^.*$                          https://%{SERVER_NAME}%{REQUEST_URI}  [L,R]
 > 
-59c67
+59c63
 <   #SetEnv VUFIND_ENV development
 ---
 >   SetEnv VUFIND_ENV development

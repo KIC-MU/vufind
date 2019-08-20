@@ -24,7 +24,7 @@ autoConfigure    = "0"
 ; Base URL is normally auto-detected, but this setting is used when autodetection is
 ; not possible (i.e. during sitemap generation at the command line).
 url              = "https://vufind.ics.muni.cz/vufind"
-email            = "aleph-support@ics.muni.cz"
+email            = "kic_admins@ics.muni.cz"
 title            = "MUNI Libraries Catalog"
 ; This is the default theme for non-mobile devices (or all devices if mobile_theme
 ; is disabled below). Available standard themes:

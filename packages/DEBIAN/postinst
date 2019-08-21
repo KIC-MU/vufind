@@ -33,7 +33,6 @@ ln -s $VUFIND_LOCAL_DIR/httpd-vufind.conf $APACHE_CONF_DIR/vufind.conf
 /etc/init.d/apache2 force-reload
 
 # Apply local patches
-patch local/httpd-vufind.conf < local/httpd-vufind.conf.diff
 patch import/log4j.properties < local/import/log4j.properties.diff
 
 # Install Cronjob

@@ -336,6 +336,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $result = null;
         try {
             $client = $this->httpService->createClient($url);
+            $client->setOptions(['timeout' => 60]);
             $client->setMethod($method);
             if ($body != null) {
                 $client->setRawBody($body);

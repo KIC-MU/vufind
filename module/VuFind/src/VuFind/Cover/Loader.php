@@ -267,7 +267,7 @@ class Loader extends \VuFind\ImageLoader
      */
     protected function storeSanitizedSettings($settings)
     {
-        $this->isbn = new ISBN($settings['isbn']);
+        $this->isbn = new ISBN(is_array($settings['isbn']) ? '' : $settings['isbn']);
         if (!empty($settings['issn'])) {
             $rawissn = preg_replace('/[^0-9X]/', '', strtoupper($settings['issn']));
             $this->issn = substr($rawissn, 0, 8);

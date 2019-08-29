@@ -64,16 +64,10 @@ class SafeMoneyFormat extends AbstractHelper
     public function __construct($defaultCurrency = null)
     {
         // Initialize number formatter:
-        $locale = setlocale(LC_MONETARY, 0);
-        $this->formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+        $this->formatter = new NumberFormatter('cs', NumberFormatter::CURRENCY);
 
         // Initialize default currency:
-        if (null === $defaultCurrency) {
-            $localeInfo = localeconv();
-            $defaultCurrency = isset($localeInfo['int_curr_symbol'])
-                ? trim($localeInfo['int_curr_symbol']) : '';
-        }
-        $this->defaultCurrency = empty($defaultCurrency) ? 'USD' : $defaultCurrency;
+        $this->defaultCurrency = 'CZK';
     }
 
     /**

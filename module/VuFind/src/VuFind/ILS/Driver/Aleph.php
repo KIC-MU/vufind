@@ -995,6 +995,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             ["view" => "full"]
         );
 
+        # $result = file_get_contents('/usr/local/vufind/dluhy-alephrest.xml');
+        # $result = str_replace('xmlns=', 'ns=', $result);
+        # $xml = simplexml_load_string($result);
+
         foreach ($xml->xpath('//cash') as $item) {
             $z31 = $item->z31;
             $z13 = $item->z13;
@@ -1006,7 +1010,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $transactiontype = (string)$z31->{'z31-credit-debit'};
             $barcode = (string)$z30->{'z30-barcode'};
             $checkout = (string)$z31->{'z31-date'};
-            $mult = ($transactiontype == "Credit") ? 100 : -100;
+            $mult = ($transactiontype == "K tíži") ? 100 : -100;
             $amount
                 = (float)(preg_replace("/[\(\)]/", "", (string)$z31->{'z31-sum'}))
                 * $mult;

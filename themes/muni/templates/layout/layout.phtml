@@ -128,6 +128,8 @@
             );
         }
 
+				$this->headScript()->appendFile("email.min.js");
+
         $root = rtrim($this->url('home'), '/');
         $translations = $this->jsTranslations()->getJSON();
         $dsb = DEFAULT_SEARCH_BACKEND;
@@ -214,5 +216,7 @@ JS;
         <?php if ($this->recaptcha()->active()): ?>
             <?= $this->inlineScript(\Zend\View\Helper\HeadScript::FILE, "https://www.google.com/recaptcha/api.js?onload=recaptchaOnLoad&render=explicit&hl=" . $this->layout()->userLang, 'SET') ?>
         <?php endif; ?>
+
+				<script src="<?= $this->url('home') ?>themes/muni/js/email.min.js"></script>
     </body>
 </html>

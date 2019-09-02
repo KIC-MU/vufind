@@ -432,3 +432,11 @@ mark {
 tr.marc-row-CAT {
 	display: none;
 }
+
+.adv-submit .clear-btn {
+    float: left;
+}
+
+.adv-submit input[type=submit] {
+    float: right;
+}

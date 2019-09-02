@@ -92,7 +92,11 @@
             </nav>
         </div>
 <?php endif; ?>
+	<div class="info-bar" style="color: rgb(0, 122, 83); margin: 5px 0 0 8px; font-weight: bold;">
+		<?= $this->transEsc('muni::beta') ?>
+	</div> 
 </div>
+		
 <div class="inner-but-full-line"></div>
 <?php if ($this->layout()->searchbox !== false): ?>
     <div class="search container navbar">

@@ -1028,27 +1028,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
 
             $finesListSort["$cashref"]  = [
                 "title"   => $title,
-                "amount" => $amount,
+                "balance" => $amount,
                 "duedate" => $this->parseDate($duedate),
                 "id"  => $id
             ];
         }
         ksort($finesListSort);
-        $balance = 0;
-        foreach (array_keys($finesListSort) as $key) {
-            $title = $finesListSort[$key]["title"];
-            $amount = $finesListSort[$key]["amount"];
-            $duedate = $finesListSort[$key]["duedate"];
-            $balance += $finesListSort[$key]["amount"];
-            $id = $finesListSort[$key]["id"];
-            $finesList[] = [
-                "title"   => $title,
-                "amount"   => $amount,
-                "balance"  => $balance,
-                "duedate" => $duedate,
-                "id"  => $id,
-            ];
-        }
 
         # Process pending fines
         $xml = $this->doRestDLFRequest(
@@ -1067,12 +1052,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $checkout = (string)$z36->{'z36-loan-date'};
             $duedate = (string)$z36->{'z36-due-date'};
             $amount = (float)($item->fine) * 100;
-            $balance += $amount;
 
             $finesList[] = [
                 "title"   => $title,
-                "amount"   => $amount,
-                "balance"  => $balance,
+                "balance"  => $amount,
                 "checkout" => $this->parseDate($checkout),
                 "duedate" => $this->parseDate($duedate),
                 "id"  => $id,

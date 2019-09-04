@@ -39,7 +39,7 @@
               ? $this->safeMoneyFormat($record['amount'] / 100.00) : '';
           $tableData['Balance'][] = isset($record['balance'])
               ? $this->safeMoneyFormat($record['balance'] / 100.00) : '';
-          $totalDue = $record['balance'] ?? 0;
+          $totalDue += $record['balance'] ?? 0;
       }
 
       // Now empty out any unused columns:

@@ -52,7 +52,8 @@
                         'number_thousands_separator' => [
                             'number_thousands_separator', null, ','
                         ],
-                        'sms_success' => 'sms_success'
+                        'sms_success' => 'sms_success',
+                        'muni::eloan' => 'muni::eloan',
                     ]
             );
             // Add libphonenumber.js strings
@@ -129,6 +130,7 @@
         }
 
 				$this->headScript()->appendFile("email.min.js");
+				$this->headScript()->appendFile("eprez.min.js");
 
         $root = rtrim($this->url('home'), '/');
         $translations = $this->jsTranslations()->getJSON();

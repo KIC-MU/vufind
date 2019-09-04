@@ -56,6 +56,9 @@
   <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
 <?php endif; ?>
 
+<div id="eprez"></div>
+<script>eprez_tag();</script>
+
 <table class="table table-view">
   <tr>
     <th><?=$this->transEsc("Description")?></th>

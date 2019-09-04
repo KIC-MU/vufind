@@ -999,6 +999,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $finesList = [];
         $finesListSort = [];
 
+        # Process filed fines
         $xml = $this->doRestDLFRequest(
             ['patron', $user['id'], 'circulationActions', 'cash'],
             ["view" => "full"]
@@ -1012,54 +1013,72 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z31 = $item->z31;
             $z13 = $item->z13;
             $z30 = $item->z30;
+
             //$delete = $item->xpath('@delete');
             $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $title = (string)$z13->{'z13-title'};
-            $transactiondate = date('d-m-Y', strtotime((string)$z31->{'z31-date'}));
             $transactiontype = (string)$z31->{'z31-credit-debit'};
-            $barcode = (string)$z30->{'z30-barcode'};
-            $checkout = (string)$z31->{'z31-date'};
+            $duedate = (string)$z31->{'z31-date'};
             $mult = ($transactiontype == "K tíži") ? 100 : -100;
             $amount
                 = (float)(preg_replace("/[\(\)]/", "", (string)$z31->{'z31-sum'}))
                 * $mult;
             $cashref = (string)$z31->{'z31-sequence'};
             //$cashdate = date('d-m-Y', strtotime((string) $z31->{'z31-date'}));
-            $balance = 0;
 
             $finesListSort["$cashref"]  = [
-                    "title"   => $title,
-                    "barcode" => $barcode,
-                    "amount" => $amount,
-                    "transactiondate" => $transactiondate,
-                    "transactiontype" => $transactiontype,
-                    "checkout" => $this->parseDate($checkout),
-                    "balance"  => $balance,
-                    "id"  => $id
+                "title"   => $title,
+                "amount" => $amount,
+                "duedate" => $this->parseDate($duedate),
+                "id"  => $id
             ];
         }
         ksort($finesListSort);
+        $balance = 0;
         foreach (array_keys($finesListSort) as $key) {
             $title = $finesListSort[$key]["title"];
-            $barcode = $finesListSort[$key]["barcode"];
             $amount = $finesListSort[$key]["amount"];
-            $checkout = $finesListSort[$key]["checkout"];
-            $transactiondate = $finesListSort[$key]["transactiondate"];
-            $transactiontype = $finesListSort[$key]["transactiontype"];
+            $duedate = $finesListSort[$key]["duedate"];
             $balance += $finesListSort[$key]["amount"];
             $id = $finesListSort[$key]["id"];
             $finesList[] = [
                 "title"   => $title,
-                "barcode"  => $barcode,
                 "amount"   => $amount,
-                "transactiondate" => $transactiondate,
-                "transactiontype" => $transactiontype,
                 "balance"  => $balance,
-                "checkout" => $checkout,
+                "duedate" => $duedate,
                 "id"  => $id,
-                "printLink" => "test",
             ];
         }
+
+        # Process pending fines
+        $xml = $this->doRestDLFRequest(
+            ['patron', $user['id'], 'circulationActions', 'loans'],
+            ["view" => "full"]
+        );
+
+        foreach ($xml->xpath('//loan[fine/text()]') as $item) {
+            $z13 = $item->z13;
+            $z30 = $item->z30;
+            $z36 = $item->z36;
+
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
+            $title = (string)$z13->{'z13-title'};
+            $barcode = (string)$z30->{'z30-barcode'};
+            $checkout = (string)$z36->{'z36-loan-date'};
+            $duedate = (string)$z36->{'z36-due-date'};
+            $amount = (float)($item->fine) * 100;
+            $balance += $amount;
+
+            $finesList[] = [
+                "title"   => $title,
+                "amount"   => $amount,
+                "balance"  => $balance,
+                "checkout" => $this->parseDate($checkout),
+                "duedate" => $this->parseDate($duedate),
+                "id"  => $id,
+            ];
+        }
+
         return $finesList;
     }
 

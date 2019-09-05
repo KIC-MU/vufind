@@ -1784,6 +1784,7 @@ show_solr_options_in_tag_search =
 ;[Shibboleth]
 ;username         = "persistent-id"
 ;login            = "https://vufind.ics.muni.cz/Shibboleth.sso/Login"
+; the logout must be set directly to IdP to perform global logout
 ;logout           = "https://idp2.ics.muni.cz/idp/logout.jsp"
 ;provider_id      = "https://idp2.ics.muni.cz/idp/shibboleth"
 ;cat_username     = "eppn"

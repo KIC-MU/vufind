@@ -33,7 +33,7 @@ title            = "MUNI Libraries Catalog"
 ;                (named after the earlier, now-deprecated blueprint theme)
 ;   sandal     = bootstrap3 theme with a "flat" styling applied (a newer look
 ;                than bootprint3).
-theme            = "sandal"
+theme            = "muni"
 
 ; Uncomment the following line to use a different default theme for mobile devices.
 ; You may not wish to use this setting if you are using one of the Bootstrap-based
@@ -390,7 +390,7 @@ encrypt_ils_password = "1"
 
 ; This is the key used to encrypt and decrypt catalog passwords.  This must be
 ; filled in with a random string value when encrypt_ils_passwords is set to true.
-ils_encryption_key = 
+ils_encryption_key = "7c2ba2743f123409dc934893b43920ea"
 ils_encryption_algo = "aes"
 privacy          = 
 
@@ -1560,7 +1560,7 @@ dewey            = "title"
 ; to prevent users from tampering with certain URLs (for example, "place hold" form
 ; submissions)
 [Security]
-HMACkey          = "mySuperSecretValue"
+HMACkey          = "ac3b92e49f123defdc934893b4396341"
 
 ; This section sets global defaults for caches; file caching is used by default.
 ; A custom directory for caching can be defined by the environment variable
@@ -1782,9 +1782,9 @@ case_sensitive_tags =
 ; in the tag screens; this is recommended when using a Solr-only configuration.
 show_solr_options_in_tag_search = 
 ;[Shibboleth]
-;username         = "eppn"
+;username         = "persistent-id"
 ;login            = "https://vufind.ics.muni.cz/Shibboleth.sso/Login"
-;logout           = "https://vufind.ics.muni.cz/Shibboleth.sso/Logout"
+;logout           = "https://idp2.ics.muni.cz/idp/logout.jsp"
 ;provider_id      = "https://idp2.ics.muni.cz/idp/shibboleth"
 ;cat_username     = "eppn"
 ;

@@ -1783,6 +1783,6 @@ show_solr_options_in_tag_search =
 [Shibboleth]
 username         = "eppn"
 login            = "https://katalog.muni.cz/Shibboleth.sso/Login"
-logout           = "https://katalog.muni.cz/Shibboleth.sso/Logout"
+logout           = "https://idp2.ics.muni.cz/idp/logout.jsp"
 provider_id      = "https://idp2.ics.muni.cz/idp/shibboleth"
 cat_username     = "eppn"

@@ -6,16 +6,41 @@ print_info() {
 
 usmarc_to_xml_biblio() {
   java -jar import/lib/marc4j*.jar to_xml |
-  sed -r '{
-    # Remove invalid character references to ASCII C0 and C1 control codes, produced by marc4j.
-    s/&#([0-8bcefBCEF]|1.)//g
+  sed -r -n '{
+    /<marc:record>/ {
+      # Read entire MARC record into pattern space.
+      :A
+      N
+      /<marc:datafield tag="STA" [^>]*>.*<marc:subfield code="a">PROZAT[IÍ]MNÍ/ {
+        /<marc:datafield tag="STA".*</marc:datafield>/ ! {
+          # Skip MARC records that are flagged as unfinished.
+          :B
+          N
+          /<\/marc:record>/ bD
+          bB
+        }
+      }
+      /<\/marc:record>/ bC
+      bA
 
-    # Replace some non-standard tags produced by Aleph with local data tags.
-    s/datafield tag="Z30"/datafield tag="994"/g
+      # Process pattern space.
+      :C
 
-    # Merge sublibrary codes to the code of the main library.
-    s#(<marc:subfield code="1">)(FFHUD|FFJZV|FF-K|FF-S|FFUHV)(</marc:subfield>)#\1FF\3#g
-    s#(<marc:subfield code="1">)(PRIMA|PRI-S)(</marc:subfield>)#\1PRIF\3#g
+      ## Remove invalid character references to ASCII C0 and C1 control codes produced by marc4j.
+      s/&#([0-8bcefBCEF]|1.)//g
+
+      ## Replace some non-standard tags produced by Aleph with local data tags.
+      s/(<marc:datafield tag)="Z30"/\1="994"/g
+
+      ## Merge sublibrary codes to the code of the main library.
+      s#(<marc:subfield code="1">)(FFHUD|FFJZV|FF-K|FF-S|FFUHV)(</marc:subfield>)#\1FF\3#g
+      s#(<marc:subfield code="1">)(PRIMA|PRI-S)(</marc:subfield>)#\1PRIF\3#g
+    }
+
+    # Print pattern space (XML declaration, trailing marc:collection tag, MARC record).
+    p
+
+    :D
   }'
 }
 
@@ -56,7 +81,9 @@ download_dumps() {
 
 reindex_solr_biblio() {
   cd "$VUFIND_HOME"
-  curl http://localhost:8080/solr/biblio/update --data "<delete><query>*:*</query></delete>" -H "Content-type:text/xml; charset=utf-8" |
+  curl http://localhost:8080/solr/biblio/update \
+    --data "<delete><query>*:*</query></delete>" \
+    -H "Content-type:text/xml; charset=utf-8" |
   grep -qF '<int name="status">0</int>'
   ./import-marc.sh <(
     head -n -1 mu-aleph-mub01.dump.xml
@@ -67,7 +94,9 @@ reindex_solr_biblio() {
 
 reindex_solr_authority() {
   cd "$VUFIND_HOME"
-  curl http://localhost:8080/solr/authority/update --data "<delete><query>*:*</query></delete>" -H "Content-type:text/xml; charset=utf-8" |
+  curl http://localhost:8080/solr/authority/update \
+    --data "<delete><query>*:*</query></delete>" \
+    -H "Content-type:text/xml; charset=utf-8" |
   grep -qF '<int name="status">0</int>'
   ./import-marc-auth.sh <(
     cat mu-vufind-nkp10.dump.xml

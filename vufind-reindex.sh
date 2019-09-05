@@ -12,6 +12,10 @@ usmarc_to_xml_biblio() {
 
     # Replace some non-standard tags produced by Aleph with local data tags.
     s/datafield tag="Z30"/datafield tag="994"/g
+
+    # Merge sublibrary codes to the code of the main library.
+    s#(<marc:subfield code="1">)(FFHUD|FFJZV|FF-K|FF-S|FFUHV)(</marc:subfield>)#\1FF\3#g
+    s#(<marc:subfield code="1">)(PRIMA|PRI-S)(</marc:subfield>)#\1PRIF\3#g
   }'
 }
 

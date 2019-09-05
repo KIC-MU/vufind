@@ -55,6 +55,7 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
         'openlibrary' => 'VuFind\Content\Covers\OpenLibrary',
         'summon' => 'VuFind\Content\Covers\Summon',
         'syndetics' => 'VuFind\Content\Covers\Syndetics',
+        'obalkyknihv3' => 'VuFind\Content\Covers\ObalkyKnihV3',
     ];
 
     /**
@@ -83,6 +84,8 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
             'Zend\ServiceManager\Factory\InvokableFactory',
         'VuFind\Content\Covers\Syndetics' =>
             'VuFind\Content\Covers\Factory::getSyndetics',
+        'VuFind\Content\Covers\ObalkyKnihV3' =>
+            'Zend\ServiceManager\Factory\InvokableFactory',
     ];
 
     /**

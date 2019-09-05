@@ -129,9 +129,6 @@
             );
         }
 
-				$this->headScript()->appendFile("email.min.js");
-				$this->headScript()->appendFile("eprez.min.js");
-
         $root = rtrim($this->url('home'), '/');
         $translations = $this->jsTranslations()->getJSON();
         $dsb = DEFAULT_SEARCH_BACKEND;

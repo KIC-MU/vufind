@@ -1,8 +1,7 @@
-function eprez_tag() {	
-  var output;
+function eprez_tag(sysno) {
+  sysno = sysno.replace(/^MUB0[1-3]/, "");
   var eprez = document.getElementById("eprez");
   var time = (new Date).getTime();
-  var sysno = location.pathname.replace(/^\/Record\/MUB0[1-3]/, "");
   var url = "https://kic.ics.muni.cz/eprezencka/alephApi/toAleph.pl?sysno=" + sysno + "&jsoncallback=eprez_tag_callback&_=" + time;
   var xhttp = new XMLHttpRequest();
 

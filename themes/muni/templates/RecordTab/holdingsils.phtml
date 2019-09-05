@@ -56,6 +56,10 @@
   <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
 <?php endif; ?>
 
+<?php $this->headScript()->appendFile("eprez.min.js"); ?>
+<div id="eprez"></div>
+<script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
+
 <table class="table table-view">
   <tr>
     <th><?=$this->transEsc("Description")?></th>

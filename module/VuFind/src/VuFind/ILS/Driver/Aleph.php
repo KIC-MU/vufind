@@ -388,15 +388,16 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * record.
      *
      * @param string $id     The record id to retrieve the holdings for
-     * @param bool   $cache  Whether the holding should be loaded from a quick cache
+     * @param bool   $quick  Whether the status information will be used for
+     * quick availability display.
      *
      * @throws ILSException
      * @return mixed     On success, an associative array with the following keys:
      * id, availability (boolean), status, location, reserve, callnumber.
      */
-    public function getStatus($id, $cache = false)
+    public function getStatus($id, $quick = false)
     {
-        $statuses = $this->getHolding($id, null, $cache);
+        $statuses = $this->getHolding($id, null, $quick);
         foreach ($statuses as &$status) {
             $status['status']
                 = ($status['availability'] == 1) ? 'available' : 'unavailable';
@@ -516,7 +517,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      *
      * @param string $id     The record id to retrieve the holdings for
      * @param array  $patron Patron data
-     * @param bool   $cache  Whether the holding should be loaded from a quick cache
+     * @param bool   $quick  Whether the holding information will be used for
+     * quick availability display.
      *
      * @throws DateException
      * @throws ILSException
@@ -524,13 +526,13 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * keys: id, availability (boolean), status, location, reserve, callnumber,
      * duedate, number, barcode.
      */
-    public function getHolding($id, array $patron = null, $cache = false)
+    public function getHolding($id, array $patron = null, $quick = false)
     {
         $holding = [];
         list($bib, $sys_no) = $this->parseId($id);
         $resource = $bib . $sys_no;
         $params = ['view' => 'full'];
-        if ($cache) {
+        if ($quick) {
             $params['cache'] = 'true';
         }
         if (!empty($patron['id'])) {
@@ -557,12 +559,19 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $duedate = null;
             $status = (string)$item->{'status'};
             $href = (string)$item["href"];
+            if ($quick) {
+                if (preg_match('/^(FFHUD|FFJZV|FF-K|FF-S|FFUHV)/', $sub_library_code)) {
+                    $sub_library_code = 'FF';
+                } elseif (preg_match('/^(PRIMA|PRI-S)/', $sub_library_code)) {
+                    $sub_library_code = 'PRIF';
+                }
+            }
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
             if (!preg_match($dueDateRegEx, $status)) {
                 $params = ['loaned' => 'NO'];
-                if ($cache) {
+                if ($quick) {
                     $params['cache'] = 'true';
                 }
                 if (is_null($non_loaned_xml)) {
@@ -990,6 +999,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $finesList = [];
         $finesListSort = [];
 
+        # Process filed fines
         $xml = $this->doRestDLFRequest(
             ['patron', $user['id'], 'circulationActions', 'cash'],
             ["view" => "full"]
@@ -1003,54 +1013,55 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $z31 = $item->z31;
             $z13 = $item->z13;
             $z30 = $item->z30;
+
             //$delete = $item->xpath('@delete');
             $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $title = (string)$z13->{'z13-title'};
-            $transactiondate = date('d-m-Y', strtotime((string)$z31->{'z31-date'}));
             $transactiontype = (string)$z31->{'z31-credit-debit'};
-            $barcode = (string)$z30->{'z30-barcode'};
-            $checkout = (string)$z31->{'z31-date'};
+            $duedate = (string)$z31->{'z31-date'};
             $mult = ($transactiontype == "K tíži") ? 100 : -100;
             $amount
                 = (float)(preg_replace("/[\(\)]/", "", (string)$z31->{'z31-sum'}))
                 * $mult;
             $cashref = (string)$z31->{'z31-sequence'};
             //$cashdate = date('d-m-Y', strtotime((string) $z31->{'z31-date'}));
-            $balance = 0;
 
             $finesListSort["$cashref"]  = [
-                    "title"   => $title,
-                    "barcode" => $barcode,
-                    "amount" => $amount,
-                    "transactiondate" => $transactiondate,
-                    "transactiontype" => $transactiontype,
-                    "checkout" => $this->parseDate($checkout),
-                    "balance"  => $balance,
-                    "id"  => $id
+                "title"   => $title,
+                "balance" => $amount,
+                "duedate" => $this->parseDate($duedate),
+                "id"  => $id
             ];
         }
         ksort($finesListSort);
-        foreach (array_keys($finesListSort) as $key) {
-            $title = $finesListSort[$key]["title"];
-            $barcode = $finesListSort[$key]["barcode"];
-            $amount = $finesListSort[$key]["amount"];
-            $checkout = $finesListSort[$key]["checkout"];
-            $transactiondate = $finesListSort[$key]["transactiondate"];
-            $transactiontype = $finesListSort[$key]["transactiontype"];
-            $balance += $finesListSort[$key]["amount"];
-            $id = $finesListSort[$key]["id"];
+
+        # Process pending fines
+        $xml = $this->doRestDLFRequest(
+            ['patron', $user['id'], 'circulationActions', 'loans'],
+            ["view" => "full"]
+        );
+
+        foreach ($xml->xpath('//loan[fine/text()]') as $item) {
+            $z13 = $item->z13;
+            $z30 = $item->z30;
+            $z36 = $item->z36;
+
+            $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
+            $title = (string)$z13->{'z13-title'};
+            $barcode = (string)$z30->{'z30-barcode'};
+            $checkout = (string)$z36->{'z36-loan-date'};
+            $duedate = (string)$z36->{'z36-due-date'};
+            $amount = (float)($item->fine) * 100;
+
             $finesList[] = [
                 "title"   => $title,
-                "barcode"  => $barcode,
-                "amount"   => $amount,
-                "transactiondate" => $transactiondate,
-                "transactiontype" => $transactiontype,
-                "balance"  => $balance,
-                "checkout" => $checkout,
+                "balance"  => $amount,
+                "checkout" => $this->parseDate($checkout),
+                "duedate" => $this->parseDate($duedate),
                 "id"  => $id,
-                "printLink" => "test",
             ];
         }
+
         return $finesList;
     }
 

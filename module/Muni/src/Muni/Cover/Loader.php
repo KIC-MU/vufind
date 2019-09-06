@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) Villanova University 2007.
+ * Copyright (C) Villanova University 2007, Masaryk University 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -23,10 +23,11 @@
  * @package  Cover_Generator
  * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Demian Katz <demian.katz@villanova.edu>
+ * @author   Vit Novotny <witiko@mail.muni.cz>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/configuration:external_content Wiki
  */
-namespace VuFind\Cover;
+namespace Muni\Cover;
 
 use VuFind\Content\Covers\PluginManager as ApiManager;
 use VuFindCode\ISBN;
@@ -267,7 +268,7 @@ class Loader extends \VuFind\ImageLoader
      */
     protected function storeSanitizedSettings($settings)
     {
-        $this->isbn = new ISBN($settings['isbn']);
+        $this->isbn = new ISBN(is_array($settings['isbn']) ? '' : $settings['isbn']);
         if (!empty($settings['issn'])) {
             $rawissn = preg_replace('/[^0-9X]/', '', strtoupper($settings['issn']));
             $this->issn = substr($rawissn, 0, 8);

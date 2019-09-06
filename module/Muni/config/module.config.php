@@ -1,0 +1,50 @@
+<?php
+namespace Muni\Module\Configuration;
+
+$config = [
+    'router' => [
+        'recorddriver_tabs' => [
+            'VuFind\RecordDriver\SolrMarc' => [
+                'tabs' => [
+                    'Similar' => null,
+                ],
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Muni\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
+        ],
+    ],
+    'vufind' => [
+        'plugin_managers' => [
+            'content_covers' => [
+                'aliases' => [
+                    'obalkyknihv3' => 'Muni\Content\Covers\ObalkyKnihV3',
+                ],
+                'factories' => [
+                    'Muni\Content\Covers\ObalkyKnihV3' => 'Zend\ServiceManager\Factory\InvokableFactory',
+                ],
+            ],
+            'ils_driver' => [
+                'aliases' => [
+                    'aleph' => 'Muni\ILS\Driver\Aleph',
+                ],
+                'factories' => [
+                    'Muni\ILS\Driver\Aleph' => 'VuFind\ILS\Driver\AlephFactory',
+                ],
+            ],
+        ],
+    ],
+    'controllers' => [
+        'factories' => [
+            'Muni\Controller\CoverController' => 'Muni\Controller\CoverControllerFactory',
+        ],
+        'aliases' => [
+            'Cover' => 'Muni\Controller\CoverController',
+            'cover' => 'Muni\Controller\CoverController',
+        ],
+    ],
+];
+
+return $config;

@@ -14,16 +14,19 @@ function eprez_tag(sysno) {
     }
 
     if("show" in data) {
-      var text = VuFind.translate("muni::eloan");
-    }
-
-    if("odkaz" in data) {
-      eprez.innerHTML =
-        "<a href='" + data.odkaz + "?sysno=" + sysno + "'>" +
-        "<h3>" + text + "</h3>" +
-        "</a>";
-    } else if("show" in data) {
-      eprez.innerHTML = "<h3>" + text + "</h3>";
+      var a = document.createElement("a");
+      if ("odkaz" in data) {
+        a.href = data.odkaz;
+      } else {
+        a.href = 'javascript:;';
+        a.onclick = function() {
+          alert(VuFind.translate("muni::eloan_unavailable"));
+        };
+      }
+      a.appendChild(document.createTextNode(VuFind.translate("muni::eloan")));
+      var h3 = document.createElement("h3");
+      h3.appendChild(a);
+      eprez.appendChild(h3);
     }
   }
   

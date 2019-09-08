@@ -11,7 +11,7 @@ available        = "1"
 ; Change to true to see messages about the behavior of the system as part of the
 ; output -- only for use when troubleshooting problems. See also the access.DebugMode
 ; setting in permissions.ini to turn on debug using a GET parameter in the request.
-debug            = 
+debug            = "0"
 ; This setting should be set to false after auto-configuration is complete
 autoConfigure    = "0"
 ; This setting specifies a health check file location. If a health check file exists,
@@ -1273,12 +1273,11 @@ skip_numeric     = "1"
 ; Be careful with this setting: a flood of errors can easily bog down your mail
 ; server!
 [Logging]
-file             = "/var/log/vufind.log:alert,error,notice,debug"
 ;database       = log_table:alert,error,notice,debug
 ; NOTE : Make sure the log file exists and that Apache has write permission.
 ; NOTE : Windows users should avoid drive letters (eg. c:\vufind) because
 ;        the colon will be used in the string parsing. "/vufind" will work
-;file           = /var/log/vufind.log:alert,error,notice,debug
+;file           = /var/log/vufind.log:alert,error,notice
 ;email          = alerts@myuniversity.edu:alert-5,error-5
 
 ; Get URL from https://YOURSLACK.slack.com/apps/manage/custom-integrations

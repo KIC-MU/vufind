@@ -562,11 +562,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $status = (string)$item->{'status'};
             $href = (string)$item["href"];
             if ($quick) {
-                if (preg_match('/^(FFHUD|FFJZV|FF-K|FF-S|FFUHV)/', $sub_library_code)) {
-                    $sub_library_code = 'FF';
-                } elseif (preg_match('/^(PRIMA|PRI-S)/', $sub_library_code)) {
-                    $sub_library_code = 'PRIF';
-                }
+                $sub_library_code = $this->convertSublibraryId($sub_library_code);
             }
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
@@ -768,7 +764,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             //$itemseq = (string) $z36->{'z36-item-sequence'};
             //$seq = (string) $z36->{'z36-sequence'};
 
-            $location = (string)$z36->{'z36_pickup_location'};
+            $location = (string)$item->{'z36-sub-library-code'};
+            $location = $this->convertSublibraryId($location);
             $reqnum = (string)$z36->{'z36-doc-number'}
                 . (string)$z36->{'z36-item-sequence'}
                 . (string)$z36->{'z36-sequence'};
@@ -886,6 +883,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 //$itemseq = (string) $z37->{'z37-item-sequence'};
                 $seq = (string)$z37->{'z37-sequence'};
                 $location = (string)$z37->{'z37-pickup-location'};
+                $location = $this->convertSublibraryId($location);
                 $reqnum = (string)$z37->{'z37-doc-number'}
                     . (string)$z37->{'z37-item-sequence'}
                     . (string)$z37->{'z37-sequence'};
@@ -1441,6 +1439,24 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     {
         $id = 'MUB01' . $docNumber;
         return $id;
+    }
+
+    /**
+     * Convert a sublibrary ID to a form that is suitable for translation.
+     *
+     * @param string $id Sublibrary ID.
+     *
+     * @return string
+     */
+    public function convertSublibraryId($id)
+    {
+        if (preg_match('/^(FFHUD|FFJZV|FF-K|FF-S|FFUHV)/', $id)) {
+            return 'FF';
+        } elseif (preg_match('/^(PRIMA|PRI-S)/', $id)) {
+            return 'PRIF';
+        } else {
+            return $id;
+        }
     }
 
     /**

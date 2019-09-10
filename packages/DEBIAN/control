@@ -9,6 +9,7 @@ Depends: apache2,
          libapache2-mod-php5 | php-mbstring,
          libxml2-utils,
          mysql-server | virtual-mysql-server-core,
+         parallel,
          php-pear,
          php,
          php-dev,
@@ -18,7 +19,9 @@ Depends: apache2,
          php-ldap,
          php-mysql,
          php-soap,
-         php-xml
+         php-xml,
+         xml-twig-tools,
+         xsltproc
 Maintainer: VuFind Project Administration Team <vufind-admins@lists.sourceforge.net>
 Homepage: http://vufind.org/
 Description: A library resource discovery portal

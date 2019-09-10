@@ -185,11 +185,6 @@ ISN:
     - issn
   DismaxHandler: edismax
 
-Barcode:
-  DismaxFields:
-    - barcode
-  DismaxHandler: edismax
-
 Subject:
   DismaxFields:
     - topic_unstemmed^150
@@ -280,6 +275,8 @@ AllFields:
     - issn
     - long_lat_display
     - barcode
+    - id
+    - item_callnumber
   DismaxHandler: edismax
 #  ExactSettings:
 #    DismaxFields:
@@ -294,6 +291,16 @@ AllFields:
 id:
   QueryFields:
     id:
+      - [onephrase, ~]
+
+barcode:
+  QueryFields:
+    barcode:
+      - [onephrase, ~]
+
+item_callnumber:
+  QueryFields:
+    item_callnumber:
       - [onephrase, ~]
 
 ParentID:

@@ -35,11 +35,26 @@ ln -s $VUFIND_LOCAL_DIR/httpd-vufind.conf $APACHE_CONF_DIR/vufind.conf
 # Apply local patches
 patch import/log4j.properties < local/import/log4j.properties.diff
 
-# Install Cronjob
+# Install cronjob
 echo "15 4 * * * root . /etc/profile.d/vufind.sh; nice -n 19 chronic bash -o pipefail -c '/usr/local/vufind/vufind-reindex.sh |& tee -a /var/log/vufind-reindex.log'" > /etc/cron.d/vufind-reindex
 chown root:root /etc/cron.d/vufind-reindex
 chmod u=rw,go=r /etc/cron.d/vufind-reindex
 systemctl restart cron
+
+# Configure logrotate
+cat << EOT > /etc/logrotate.d/vufind
+/var/log/vufind.log /var/log/vufind-reindex.log {
+  weekly
+  rotate 5
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 644 root root
+}
+EOT
+chown root:root /etc/logrotate.d/vufind
+chmod u=rw,go=r /etc/logrotate.d/vufind
 
 # Disable autocommit in the biblio Solr core
 sed -ni '/<autoCommit>/,/<\/autoCommit>/!p' solr/vufind/biblio/conf/solrconfig.xml

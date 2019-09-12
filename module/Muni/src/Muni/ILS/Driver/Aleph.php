@@ -1175,7 +1175,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         //$telephone3 = (string)$address->{'z304-telephone-3'};
         //$telephone4 = (string)$address->{'z304-telephone-4'};
         $smsnumber = (string)$address->{'z304-sms-number'};
-        $email = (string)$address->{'z404-email-address'};
+        $email = (string)$address->{'z304-email-address'};
         $dateFrom = (string)$address->{'z304-date-from'};
         $dateTo = (string)$address->{'z304-date-to'};
 

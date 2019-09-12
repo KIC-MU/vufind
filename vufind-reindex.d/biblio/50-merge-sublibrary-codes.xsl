@@ -12,14 +12,14 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="//marc:subfield[../marc:datafield[@tag = '994'] and @code = '1' and (text() = 'FFHUD' or text() = 'FFJZV' or text() = 'FF-K' or text() = 'FF-S' or text() = 'FFUHV')]">
+  <xsl:template match="//marc:subfield[name(..) = 'marc:datafield' and ../@tag = '994' and @code = '1' and (text() = 'FFHUD' or text() = 'FFJZV' or text() = 'FF-K' or text() = 'FF-S' or text() = 'FFUHV')]">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <xsl:text>FF</xsl:text>
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="//marc:subfield[../marc:datafield[@tag = '994'] and @code = '1' and (text() = 'PRIMA' or text() = 'PRI-S')]">
+  <xsl:template match="//marc:subfield[name(..) = 'marc:datafield' and ../@tag = '994' and @code = '1' and (text() = 'PRIMA' or text() = 'PRI-S')]">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <xsl:text>PRIF</xsl:text>

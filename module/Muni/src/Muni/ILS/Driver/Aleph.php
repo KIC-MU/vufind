@@ -1113,6 +1113,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $address2 = (string)$xml->z304->{'z304-address-3'};
         $zip = (string)$xml->z304->{'z304-zip'};
         $phone = (string)$xml->z304->{'z304-telephone'};
+        $mobile_phone = (string)$address->{'z304-sms-number'};
         $barcode = (string)$xml->z304->{'z304-address-0'};
         $group = (string)$xml->z305->{'z305-bor-status'};
         $expiry = (string)$xml->z305->{'z305-expiry-date'};
@@ -1136,6 +1137,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $recordList['address1'] = $address1;
         $recordList['address2'] = $address2;
         $recordList['zip'] = $zip;
+        $recordList['mobile_phone'] = $mobile_phone;
         $recordList['phone'] = $phone;
         $recordList['group'] = $group;
         $recordList['barcode'] = $barcode;
@@ -1172,6 +1174,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         //$telephone2 = (string)$address->{'z304-telephone-2'};
         //$telephone3 = (string)$address->{'z304-telephone-3'};
         //$telephone4 = (string)$address->{'z304-telephone-4'};
+        $smsnumber = (string)$address->{'z304-sms-number'};
         $email = (string)$address->{'z404-email-address'};
         $dateFrom = (string)$address->{'z304-date-from'};
         $dateTo = (string)$address->{'z304-date-to'};
@@ -1203,6 +1206,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $recordList['city'] = $address3;
         $recordList['country'] = $address4;
         $recordList['zip'] = $zip;
+        $recordList['mobile_phone'] = $smsnumber;
         $recordList['phone'] = $telephone1;
         $recordList['email'] = $email;
         $recordList['dateFrom'] = $dateFrom;

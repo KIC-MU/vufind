@@ -146,6 +146,7 @@
    <field name="thumbnail" type="string" indexed="false" stored="true"/>
    <!-- Catalog Specific Fields -->
    <field name="barcode" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="short_id" type="long" indexed="true" stored="true" multiValued="true"/>
    <field name="item_callnumber" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="lccn" type="string" indexed="true" stored="true"/>
    <field name="ctrlnum" type="string" indexed="true" stored="true" multiValued="true"/>

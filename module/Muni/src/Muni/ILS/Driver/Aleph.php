@@ -277,7 +277,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         } else {
             $url = $this->dlfbaseurl . $path;
         }
-        if ($this->getTranslatorLocale() == "cs") {
+        if ($this->getTranslatorLocale() == "cs" and !isset($params["lang"])) {
             $params["lang"] = "cze";
         } else {
             $params["lang"] = "eng";
@@ -747,7 +747,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
     {
         $userId = $user['id'];
         $transList = [];
-        $params = ["view" => "full"];
+        $params = ["view" => "full", "lang" => "eng"];
         $xml = $this->doRestDLFRequest(
             ['patron', $userId, 'circulationActions', 'loans'], $params
         );
@@ -759,7 +759,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $id = $this->docNumberToId((string)$z13->{'z13-doc-number'});
             $group = $item->xpath('@href');
             $group = substr(strrchr($group[0], "/"), 1);
-            $renew = $item->xpath('@renew');
+            $renewable = $item->xpath('@renew')[0];
             //$docno = (string) $z36->{'z36-doc-number'};
             //$itemseq = (string) $z36->{'z36-item-sequence'};
             //$seq = (string) $z36->{'z36-sequence'};
@@ -777,7 +777,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $isbn = (string)$z13->{'z13-isbn-issn'};
             $barcode = (string)$z30->{'z30-barcode'};
 
-            $transList[] = [
+            $transaction = [
                 //'type' => $type,
                 'id' => $id,
                 'item_id' => $group,
@@ -791,9 +791,26 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'duedate' => $this->parseDate($due),
                 //'holddate' => $holddate,
                 //'delete' => $delete,
-                'renewable' => $renew[0] == "Y",
+                'renewable' => $renewable == "Y",
                 //'create' => $this->parseDate($create)
             ];
+
+            $renewInfo = (string)$item->{'renew-info'};
+            $renewNoLimit = 'no limit on number of renewals';
+            $duedateNoLimit = 'No limit on latest due date';
+            $renewRegex = '/([0-9]*) \((' . $renewNoLimit . '|out of ([0-9]*))\)\.';
+            $renewRegex .= '(' . $duedateNoLimit . '|Latest due date is (..\/..\/..))\./';
+            if (preg_match($renewRegex, $renewInfo, $renewInfoMatches)) {
+              $transaction['renew'] = $renewInfoMatches[1];
+                if ($renewInfoMatches[2] != $renewNoLimit) {
+                    $transaction['renewLimit'] = $renewInfoMatches[3];
+                }
+                if ($renewInfoMatches[4] != $duedateNoLimit) {
+                    $transaction['duedateLimit'] = $this->parseDate($renewInfoMatches[5]);
+                }
+            }
+
+            $transList[] = $transaction;
         }
 
         return $transList;

@@ -123,10 +123,14 @@
 
               <?php if (!empty($ilsDetails['create'])): ?>
                 <strong><?=$this->transEsc('Created') ?>:</strong> <?=$this->escapeHtml($ilsDetails['create']) ?>
-                <?php if (!empty($ilsDetails['expire'])): ?><br /><?php endif; ?>
+                <?php if (!empty($ilsDetails['expire']) || !empty($ilsDetails['status'])): ?><br /><?php endif; ?>
               <?php endif; ?>
               <?php if (!empty($ilsDetails['expire'])): ?>
                 <strong><?=$this->transEsc('Expires') ?>:</strong> <?=$this->escapeHtml($ilsDetails['expire']) ?>
+                <?php if (!empty($ilsDetails['status'])): ?><br /><?php endif; ?>
+              <?php endif; ?>
+              <?php if (!empty($ilsDetails['status'])): ?>
+                <strong><?=$this->transEsc('Status') ?>:</strong> <?=$this->escapeHtml($ilsDetails['status']) ?>
               <?php endif; ?>
               <br />
 

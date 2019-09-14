@@ -911,7 +911,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $author = (string)$z13->{'z13-author'};
                 $isbn = (string)$z13->{'z13-isbn-issn'};
                 $barcode = (string)$z30->{'z30-barcode'};
-                $status = (string)$z37->{'z37-status'};
+                $status = (string)$item->{'status'};
+                $status = preg_replace_callback(
+                    '|[0-9]{2}/[0-9]{2}/[0-9]{2}|',
+                    function($matches) {
+                      return $this->parseDate($matches[0]);
+                    }, $status);
                 if ($holddate == "00000000") {
                     $holddate = null;
                 } else {

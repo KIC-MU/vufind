@@ -142,6 +142,7 @@ reindex_solr() {
 
 main() {
   print_info 1 "Started reindexing solr"
+  START_TIME=$(date +%s.%N)
   (
     set -e
 
@@ -157,7 +158,9 @@ main() {
     download_dumps
     reindex_solr
   )
-  print_info 1 "Finished reindexing solr with return code $?"
+  FINISH_TIME=$(date +%s.%N)
+  DURATION=$(LC_ALL=C printf '%.2f' $(bc -l <<< "($FINISH_TIME - $START_TIME) / 60"))
+  print_info 1 "Finished reindexing solr in $DURATION minutes with return code $?"
 }
 
 main

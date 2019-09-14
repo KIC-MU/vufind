@@ -172,7 +172,7 @@
                 <br />
               <?php endif; ?>
 
-              <?php if (isset($ilsDetails['renew'])): ?>
+              <?php if ((isset($ilsDetails['renew']) and $ilsDetails['renew'] > 0) or isset($ilsDetails['renewLimit'])): ?>
                 <strong><?=$this->transEsc('Renewed')?>:</strong> <?=$this->transEsc($ilsDetails['renew'])?>
                 <?php if (isset($ilsDetails['renewLimit'])): ?>
                   | <strong><?=$this->transEsc('Renewal Limit')?>:</strong> <?=$this->transEsc($ilsDetails['renewLimit'])?>

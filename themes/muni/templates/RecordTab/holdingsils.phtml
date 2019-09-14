@@ -56,7 +56,7 @@
   <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
 <?php endif; ?>
 
-<?php $this->headScript()->appendFile("eprez.min.js"); ?>
+<?php $this->headScript()->appendFile("eprez.js"); ?>
 <div id="eprez"></div>
 <script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
 

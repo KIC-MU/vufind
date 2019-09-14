@@ -217,6 +217,6 @@ JS;
             <?= $this->inlineScript(\Zend\View\Helper\HeadScript::FILE, "https://www.google.com/recaptcha/api.js?onload=recaptchaOnLoad&render=explicit&hl=" . $this->layout()->userLang, 'SET') ?>
         <?php endif; ?>
 
-				<script src="<?= $this->url('home') ?>themes/muni/js/email.min.js"></script>
+				<script src="<?= $this->url('home') ?>themes/muni/js/email.js"></script>
     </body>
 </html>

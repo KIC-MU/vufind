@@ -18,6 +18,14 @@ $config = [
     ],
     'vufind' => [
         'plugin_managers' => [
+            'ajaxhandler' => [
+                'aliases' => [
+                    'getItemStatuses' => 'Muni\AjaxHandler\GetItemStatuses',
+                ],
+                'factories' => [
+                    'Muni\AjaxHandler\GetItemStatuses' => 'VuFind\AjaxHandler\GetItemStatusesFactory',
+                ],
+            ],
             'content_covers' => [
                 'aliases' => [
                     'obalkyknihv3' => 'Muni\Content\Covers\ObalkyKnihV3',

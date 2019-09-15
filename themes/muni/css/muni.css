@@ -389,6 +389,10 @@ div.search-controls {
    background-color: #0000dc; 
 }
 
+.myresearch-menu a.active:focus {
+   color: #000000;
+}
+
 mark {
     background-color: transparent;
     color: inherit;

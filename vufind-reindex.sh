@@ -137,7 +137,9 @@ reindex_solr_authority() {
 reindex_solr() {
   reindex_solr_biblio
   reindex_solr_authority
+  print_info 2 "Started optimizing solr"
   (cd "$VUFIND_HOME"/util && php optimize.php)
+  print_info 2 "Finished optimizing solr"
 }
 
 main() {

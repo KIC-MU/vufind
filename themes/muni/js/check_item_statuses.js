@@ -72,7 +72,7 @@ function displayItemStatus(result, $item) {
       locationListHTML += '</div>';
     }
     if (skippedLocations) {
-        locationListHTML += '<div>…</div>';
+        locationListHTML += '<div><strong>…</strong></div>';
     }
     $item.find('.locationDetails').removeClass('hidden');
     $item.find('.locationDetails').html(locationListHTML);

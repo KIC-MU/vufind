@@ -43,7 +43,17 @@ systemctl restart cron
 
 # Configure logrotate
 cat << EOT > /etc/logrotate.d/vufind
-/var/log/vufind.log /var/log/vufind-reindex.log {
+/var/log/vufind.log {
+  weekly
+  rotate 5
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 644 www-data www-data
+}
+
+/var/log/vufind-maintenance.log /var/log/vufind-reindex.log {
   weekly
   rotate 5
   compress

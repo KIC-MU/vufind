@@ -1,5 +1,18 @@
 #!/bin/bash
 
+declare -A START_TIMES
+
+start() {
+  START_TIMES[$1]=$(date +%s.%N)
+  print_info $1 Started "${@:2}"
+}
+
+finish() {
+  FINISH_TIME=$(date +%s.%N)
+  DURATION=$(LC_ALL=C printf '%.2f' $(bc -l <<< "($FINISH_TIME - ${START_TIMES[$1]}) / 60"))
+  print_info $1 Finished "${@:2}" "in $DURATION minutes"
+}
+
 print_info() {
   printf '%s:\t%s%s\n' "$(date --rfc-3339=seconds)" \
     "$(for INDEX in $(seq 2 $1); do printf '  '; done)" \
@@ -7,25 +20,24 @@ print_info() {
 }
 
 create_sitemap() {
-  print_info 2 "Started creating the sitemap"
+  start 2 "creating the sitemap"
   php /usr/local/vufind/util/sitemap.php
   chmod g+r,o+r /tmp/sitemap*.xml
   mv /tmp/sitemap{,-*,Index}.xml /var/www/html/
-  print_info 2 "Finished creating the sitemap"
+  finish 2 "creating the sitemap"
 }
 
 clear_caches() {
-  print_info 2 "Started clearing the caches"
+  start 2 "clearing the caches"
   systemctl stop vufind apache2
   rm -rf /usr/local/vufind/local/cache/*
   rm -rf /var/cache/apache2/mod_cache_disk/aleph.muni.cz/*
   systemctl start vufind apache2
-  print_info 2 "Finished clearing the caches"
+  finish 2 "clearing the caches"
 }
 
 main() {
-  print_info 1 "Started the maintenance of vufind"
-  START_TIME=$(date +%s.%N)
+  start 1 "the maintenance of vufind"
   (
     set -e
 
@@ -46,9 +58,7 @@ main() {
     create_sitemap
     clear_caches
   )
-  FINISH_TIME=$(date +%s.%N)
-  DURATION=$(LC_ALL=C printf '%.2f' $(bc -l <<< "($FINISH_TIME - $START_TIME) / 60"))
-  print_info 1 "Finished the maintenance of vufind in $DURATION minutes with return code $?"
+  finish 1 "the maintenance of vufind with return code $?"
 }
 
 main

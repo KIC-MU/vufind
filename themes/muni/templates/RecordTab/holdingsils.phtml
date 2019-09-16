@@ -60,7 +60,7 @@
 <div id="eprez"></div>
 <script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
 
-<table class="table table-view">
+<table class="table table-view" id="items">
   <tr>
     <th><?=$this->transEsc("Description")?></th>
     <th><?=$this->transEsc("Status")?></th>
@@ -93,7 +93,7 @@
               }
           ?>
         </td>
-        <td>
+        <td class="library">
           <?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
           <?php if (isset($item['locationhref']) && $item['locationhref']): ?>
             <a href="<?=$item['locationhref']?>" target="_blank"><?=$locationText?></a>
@@ -101,12 +101,12 @@
             <?=$locationText?>
           <?php endif; ?>
         </td>
-        <td>
+        <td class="collection">
           <?php if (isset($item['collection'])): ?>
             <?=$item['collection']?>
           <?php endif; ?>
         </td>
-        <td>
+        <td class="call_number">
           <?php $callNo = $item['callnumber']; ?>
           <?php if ($this->callnumberHandler): ?>
             <a href="<?=$this->url('alphabitemse-home') ?>?source=<?=$this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?=$this->escapeHtmlAttr($callNo) ?>"><?=$this->escapeHtml($callNo)?></a>
@@ -128,6 +128,10 @@
     <?php endforeach; ?>
   <?php endforeach; ?>
 </table>
+
+<?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
+<?php $this->headScript()->appendFile("datafieldslinks.js"); ?>
+<script>showItemLocations('<?=$this->layout()->userLang?>');</script>
 
 <?php $history = $this->driver->getRealTimeHistory(); ?>
 <?php if (is_array($history) && !empty($history)): ?>

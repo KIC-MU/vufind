@@ -3,19 +3,27 @@ declare -A LEVEL_TEXTS
 LEVEL=0
 
 start() {
-  ((LEVEL += 1))
+  LEVEL=$(($LEVEL + 1))
   START_TIMES[$LEVEL]=$(date +%s.%N)
   LEVEL_TEXTS[$LEVEL]="$*"
   print_info $LEVEL Started "$*"
 }
 
 finish() {
+  local EXIT_CODE START_TIME FINISH_TIME DURATION LEVEL_TEXT
+
+  EXIT_CODE=$?
   START_TIME=${START_TIMES[$LEVEL]}
   FINISH_TIME=$(date +%s.%N)
   DURATION=$(LC_ALL=C printf '%.2f' $(bc -l <<< "($FINISH_TIME - $START_TIME) / 60"))
   LEVEL_TEXT=${LEVEL_TEXTS[$LEVEL]}
-  print_info $LEVEL Finished "$LEVEL_TEXT" in $DURATION minutes
-  ((LEVEL -= 1))
+  print_info $LEVEL Finished "$LEVEL_TEXT" in $DURATION minutes $(
+    if [[ $LEVEL = 1 ]]
+    then
+      echo with exit code $EXIT_CODE
+    fi
+  )
+  LEVEL=$(($LEVEL - 1))
 }
 
 print_info() {

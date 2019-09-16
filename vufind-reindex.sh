@@ -1,7 +1,51 @@
 #!/bin/bash
 shopt -s extglob
 
+declare -A ALEPH_LANGUAGE_MAP
+
+ALEPH_LANGUAGE_MAP[cs]=cze
+ALEPH_LANGUAGE_MAP[en]=eng
 DUMP_DIRECTORY=/var/tmp/vufind-reindex
+
+filter_javascript() {
+  local LANGUAGE
+
+  sed -n "
+    /\/\* Add data fields links code. \*\//,$ {
+      # Convert language codes to VuFind format
+      $(
+        for LANGUAGE in "${!ALEPH_LANGUAGE_MAP[@]}"
+        do
+          printf 's/'%s'/'%s'/g\n' ${ALEPH_LANGUAGE_MAP[$LANGUAGE]} $LANGUAGE
+        done
+      )
+
+      p
+    }
+  "
+}
+
+download_javascript() {
+  local LANGUAGE BASENAME VUFIND_BASENAME
+
+  cd "$DUMP_DIRECTORY"
+
+  for LANGUAGE in en cs
+  do
+    BASENAME=datafieldslinks-${ALEPH_LANGUAGE_MAP[$LANGUAGE]}
+    VUFIND_BASENAME="$VUFIND_HOME"/themes/muni/js/datafieldslinks-$LANGUAGE
+
+    start producing $BASENAME.js
+      curl -s -L https://aleph.muni.cz/$BASENAME.js | filter_javascript > $BASENAME.js.new
+      mv $BASENAME.js{.new,}
+
+      cp $BASENAME.js "$VUFIND_BASENAME".js.new
+      chown solr:solr "$VUFIND_BASENAME".js.new
+      chmod 664 "$VUFIND_BASENAME".js.new
+      mv "$VUFIND_BASENAME".js{.new,}
+    finish
+  done
+}
 
 usmarc_to_xml() {
   java -jar "$VUFIND_HOME"/import/lib/marc4j*.jar to_xml |
@@ -12,6 +56,8 @@ usmarc_to_xml() {
 }
 
 download_dumps() {
+  local TYPE BASENAME TRANSFORMATION INDEX
+
   for TYPE in biblio authority
   do
     start producing $TYPE.xml
@@ -149,6 +195,7 @@ main() {
     (
       set -e
 
+      download_javascript
       download_dumps
       reindex_solr
     )

@@ -444,3 +444,7 @@ tr.marc-row-CAT {
 .adv-submit input[type=submit] {
     float: right;
 }
+
+.authoritybox {
+    margin-bottom: 20px;
+}

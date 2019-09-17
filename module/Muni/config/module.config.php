@@ -42,6 +42,14 @@ $config = [
                     'Muni\ILS\Driver\Aleph' => 'VuFind\ILS\Driver\AlephFactory',
                 ],
             ],
+            'recommend' => [
+                'aliases' => [
+                    'authorityrecommend' => 'Muni\Recommend\AuthorityRecommend',
+                ],
+                'factories' => [
+                    'Muni\Recommend\AuthorityRecommend' => 'Muni\Recommend\Factory::getAuthorityRecommend',
+                ],
+            ],
         ],
     ],
     'controllers' => [

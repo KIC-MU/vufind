@@ -195,9 +195,9 @@ main() {
     (
       set -e
 
-      download_javascript
       download_dumps
       reindex_solr
+      download_javascript
     )
   finish
 }

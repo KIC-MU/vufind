@@ -15,6 +15,19 @@
                 <option value="<?=$this->escapeHtmlAttr(($value['operator'] == 'OR' ? '~' : '') . $field . ':"' . $value['value'] . '"')?>"<?=(isset($value['selected']) && $value['selected'])?' selected="selected"':''?>><?=$display?></option>
               <?php endforeach; ?>
             <?php else: ?>
+              <?php if ($field == 'language'): ?>
+                <?php foreach (['Czech', 'English', 'German', 'French', 'Spanish', 'Italian', 'Russian'] as $value): ?>
+                  <option value="format:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
+                  <?php unset($list['list'][$value]); ?>
+                <?php endforeach; ?>
+                <option disabled="disabled">=================</option>
+              <?php elseif ($field == 'format'): ?>
+                <?php foreach (['Book', 'Serial', 'Article'] as $value): ?>
+                  <option value="format:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
+                  <?php unset($list['list'][$value]); ?>
+                <?php endforeach; ?>
+                <option disabled="disabled">=================</option>
+              <?php endif; ?>
               <?php
               // Sort the current facet list alphabetically; we'll use this data
               // along with the foreach below to display facet options in the
@@ -27,16 +40,6 @@
               }
               natcasesort($sorted);
               ?>
-              <?php if ($field == 'language'): ?>
-                <option value="language:&quot;Czech&quot;"><?=$this->transEsc('Czech')?></option>
-                <option value="language:&quot;English&quot;"><?=$this->transEsc('English')?></option>
-                <option value="language:&quot;German&quot;"><?=$this->transEsc('German')?></option>
-                <option value="language:&quot;French&quot;"><?=$this->transEsc('French')?></option>
-                <option value="language:&quot;Spanish&quot;"><?=$this->transEsc('Spanish')?></option>
-                <option value="language:&quot;Italian&quot;"><?=$this->transEsc('Italian')?></option>
-                <option value="language:&quot;Russian&quot;"><?=$this->transEsc('Russian')?></option>
-                <option disabled="disabled">=================</option>
-              <?php endif; ?>
               <?php foreach ($sorted as $i => $display): ?>
                 <?php $value = $list['list'][$i]; ?>
                 <option value="<?=$this->escapeHtmlAttr(($value['operator'] == 'OR' ? '~' : '') . $field . ':"' . $value['value'] . '"')?>"<?=(isset($value['selected']) && $value['selected'])?' selected="selected"':''?>><?=$this->escapeHtml($display)?></option>

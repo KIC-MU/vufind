@@ -25,10 +25,10 @@ function showItemLocations(language) {
       callNumberSeparators.sort(ffSort);
       for (var j = 0; j < callNumberSeparators.length; j++) {
         var callNumberSeparator = callNumberSeparators[j];
-        text = ffShelfMap[callNumberSeparator];
-        if (ffSort(callNumberText, callNumberSeparator) >= 1) {
+        if (ffSort(callNumberText, callNumberSeparator) < 1) {
           break;
         }
+        text = ffShelfMap[callNumberSeparator];
       }
 
       collection.appendChild(document.createTextNode(' ('));

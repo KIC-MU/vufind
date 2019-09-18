@@ -16,7 +16,7 @@ filter_javascript() {
       $(
         for LANGUAGE in "${!ALEPH_LANGUAGE_MAP[@]}"
         do
-          printf 's/'%s'/'%s'/g\n' ${ALEPH_LANGUAGE_MAP[$LANGUAGE]} $LANGUAGE
+          printf "s/'%s'/'%s'/g\n" ${ALEPH_LANGUAGE_MAP[$LANGUAGE]} $LANGUAGE
         done
       )
 

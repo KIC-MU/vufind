@@ -13,8 +13,8 @@
   <?php else: ?>
     <?php if ($holding['availability'] ?? false): ?>
       <?php /* Begin Available Items (Holds) */ ?>
-       <span class="text-success" class="status"><?=$this->transEsc("Available")?><link property="availability" href="http://schema.org/InStock" /></span><br />
-        <span class="small"><?=$this->transEsc($holding['status'])?></span><br/>
+       <span class="text-success"><?=$this->transEsc("Available")?><link property="availability" href="http://schema.org/InStock" /></span><br />
+        <span class="small" class="status"><?=$this->transEsc($holding['status'])?></span><br/>
       <?php if ($holding['link'] ?? false): ?>
         <a class="<?=$check ? 'checkRequest ' : ''?>placehold" <?php if (!empty($holding['linkLightbox'])): ?>data-lightbox <?php endif; ?>href="<?=$this->recordLink()->getRequestUrl($holding['link'])?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?=$this->transEsc($check ? "Check Hold" : "Place a Hold")?></a>
       <?php endif; ?>
@@ -26,7 +26,7 @@
       <?php endif; ?>
     <?php else: ?>
       <?php /* Begin Unavailable Items (Recalls) */ ?>
-      <span class="text-danger" class="status"><?=$this->transEsc($holding['status'])?><link property="availability" href="http://schema.org/OutOfStock" /></span><br />
+      <span class="text-danger"><span class="status"><?=$this->transEsc($holding['status'])?></span><link property="availability" href="http://schema.org/OutOfStock" /></span><br />
       <?php if ($holding['returnDate'] ?? false): ?><span class="small"><?=$this->escapeHtml($holding['returnDate'])?></span><?php endif; ?>
       <?php if ($holding['duedate'] ?? false): ?>
         <span class="small"><?=$this->transEsc("Due")?> <?=$this->escapeHtml($holding['duedate'])?></span><br />

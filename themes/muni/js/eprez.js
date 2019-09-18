@@ -1,7 +1,7 @@
 function eprez_tag(sysno) {
   sysno = sysno.replace(/^MUB0[1-3]/, "");
   var eprez = document.getElementById("eprez");
-  var time = (new Date).getTime();
+  var time = new Date().getTime();
   var url = "https://kic.ics.muni.cz/eprezencka/alephApi/toAleph.pl?sysno=" + sysno + "&jsoncallback=eprez_tag_callback&_=" + time;
   var xhttp = new XMLHttpRequest();
 
@@ -18,7 +18,7 @@ function eprez_tag(sysno) {
       if ("odkaz" in data) {
         a.href = data.odkaz;
       } else {
-        a.href = 'javascript:;';
+        a.href = '#';
         a.onclick = function() {
           alert(VuFind.translate("muni::eloan_unavailable"));
         };

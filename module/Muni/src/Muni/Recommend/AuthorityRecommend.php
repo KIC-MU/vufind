@@ -275,7 +275,7 @@ class AuthorityRecommend implements \VuFind\Recommend\RecommendInterface
         $this->results = $results;
 
         // empty searches such as New Items will return blank
-        if ($this->lookfor == NULL) {
+        if ($this->lookfor == null) {
             return;
         }
 

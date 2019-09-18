@@ -78,16 +78,20 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
      */
     public function getUrl($key, $size, $ids)
     {
-        $client = $this->httpService->createClient('http://cache.obalkyknih.cz/api/runtime/alive');
+        $client = $this->httpService->createClient(
+            'http://cache.obalkyknih.cz/api/runtime/alive'
+        );
         $client->setMethod('GET');
         $result = $client->send();
         $answer = $result->getBody();
         if ($answer == 'ALIVE') {
-          $server = 'cache.obalkyknih.cz';
+            $server = 'cache.obalkyknih.cz';
         } else {
-          $server = 'cache2.obalkyknih.cz';
+            $server = 'cache2.obalkyknih.cz';
         }
-        $url = 'https://' . $server . '/api/cover?multi={"isbn":"' . $ids['isbn']->get13() . '"}&keywords=';
+        $url = 'https://' . $server . '/api/cover?multi={';
+        $url .= '"isbn":"' . $ids['isbn']->get13();
+        $url .= '"}&keywords=';
         return $url;
     }
 }

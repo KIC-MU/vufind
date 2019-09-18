@@ -11,20 +11,20 @@ function showItemLocations(language) {
     var status = item.getElementsByClassName("status");
     var statusText = status.length > 0 ? status[0].textContent : "";
 
+    var text;
     if (
       // Faculty of Arts locations.
       libraryText == VuFind.translate('location_FF') &&
       collectionText == 'volný výběr' &&
       ! statusText.match(ffSkipStatusMap[language])
     ) {
-      var text;
       var callNumberSeparators = [];
       for (var callNumberSeparator in ffShelfMap) {
         callNumberSeparators.push(callNumberSeparator);
       }
       callNumberSeparators.sort(ffSort);
       for (var j = 0; j < callNumberSeparators.length; j++) {
-        var callNumberSeparator = callNumberSeparators[j];
+        callNumberSeparator = callNumberSeparators[j];
         if (ffSort(callNumberText, callNumberSeparator) < 1) {
           break;
         }
@@ -48,15 +48,15 @@ function showItemLocations(language) {
         var callNumberId = callNumberIdParts[1] + pad(callNumberIdParts[2], 'l', '0', 2);
         for (var from in fssShelfMap) {
           shelf = fssShelfMap[from];
-          if (callNumberId >= from && (!('to' in shelf) || callNumberId <= shelf['to'])) {
+          if (callNumberId >= from && (!('to' in shelf) || callNumberId <= shelf.to)) {
             break;
           }
         }
       }
 
-      var text = shelf[language];
-      var symbol = 'symbol' in shelf ? shelf['symbol'] : '●';
-      var color = 'rgb' in shelf ? shelf['rgb'] : 'inherit';
+      text = shelf[language];
+      var symbol = 'symbol' in shelf ? shelf.symbol : '●';
+      var color = 'rgb' in shelf ? shelf.rgb : 'inherit';
 
       var span = document.createElement('span');
       span.appendChild(document.createTextNode(symbol));

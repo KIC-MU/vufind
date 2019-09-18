@@ -376,9 +376,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      */
     protected function parseId($id)
     {
-        $retval = array(substr($id, 0, 5), substr($id, 5));
+        $retval = [substr($id, 0, 5), substr($id, 5)];
         if (!in_array($retval[0], $this->bib)) {
-            $retval = array("MUB01", $id);
+            $retval = ["MUB01", $id];
         }
         return $retval;
     }
@@ -389,8 +389,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
      * This is responsible for retrieving the status information of a certain
      * record.
      *
-     * @param string $id     The record id to retrieve the holdings for
-     * @param bool   $quick  Whether the status information will be used for
+     * @param string $id    The record id to retrieve the holdings for
+     * @param bool   $quick Whether the status information will be used for
      * quick availability display.
      *
      * @throws ILSException
@@ -572,7 +572,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 if ($quick) {
                     $params['cache'] = 'true';
                 }
-                if (is_null($non_loaned_xml)) {
+                if (null === $non_loaned_xml) {
                     $non_loaned_xml = $this->doRestDLFRequest(
                         ['record', $resource, 'items'],
                         $params
@@ -799,14 +799,17 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $renewNoLimit = 'no limit on number of renewals';
             $duedateNoLimit = 'No limit on latest due date';
             $renewRegex = '/([0-9]*) \((' . $renewNoLimit . '|out of ([0-9]*))\)\.';
-            $renewRegex .= '(' . $duedateNoLimit . '|Latest due date is (..\/..\/..))\./';
+            $renewRegex .= '(' . $duedateNoLimit;
+            $renewRegex .= '|Latest due date is (..\/..\/..))\./';
             if (preg_match($renewRegex, $renewInfo, $renewInfoMatches)) {
-              $transaction['renew'] = $renewInfoMatches[1];
+                $transaction['renew'] = $renewInfoMatches[1];
                 if ($renewInfoMatches[2] != $renewNoLimit) {
                     $transaction['renewLimit'] = $renewInfoMatches[3];
                 }
                 if ($renewInfoMatches[4] != $duedateNoLimit) {
-                    $transaction['duedateLimit'] = $this->parseDate($renewInfoMatches[5]);
+                    $transaction['duedateLimit'] = $this->parseDate(
+                        $renewInfoMatches[5]
+                    );
                 }
             }
 
@@ -857,7 +860,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     null, 'POST', null
                 );
                 $due = (string)$xml->xpath('//new-due-date')[0];
-                $result[$id] = ['success' => true, 'new_date' => $this->parseDate($due)];
+                $result[$id] = [
+                    'success' => true, 'new_date' => $this->parseDate($due)
+                ];
             } catch (AlephRestfulException $ex) {
                 $result[$id] = [
                     'success' => false, 'sysMessage' => $ex->getMessage()
@@ -914,9 +919,11 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $status = (string)$item->{'status'};
                 $status = preg_replace_callback(
                     '|[0-9]{2}/[0-9]{2}/[0-9]{2}|',
-                    function($matches) {
-                      return $this->parseDate($matches[0]);
-                    }, $status);
+                    function ($matches) {
+                        return $this->parseDate($matches[0]);
+                    },
+                    $status
+                );
                 if ($holddate == "00000000") {
                     $holddate = null;
                 } else {
@@ -1021,15 +1028,15 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         $finesList = [];
         $finesListSort = [];
 
-        # Process filed fines
+        // Process filed fines
         $xml = $this->doRestDLFRequest(
             ['patron', $user['id'], 'circulationActions', 'cash'],
             ["view" => "full"]
         );
 
-        # $result = file_get_contents('/usr/local/vufind/dluhy-alephrest.xml');
-        # $result = str_replace('xmlns=', 'ns=', $result);
-        # $xml = simplexml_load_string($result);
+        // $result = file_get_contents('/usr/local/vufind/dluhy-alephrest.xml');
+        // $result = str_replace('xmlns=', 'ns=', $result);
+        // $xml = simplexml_load_string($result);
 
         foreach ($xml->xpath('//cash') as $item) {
             $z31 = $item->z31;
@@ -1060,7 +1067,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $finesList[] = $item;
         }
 
-        # Process pending fines
+        // Process pending fines
         $xml = $this->doRestDLFRequest(
             ['patron', $user['id'], 'circulationActions', 'loans'],
             ["view" => "full"]

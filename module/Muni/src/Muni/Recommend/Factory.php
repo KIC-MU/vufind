@@ -96,7 +96,9 @@ class Factory
      */
     public static function getCatalogResults(ServiceManager $sm)
     {
-        return new \VuFind\Recommend\CatalogResults($sm->get('VuFind\Search\SearchRunner'));
+        return new \VuFind\Recommend\CatalogResults(
+            $sm->get('VuFind\Search\SearchRunner')
+        );
     }
 
     /**
@@ -200,7 +202,11 @@ class Factory
         $mapSelectionConfig = $sm->get('VuFind\GeoFeatures\MapSelectionConfig');
         $mapSelectionOptions = $mapSelectionConfig->getMapSelectionOptions();
 
-        return new \VuFind\Recommend\MapSelection($solr, $basemapOptions, $mapSelectionOptions);
+        return new \VuFind\Recommend\MapSelection(
+            $solr,
+            $basemapOptions,
+            $mapSelectionOptions
+        );
     }
 
     /**
@@ -242,7 +248,9 @@ class Factory
      */
     public static function getSideFacetsDeferred(ServiceManager $sm)
     {
-        return new \VuFind\Recommend\SideFacetsDeferred($sm->get('VuFind\Config\PluginManager'));
+        return new \VuFind\Recommend\SideFacetsDeferred(
+            $sm->get('VuFind\Config\PluginManager')
+        );
     }
 
     /**
@@ -282,7 +290,9 @@ class Factory
      */
     public static function getSummonResults(ServiceManager $sm)
     {
-        return new \VuFind\Recommend\SummonResults($sm->get('VuFind\Search\SearchRunner'));
+        return new \VuFind\Recommend\SummonResults(
+            $sm->get('VuFind\Search\SearchRunner')
+        );
     }
 
     /**
@@ -350,7 +360,9 @@ class Factory
      */
     public static function getWebResults(ServiceManager $sm)
     {
-        return new \VuFind\Recommend\WebResults($sm->get('VuFind\Search\SearchRunner'));
+        return new \VuFind\Recommend\WebResults(
+            $sm->get('VuFind\Search\SearchRunner')
+        );
     }
 
     /**
@@ -362,6 +374,8 @@ class Factory
      */
     public static function getWorldCatIdentities(ServiceManager $sm)
     {
-        return new \VuFind\Recommend\WorldCatIdentities($sm->get('VuFind\Connection\WorldCatUtils'));
+        return new \VuFind\Recommend\WorldCatIdentities(
+            $sm->get('VuFind\Connection\WorldCatUtils')
+        );
     }
 }

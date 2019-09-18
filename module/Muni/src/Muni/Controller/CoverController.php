@@ -28,8 +28,8 @@
  */
 namespace Muni\Controller;
 
-use VuFind\Cover\CachingProxy;
 use Muni\Cover\Loader;
+use VuFind\Cover\CachingProxy;
 use VuFind\Session\Settings as SessionSettings;
 
 /**

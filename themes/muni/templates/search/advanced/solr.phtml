@@ -5,6 +5,12 @@
       <?=$this->render('search/advanced/checkbox-filters.phtml')?>
     <?php endif; ?>
     <div class="solr-facet-container">
+      <?php
+      $sticky = [
+        'language' => ['Czech', 'English', 'German', 'French', 'Spanish', 'Italian', 'Russian'],
+        'format' => ['Book', 'Serial', 'Article'],
+      ];
+      ?>
       <?php foreach ($this->facetList as $field => $list): ?>
         <div class="solr-adv-facet">
           <label for="limit_<?=$this->escapeHtmlAttr(str_replace(' ', '', $field))?>"><?=$this->transEsc($list['label'])?>:</label>
@@ -15,16 +21,16 @@
                 <option value="<?=$this->escapeHtmlAttr(($value['operator'] == 'OR' ? '~' : '') . $field . ':"' . $value['value'] . '"')?>"<?=(isset($value['selected']) && $value['selected'])?' selected="selected"':''?>><?=$display?></option>
               <?php endforeach; ?>
             <?php else: ?>
-              <?php if ($field == 'language'): ?>
-                <?php foreach (['Czech', 'English', 'German', 'French', 'Spanish', 'Italian', 'Russian'] as $value): ?>
+              <?php
+              $llstKeys = [];
+              foreach ($list['list'] as $key => $value) {
+                $listKeys[$value['value']] = $key;
+              }
+              ?>
+              <?php if (isset($sticky[$field])): ?>
+                <?php foreach ($sticky[$field] as $value): ?>
                   <option value="format:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
-                  <?php unset($list['list'][$value]); ?>
-                <?php endforeach; ?>
-                <option disabled="disabled">=================</option>
-              <?php elseif ($field == 'format'): ?>
-                <?php foreach (['Book', 'Serial', 'Article'] as $value): ?>
-                  <option value="format:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
-                  <?php unset($list['list'][$value]); ?>
+                  <?php unset($list['list'][$listKeys[$value]]); ?>
                 <?php endforeach; ?>
                 <option disabled="disabled">=================</option>
               <?php endif; ?>

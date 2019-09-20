@@ -49,22 +49,21 @@ function showItemLocations(language) {
         for (var from in fssShelfMap) {
           shelf = fssShelfMap[from];
           if (callNumberId >= from && (!('to' in shelf) || callNumberId <= shelf.to)) {
+            text = shelf[language];
+            var symbol = 'symbol' in shelf ? shelf.symbol : '●';
+            var color = 'rgb' in shelf ? shelf.rgb : 'inherit';
+
+            var span = document.createElement('span');
+            span.appendChild(document.createTextNode(symbol));
+            span.appendChild(document.createTextNode(' '));
+            span.appendChild(document.createTextNode(text));
+            span.style.color = color;
+            collection.appendChild(document.createTextNode(' '));
+            collection.appendChild(span);
             break;
           }
         }
       }
-
-      text = shelf[language];
-      var symbol = 'symbol' in shelf ? shelf.symbol : '●';
-      var color = 'rgb' in shelf ? shelf.rgb : 'inherit';
-
-      var span = document.createElement('span');
-      span.appendChild(document.createTextNode(symbol));
-      span.appendChild(document.createTextNode(' '));
-      span.appendChild(document.createTextNode(text));
-      span.style.color = color;
-      collection.appendChild(document.createTextNode(' '));
-      collection.appendChild(span);
     }
   }
 }

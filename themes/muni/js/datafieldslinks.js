@@ -56,10 +56,16 @@ function showItemLocations(language) {
             var span = document.createElement('span');
             span.appendChild(document.createTextNode(symbol));
             span.appendChild(document.createTextNode(' '));
-            span.appendChild(document.createTextNode(text));
             span.style.color = color;
             collection.appendChild(document.createTextNode(' '));
             collection.appendChild(span);
+            if (shelf.en == 'Yellow Study Room') {
+              // Make the study room text black for the yellow study room.
+              collection.appendChild(document.createTextNode(text));
+            } else {
+              // Otherwise, make the text the color of the study room.
+              span.appendChild(document.createTextNode(text));
+            }
             break;
           }
         }

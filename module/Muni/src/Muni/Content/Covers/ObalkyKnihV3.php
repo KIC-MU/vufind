@@ -37,9 +37,10 @@ namespace Muni\Content\Covers;
  * @link     https://vufind.org/wiki/development Wiki
  */
 class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
-    implements \VuFindHttp\HttpServiceAwareInterface
+    implements \VuFindHttp\HttpServiceAwareInterface, \Zend\Log\LoggerAwareInterface
 {
     use \VuFindHttp\HttpServiceAwareTrait;
+    use \VuFind\Log\LoggerAwareTrait;
 
     /**
      * Constructor
@@ -99,6 +100,8 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
         $url = 'https://' . $server . '/api/cover?multi=';
         $url .= urlencode('[' . json_encode($identifiers) . ']');
         $url .= '&keywords=';
+
+        $this->debug('Using the following ObalkyKnihV3 URL: ' . $url);
         return $url;
     }
 }

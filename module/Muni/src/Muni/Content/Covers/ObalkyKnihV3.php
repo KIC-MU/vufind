@@ -48,6 +48,7 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
     public function __construct()
     {
         $this->supportsIsbn = true;
+        $this->supportsIssn = true;
         $this->supportsOclc = true;
     }
 
@@ -98,16 +99,34 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
         if (isset($ids['isbn'])) {
             $identifiers['isbn'] = $ids['isbn']->get13();
         }
+        elseif (isset($ids['issn'])) {
+            $identifiers['isbn'] = $ids['issn'];
+        }
+
         if (isset($ids['oclc'])) {
             $identifiers['oclc'] = '(OCoLC)' . $ids['oclc'];
         }
 
         // Construct the URL
-        $url = 'https://' . $server . '/api/cover?multi=';
-        $url .= urlencode('[' . json_encode($identifiers) . ']');
-        $url .= '&keywords=';
+        $queryUrl = 'https://' . $server . '/api/books?multi=';
+        $queryUrl .= urlencode('[' . json_encode($identifiers) . ']');
+        $queryUrl .= '&keywords=';
 
-        $this->debug('Using the following ObalkyKnihV3 URL: ' . $url);
-        return $url;
+        // Request information from the server
+        $this->debug('Querying the following ObalkyKnihV3 URL: ' . $queryUrl);
+        $client = $this->httpService->createClient($queryUrl);
+        $client->setMethod('GET');
+        $result = $client->send();
+        $answer = json_decode($result->getBody(), true);
+
+        // Produce the URL of the thumbnail
+        if (!empty($answer) and !empty($answer[0]) and isset($answer[0]['cover_medium_url'])) {
+            $url = $answer[0]['cover_medium_url'];
+            $this->debug('Produced the following ObalkyKnihV3 URL: ' . $url);
+            return $url;
+        } else {
+            $this->debug('ObalkyKnihV3 query at URL ' . $queryUrl . ' produced no covers');
+            return null;
+        }
     }
 }

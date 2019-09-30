@@ -48,6 +48,7 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
     public function __construct()
     {
         $this->supportsIsbn = true;
+        $this->supportsOclc = true;
     }
 
     /**
@@ -94,7 +95,12 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
 
         // Use multiple identifiers
         $identifiers = array();
-        $identifiers['isbn'] = $ids['isbn']->get13();
+        if (isset($ids['isbn'])) {
+            $identifiers['isbn'] = $ids['isbn']->get13();
+        }
+        if (isset($ids['oclc'])) {
+            $identifiers['oclc'] = '(OCoLC)' . $ids['oclc'];
+        }
 
         // Construct the URL
         $url = 'https://' . $server . '/api/cover?multi=';

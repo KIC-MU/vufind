@@ -78,8 +78,9 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
      */
     public function getUrl($key, $size, $ids)
     {
+        // Implement failover
         $client = $this->httpService->createClient(
-            'http://cache.obalkyknih.cz/api/runtime/alive'
+            'https://cache.obalkyknih.cz/api/runtime/alive'
         );
         $client->setMethod('GET');
         $result = $client->send();
@@ -89,9 +90,15 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
         } else {
             $server = 'cache2.obalkyknih.cz';
         }
-        $url = 'https://' . $server . '/api/cover?multi={';
-        $url .= '"isbn":"' . $ids['isbn']->get13();
-        $url .= '"}&keywords=';
+
+        // Use multiple identifiers
+        $identifiers = array();
+        $identifiers['isbn'] = $ids['isbn']->get13();
+
+        // Construct the URL
+        $url = 'https://' . $server . '/api/cover?multi=';
+        $url .= urlencode('[' . json_encode($identifiers) . ']');
+        $url .= '&keywords=';
         return $url;
     }
 }

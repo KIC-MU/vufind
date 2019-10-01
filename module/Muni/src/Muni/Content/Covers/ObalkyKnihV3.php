@@ -50,6 +50,7 @@ class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
         $this->supportsIsbn = true;
         $this->supportsIssn = true;
         $this->supportsOclc = true;
+        $this->cacheAllowed = true;
     }
 
     /**

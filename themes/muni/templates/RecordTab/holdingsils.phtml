@@ -119,7 +119,7 @@
             <?=$this->escapeHtml($note)?><br/>
           <?php endforeach; endif; ?>
         </td>
-        <td>
+        <td class="barcode">
           <?php if (isset($item['barcode'])): ?>
             <?=$item['barcode']?>
           <?php endif; ?>
@@ -131,7 +131,10 @@
 
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>
-<script>showItemLocations('<?=$this->layout()->userLang?>');</script>
+<?php $alephLanguages = ['cs' => 'cze', 'en' => 'eng']; ?>
+<?php $alephLang = $alephLanguages[$this->layout()->userLang]; ?>
+<script>showItemLocations('<?=$alephLang?>');</script>
+<script>showItemLinks('<?=$alephLang?>', '<?=$this->driver->getUniqueID()?>');</script>
 
 <?php $history = $this->driver->getRealTimeHistory(); ?>
 <?php if (is_array($history) && !empty($history)): ?>

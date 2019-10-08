@@ -1,22 +1,34 @@
+var collectionRename = {
+  'Knihovna univ. kampusu': 'location_KUK',
+  'FF - ustredni knihovna': 'location_FF',
+  'Fac. Arts - central library': 'location_FF',
+};
+
+function strip(str) {
+  return str.replace(/^\s*/g, '').replace(/\s*$/g, '');
+}
+
 function showItemLocations(language) {
   var items = document.getElementById('items').getElementsByTagName('tr');
   for (var i = 1; i < items.length; i++) {
     var item = items[i];
+    var barcode = item.getElementsByClassName("barcode")[0];
+    var barcodeText = strip(barcode.textContent);
     var callNumber = item.getElementsByClassName("call_number")[0];
-    var callNumberText = callNumber.textContent.replace(/^\s*/g, '').replace(/\s*$/g, '');
+    var callNumberText = strip(callNumber.textContent);
     var collection = item.getElementsByClassName("collection")[0];
-    var collectionText = collection.textContent.replace(/^\s*/g, '').replace(/\s*$/g, '');
+    var collectionText = strip(collection.textContent);
     var library = item.getElementsByClassName("library")[0];
-    var libraryText = library.textContent.replace(/^\s*/g, '').replace(/\s*$/g, '');
+    var libraryText = strip(library.textContent);
     var status = item.getElementsByClassName("status");
-    var statusText = status.length > 0 ? status[0].textContent : "";
+    var statusText = status.length > 0 ? strip(status[0].textContent) : '';
 
     var text;
     if (
       // Faculty of Arts locations.
-      libraryText == VuFind.translate('location_FF') &&
-      collectionText == 'volný výběr' &&
-      ! statusText.match(ffSkipStatusMap[language])
+      libraryText == VuFind.translate('location_FF')
+      && collectionText == 'volný výběr'
+      && ! statusText.match(ffSkipStatusMap[language])
     ) {
       var callNumberSeparators = [];
       for (var callNumberSeparator in ffShelfMap) {
@@ -36,9 +48,9 @@ function showItemLocations(language) {
       collection.appendChild(document.createTextNode(')'));
     } else if (
       // Faculty of Social Studies study room colors.
-      libraryText == VuFind.translate('location_FSS') &&
-        ! statusText.match(fssSkipStatusMap[language]) &&
-        ! callNumber.textContent.match(/^(VHS|CD|DVD|VSKP)-/)
+      libraryText == VuFind.translate('location_FSS')
+      && ! statusText.match(fssSkipStatusMap[language])
+      && ! callNumber.textContent.match(/^(VHS|CD|DVD|VSKP)-/)
     ) {
       var shelf;
       if (callNumberText in fssShelfHardMap) {
@@ -70,6 +82,52 @@ function showItemLocations(language) {
           }
         }
       }
+    }
+  }
+}
+
+function showItemLinks(language, vuFindId) {
+  for (var oldName in collectionRename) {
+    // Renaming misnamed collections from Aleph.
+    var newName = VuFind.translate(collectionRename[oldName]);
+    if (oldName in collections) {
+      collections[newName] = collections[oldName];
+    }
+  }
+
+  var items = document.getElementById('items').getElementsByTagName('tr');
+  for (var i = 1; i < items.length; i++) {
+    var item = items[i];
+    var barcode = item.getElementsByClassName("barcode")[0];
+    var barcodeText = strip(barcode.textContent);
+    var collection = item.getElementsByClassName("collection")[0];
+    var collectionText = strip(collection.textContent);
+    var library = item.getElementsByClassName("library")[0];
+    var libraryText = strip(library.textContent);
+    var status = item.getElementsByClassName("status");
+    var statusText = status.length > 0 ? strip(status[0].textContent) : '';
+    var sysno = vuFindId.replace(/.*MUB[0-9]{2}/, '');
+
+    if(
+      libraryText in collections
+      && statusText == VuFind.translate('muni::Long term loan')
+      && collections[libraryText]['__longtermloan__']
+      && collections[libraryText][userIsLoggedIn ? '__bor__' : '__nobor__']
+    ) {
+      // Long term loan links
+      var d = collections[libraryText][collectionText];
+      var label = collections[libraryText]['__linklabel__'];
+      var url = collections[libraryText]['__url__'];
+      var icon = document.createElement('i');
+      icon.className = 'fa fa-flag';
+      icon.setAttribute('aria-hidden', 'true');
+      var a = document.createElement('a');
+      a.target = '_blank';
+      a.href = url + '?d=' + d + '&sysno=' + sysno + '&bc=' + barcodeText + '&reqtype=longtermloan&lang=' + language;
+      a.appendChild(icon);
+      a.appendChild(document.createTextNode(' ' + label));
+      var td = status[0].parentElement.parentElement;
+      td.appendChild(a);
     }
   }
 }

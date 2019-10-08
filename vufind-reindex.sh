@@ -11,17 +11,7 @@ filter_javascript() {
   local LANGUAGE
 
   sed -n "
-    /\/\* Add data fields links code. \*\//,$ {
-      # Convert language codes to VuFind format
-      $(
-        for LANGUAGE in "${!ALEPH_LANGUAGE_MAP[@]}"
-        do
-          printf "s/'%s'/'%s'/g\n" ${ALEPH_LANGUAGE_MAP[$LANGUAGE]} $LANGUAGE
-        done
-      )
-
-      p
-    }
+    /\/\* Add data fields links code. \*\//,$ p
   "
 }
 

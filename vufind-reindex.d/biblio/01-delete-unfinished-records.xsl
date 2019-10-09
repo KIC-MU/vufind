@@ -12,5 +12,5 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="//marc:record[.//marc:datafield[@tag = 'STA' and .//marc:subfield[@code = 'a' and starts-with(., 'PROZATIMNÍ')]]]"/>
+  <xsl:template match="//marc:record[.//marc:datafield[@tag = 'STA' and .//marc:subfield[@code = 'a' and (text() = 'AKVIZICE' or text() = 'VYRAZENO' or starts-with(., 'PROZATIMNÍ'))]]]"/>
 </xsl:stylesheet>

@@ -45,7 +45,7 @@ systemctl restart cron
 cat << EOT > /etc/logrotate.d/vufind
 /var/log/vufind.log {
   weekly
-  rotate 5
+  rotate 60
   compress
   delaycompress
   missingok
@@ -55,7 +55,7 @@ cat << EOT > /etc/logrotate.d/vufind
 
 /var/log/vufind-maintenance.log /var/log/vufind-reindex.log {
   weekly
-  rotate 5
+  rotate 60
   compress
   delaycompress
   missingok

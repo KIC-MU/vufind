@@ -444,3 +444,17 @@ tr.marc-row-CAT {
 .authoritybox {
     margin-bottom: 20px;
 }
+
+td.items-label {
+    font-weight: bold;
+}
+
+table.items-sm {
+    border-top: 2px solid black;
+    border-bottom: 1px solid black; 
+    border-collapse: separate;
+}
+
+div.item-internet-links {
+    margin-bottom: 2rem;
+}

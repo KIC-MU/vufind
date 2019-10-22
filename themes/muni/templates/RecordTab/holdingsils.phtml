@@ -45,22 +45,25 @@
 <?php $holdingTitleHold = $this->driver->tryMethod('getRealTimeTitleHold'); if (!empty($holdingTitleHold)): ?>
   <a class="placehold" data-lightbox title="<?=$this->transEsc('request_place_text')?>" href="<?=$this->recordLink()->getRequestUrl($holdingTitleHold)?>"><i class="fa fa-flag" aria-hidden="true"></i>&nbsp;<?=$this->transEsc('title_hold_place')?></a>
 <?php endif; ?>
-<?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
-  <h3><?=$this->transEsc("Internet")?></h3>
-  <?php if (!empty($urls)): ?>
-    <?php foreach ($urls as $current): ?>
-      <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>"><?=$this->escapeHtml($current['desc'])?></a><br/>
-    <?php endforeach; ?>
+  <?php if (!empty($urls) || $openUrlActive || $doiActive): ?>
+      <div class="item-internet-links">
+          <h3><?= $this->transEsc("Internet") ?></h3>
+          <?php if (!empty($urls)): ?>
+              <?php foreach ($urls as $current): ?>
+                  <a href="<?= $this->escapeHtmlAttr($this->proxyUrl($current['url'])) ?>"><?= $this->escapeHtml($current['desc']) ?></a><br/>
+              <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if ($openUrlActive): ?><?= $openUrl->renderTemplate() ?><?php endif; ?>
+          <?php if ($doiActive): ?><?= $doi->renderTemplate() ?><?php endif; ?>
+      </div>
   <?php endif; ?>
-  <?php if ($openUrlActive): ?><?=$openUrl->renderTemplate()?><?php endif; ?>
-  <?php if ($doiActive): ?><?=$doi->renderTemplate()?><?php endif; ?>
-<?php endif; ?>
 
 <?php $this->headScript()->appendFile("eprez.js"); ?>
 <div id="eprez"></div>
 <script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
 
-<table class="table table-view" id="items">
+<?php // large displays view ?>
+<table class="table table-view hidden-xs hidden-sm" id="items">
   <tr>
     <th><?=$this->transEsc("Description")?></th>
     <th><?=$this->transEsc("Status")?></th>
@@ -128,6 +131,124 @@
     <?php endforeach; ?>
   <?php endforeach; ?>
 </table>
+
+<?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
+    <?php foreach ($holding['items'] as $item): ?>
+        <table class="items-sm table table-view table-striped hidden-md hidden-lg">
+            <tr>
+                <th>
+                    <?= $this->transEsc("Description") ?>
+                </th>
+                <td>
+                    <?php if (isset($item['description'])): ?>
+                        <?= $item['description'] ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Status") ?>
+                </th>
+                <td>
+                    <?php
+                    try {
+                        echo $this->context($this)->renderInContext(
+                                'RecordTab/holdingsils/' . $this->tab->getTemplate() . '.phtml',
+                                ['holding' => $item]
+                        );
+                    } catch (Exception $e) {
+                        echo $this->context($this)->renderInContext(
+                                'RecordTab/holdingsils/standard.phtml',
+                                ['holding' => $item]
+                        );
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Library") ?>
+                </th>
+                <td class="library">
+                    <?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
+                    <?php if (isset($item['locationhref']) && $item['locationhref']): ?>
+                        <a href="<?= $item['locationhref'] ?>" target="_blank"><?= $locationText ?></a>
+                    <?php else: ?>
+                        <?= $locationText ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Collection") ?>
+                </th>
+                <td class="collection">
+                    <?php if (isset($item['collection'])): ?>
+                        <?= $item['collection'] ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Call number") ?>
+                </th>
+                <td class="call_number">
+                    <?php $callNo = $item['callnumber']; ?>
+                    <?php if ($this->callnumberHandler): ?>
+                        <a href="<?= $this->url('alphabitemse-home') ?>?source=<?= $this->escapeHtmlAttr($this->callnumberHandler) ?>&amp;from=<?= $this->escapeHtmlAttr($callNo) ?>"><?= $this->escapeHtml($callNo) ?></a>
+                    <?php else: ?>
+                        <?= $this->escapeHtml($callNo) ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Library") ?>
+                </th>
+                <td class="library">
+                    <?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
+                    <?php if (isset($item['locationhref']) && $item['locationhref']): ?>
+                        <a href="<?= $item['locationhref'] ?>" target="_blank"><?= $locationText ?></a>
+                    <?php else: ?>
+                        <?= $locationText ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Collection") ?>
+                </th>
+                <td class="collection">
+                    <?php if (isset($item['collection'])): ?>
+                        <?= $item['collection'] ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Holdings_notes") ?>
+                </th>
+                <td>
+                    <?php if (isset($item['notes'])): foreach ($item['notes'] as $note): ?>
+                            <?= $this->escapeHtml($note) ?><br/>
+                    <?php endforeach; endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <?= $this->transEsc("Barcode") ?>
+                </th>
+                <td class="barcode">
+                    <?php if (isset($item['barcode'])): ?>
+                        <?= $item['barcode'] ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
+
+    <?php endforeach; ?>
+<?php endforeach; ?>
+
 
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>

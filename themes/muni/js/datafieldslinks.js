@@ -1,7 +1,22 @@
 var collectionRename = {
-  'Knihovna univ. kampusu': 'location_KUK',
   'FF - ustredni knihovna': 'location_FF',
   'Fac. Arts - central library': 'location_FF',
+  'FF - katedry a ustavy': 'location_FF-K',
+  'Fac. Arts - departments': 'location_FF-K',
+  'FF - studovna': 'location_FF-S',
+  'Fac. Arts - Study room': 'location_FF-S',
+  'FF - hudebni veda': 'location_FFHUD',
+  'Fac. Arts - Music': 'location_FFHUD',
+  'Fakulta sociálních studií': 'location_FSS',
+  'Faculty of Social Studies': 'location_FSS',
+  'Knihovna univ. kampusu': 'location_KUK',
+  'Campus Library': 'location_KUK',
+  'Lékařská fakulta': 'location_LF',
+  'Faculty of Medicine': 'location_LF',
+  'Přírodovědecká fakulta': 'location_PRIF',
+  'Faculty of Science': 'location_PRIF',
+  'Přír. fakulta - Matematika': 'location_PRIMA',
+  'Faculty of Sci. - Mathematics': 'location_PRIMA',
 };
 
 function strip(str) {
@@ -128,6 +143,24 @@ function showItemLinks(language, vuFindId) {
       a.appendChild(document.createTextNode(' ' + label));
       var td = status[0].parentElement.parentElement;
       td.appendChild(a);
+    }
+
+    if(
+      libraryText in collections
+      && collections[libraryText]['__collection__']
+    ) {
+      // Collection links
+      var d = collections[libraryText][collectionText];
+      var label = collections[libraryText]['__linklabel__'];
+      var url = collections[libraryText]['__url__'];
+      var a = document.createElement('a');
+      a.target = '_blank';
+      a.href = url + '?d=' + d + '&sysno=' + sysno + '&bc=' + barcodeText + '&reqtype=collection&lang=' + language;
+      a.appendChild(document.createTextNode(collectionText));
+      while (collection.childNodes.length > 0) {
+        collection.removeChild(collection.childNodes[0]);
+      }
+      collection.appendChild(a);
     }
   }
 }

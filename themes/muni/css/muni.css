@@ -445,12 +445,11 @@ tr.marc-row-CAT {
     margin-bottom: 20px;
 }
 
-/*
 @media (min-width: 992px) {
     #items {
         table-layout: auto;
     }
-}*/
+}
 
 @media (max-width: 992px) {
     

@@ -198,7 +198,7 @@ a.btn-link:hover {
     height: 1.5em;
     vertical-align: middle;
     content: "";
-        background-size: auto;
+    background-size: auto;
     background-size: 100% 100%;
 }
 
@@ -286,7 +286,7 @@ div.home-facet h2 {
 
 
 div.search {
-	margin-top: 2rem;
+    margin-top: 2rem;
 }
 
 #searchForm {
@@ -332,16 +332,16 @@ div.search-controls {
     #searchForm button.btn-primary {
         margin-top: .5rem;
     }
-    
+
     #searchForm_type {
         width: 100%;
     }
-    
+
     #searchForm_lookfor {
         width: 100%;
         max-width: 100%;
     }
-    
+
     #muniHomepageSearchForm {
         width: 100%;
     }   
@@ -382,17 +382,17 @@ div.search-controls {
 }
 
 .myresearch-menu a.active {
-   background-color: #0000dc; 
+    background-color: #0000dc; 
 }
 
 .myresearch-menu a.active:focus {
-   color: #000000;
+    color: #000000;
 }
 
 mark {
     background-color: transparent;
     color: inherit;
-		padding: 0;
+    padding: 0;
 }
 
 
@@ -430,7 +430,7 @@ mark {
 }
 
 tr.marc-row-CAT {
-	display: none;
+    display: none;
 }
 
 .adv-submit .clear-btn {
@@ -443,4 +443,65 @@ tr.marc-row-CAT {
 
 .authoritybox {
     margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+    #items {
+        table-layout: auto;
+    }
+}
+
+@media (max-width: 992px) {
+    
+    #items td, #items tr {
+        display: block;
+    }
+    
+    #items-head {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        display: none;
+    }
+
+    #items tr {
+        border-top: 2px solid black;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid black;
+    }
+
+    #items td {
+        border: none;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        min-height: 30px;
+    }
+    
+    #items td:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    #items td:before {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 45%;
+        height: 100%;
+        padding: 6px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    #items td:before {
+        content: attr(label-title);
+    }
+
+}
+
+div.item-internet-links {
+    margin-bottom: 2rem;
 }

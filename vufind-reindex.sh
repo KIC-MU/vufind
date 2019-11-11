@@ -1,5 +1,6 @@
 #!/bin/bash
 shopt -s extglob
+set -o pipefail
 
 declare -A ALEPH_LANGUAGE_MAP
 

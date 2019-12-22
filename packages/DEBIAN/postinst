@@ -7,6 +7,7 @@
 sh -c 'echo export JAVA_HOME=\"/usr/lib/jvm/default-java\" > /etc/profile.d/vufind.sh'
 sh -c 'echo export VUFIND_HOME=\"/usr/local/vufind\"  >> /etc/profile.d/vufind.sh'
 sh -c 'echo export VUFIND_LOCAL_DIR=\"\$VUFIND_HOME/local\"  >> /etc/profile.d/vufind.sh'
+sh -c 'echo export SOLR_HEAP=\"4G\"  >> /etc/profile.d/vufind.sh'
 source /etc/profile.d/vufind.sh
 
 # Turn on mod_rewrite in Apache.

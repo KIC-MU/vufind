@@ -187,14 +187,14 @@
                 <?php if (isset($renewDetails['success']) && $renewDetails['success']): ?>
                   <?php $showStatus = false; ?>
                   <strong><?=$this->transEsc('Due Date')?>:</strong> <?=$this->escapeHtml($renewDetails['new_date'])?> <?php if (isset($renewDetails['new_time'])): ?><?=$this->escapeHtml($renewDetails['new_time'])?><?php endif; ?>
-                  <?php if (isset($ilsDetails['duedateLimit'])): ?>
-                    | <strong><?=$this->transEsc('muni::Latest Due Date')?>:</strong> <?=$this->escapeHtml($ilsDetails['duedateLimit'])?>
+                  <?php if (isset($ilsDetails['issuedate'])): ?>
+                    | <strong><?=$this->transEsc('Checked Out')?>:</strong> <?=$this->escapeHtml($ilsDetails['issuedate'])?>
                   <?php endif; ?>
                   <div class="alert alert-success"><?=$this->transEsc('renew_success')?></div>
                 <?php else: ?>
                   <strong><?=$this->transEsc('Due Date')?>:</strong> <?=$this->escapeHtml($ilsDetails['duedate'])?><?php if (isset($ilsDetails['dueTime'])): ?> <?=$this->escapeHtml($ilsDetails['dueTime'])?><?php endif; ?>
-                  <?php if (isset($ilsDetails['duedateLimit'])): ?>
-                    | <strong><?=$this->transEsc('muni::Latest Due Date')?>:</strong> <?=$this->escapeHtml($ilsDetails['duedateLimit'])?>
+                  <?php if (isset($ilsDetails['issuedate'])): ?>
+                    | <strong><?=$this->transEsc('Checked Out')?>:</strong> <?=$this->escapeHtml($ilsDetails['issuedate'])?>
                   <?php endif; ?>
                   <div class="alert alert-danger">
                     <?=$this->transEsc('renew_fail')?><?php if (isset($renewDetails['sysMessage'])): ?>: <?=$this->escapeHtml($renewDetails['sysMessage'])?><?php endif; ?>
@@ -206,8 +206,8 @@
                 <?php endif; ?>
               <?php else: ?>
                 <strong><?=$this->transEsc('Due Date')?>:</strong> <?=$this->escapeHtml($ilsDetails['duedate'])?><?php if (isset($ilsDetails['dueTime'])): ?> <?=$this->escapeHtml($ilsDetails['dueTime'])?><?php endif; ?>
-                <?php if (isset($ilsDetails['duedateLimit'])): ?>
-                  | <strong><?=$this->transEsc('muni::Latest Due Date')?>:</strong> <?=$this->escapeHtml($ilsDetails['duedateLimit'])?>
+                <?php if (isset($ilsDetails['issuedate'])): ?>
+                  | <strong><?=$this->transEsc('Checked Out')?>:</strong> <?=$this->escapeHtml($ilsDetails['issuedate'])?>
                 <?php endif; ?>
                 <?php if ($showStatus): ?>
                   <?php if (isset($ilsDetails['dueStatus']) && $ilsDetails['dueStatus'] == "overdue"): ?>

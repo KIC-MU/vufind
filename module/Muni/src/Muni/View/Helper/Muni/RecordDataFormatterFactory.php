@@ -226,7 +226,8 @@ class RecordDataFormatterFactory implements FactoryInterface
             'child_records', 'getChildRecordCount', 'data-childRecords.phtml',
             ['allowZero' => false]
         );
-        $spec->setTemplateLine('muni::Encodings', true, 'data-encoding.phtml');
+        $spec->setTemplateLine('muni::Encodings', true, 'data-encodings.phtml');
+        $spec->setTemplateLine('Source', true, 'data-source.phtml');
         $spec->setTemplateLine('Online Access', true, 'data-onlineAccess.phtml');
         $spec->setTemplateLine(
             'Related Items', 'getAllRecordLinks', 'data-allRecordLinks.phtml'

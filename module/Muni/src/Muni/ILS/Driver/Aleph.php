@@ -1245,9 +1245,17 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             ['patron', $user['id'], 'patronStatus', 'registration']
         );
         //$status = $xml->xpath("//institution/z305-bor-status");
-        //$expiry = $xml->xpath("//institution/z305-expiry-date");
-        //$recordList['expire'] = $this->parseDate($expiry[0]);
         //$recordList['group'] = $status[0];
+        $max_expiry = null;
+        foreach ($xml->xpath("//institution/z305-expiry-date") as $expiry) {
+            $expiry = (string)$expiry;
+            if ($max_expiry == null || $expiry > $max_expiry) {
+                $max_expiry = $expiry;
+            }
+        }
+        if ($max_expiry != null) {
+            $recordList['expiration_date'] = $this->parseDate($max_expiry);
+        }
 
         return $recordList;
     }

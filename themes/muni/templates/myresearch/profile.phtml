@@ -51,9 +51,8 @@
       <?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $this->user]); ?>
     </p>
     <table class="table table-striped">
-      <?=$this->renderArray(
-        $arrTemplate, $this->profile,
-        [
+      <?php
+        $array = [
           $this->transEsc('First Name') => 'firstname',
           $this->transEsc('Last Name') => 'lastname',
           $this->transEsc('Address') => 'address2',
@@ -64,9 +63,13 @@
           $this->transEsc('Mobile Number') => 'mobile_phone',
           $this->transEsc('Phone Number') => 'phone',
           $this->transEsc('Group') => 'group',
-          $this->transEsc('Expires') => 'expiration_date'
-        ]
-      )?>
+        ];
+        $admbases = ['MED50', 'LAW50', 'SCI50', 'FIL50', 'PED50', 'ECO50', 'INF50', 'SOC50', 'TEL50', 'MUB50'];
+        foreach ($admbases as $admbase):
+          $array[$this->transEsc('muni::Registration at') . $this->transEsc('muni::admbase_' . $admbase . '_locative') . $this->transEsc('muni::expires on')] = 'expiration_date_' . $admbase;
+        endforeach;
+      ?>
+      <?=$this->renderArray($arrTemplate, $this->profile, $array);?>
     </table>
   <?php elseif ('ils-none' !== $this->ils()->getOfflineMode() && $this->patronLoginView && !empty($this->patronLoginView->getTemplate())): ?>
     <?=$this->partial($this->patronLoginView);?>

@@ -1229,14 +1229,17 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             }
         }
         $recordList['firstname'] = join(' ', $firstname);
-
         $recordList['address1'] = $address1;
         $recordList['address2'] = $address2;
         $recordList['city'] = $address3;
         $recordList['country'] = $address4;
         $recordList['zip'] = $zip;
-        $recordList['mobile_phone'] = $smsnumber;
-        $recordList['phone'] = $telephone1;
+        if ($smsnumber) {
+            $recordList['mobile_phone'] = $smsnumber;
+        }
+        if ($telephone1) {
+            $recordList['phone'] = $telephone1;
+        }
         $recordList['email'] = $email;
         $recordList['dateFrom'] = $dateFrom;
         $recordList['dateTo'] = $dateTo;
@@ -1246,15 +1249,14 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
         );
         //$status = $xml->xpath("//institution/z305-bor-status");
         //$recordList['group'] = $status[0];
-        $max_expiry = null;
-        foreach ($xml->xpath("//institution/z305-expiry-date") as $expiry) {
-            $expiry = (string)$expiry;
-            if ($max_expiry == null || $expiry > $max_expiry) {
-                $max_expiry = $expiry;
+        foreach ($xml->xpath("//institution") as $institution) {
+            $administrative_base = (string)$institution->attributes()['code'];
+            $expiration_date = $institution->{'z305-expiry-date'};
+            if (!empty($expiration_date)) {
+                $key = 'expiration_date_' . $administrative_base;
+                $value = $this->parseDate((string)$expiration_date);
+                $recordList[$key] = $value;
             }
-        }
-        if ($max_expiry != null) {
-            $recordList['expiration_date'] = $this->parseDate($max_expiry);
         }
 
         return $recordList;

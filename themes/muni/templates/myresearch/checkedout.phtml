@@ -65,7 +65,7 @@
             <?=$this->escapeHtml($prefix . ': ') . $this->transEsc('renew_fail')?><?php if (isset($renewDetails['sysMessage'])): ?>: <?=$this->escapeHtml($renewDetails['sysMessage'])?><?php endif; ?>
             <br/>
             <?php $location = $ilsDetails['location']; ?>
-            <?php $helperText = sprintf($this->translate('muni::contact_library'), $this->translate('muni::location_' . $location . '_genitiv')); ?>
+            <?php $helperText = sprintf($this->translate('muni::contact_library'), $this->translate('muni::location_' . $location . '_genitive')); ?>
             <?=$this->escapeHtml($helperText)?>
           </div>
         <?php endif; ?>
@@ -200,7 +200,7 @@
                     <?=$this->transEsc('renew_fail')?><?php if (isset($renewDetails['sysMessage'])): ?>: <?=$this->escapeHtml($renewDetails['sysMessage'])?><?php endif; ?>
                     <br/>
                     <?php $location = $ilsDetails['location']; ?>
-                    <?php $helperText = sprintf($this->translate('muni::contact_library'), $this->translate('muni::location_' . $location . '_genitiv')); ?>
+                    <?php $helperText = sprintf($this->translate('muni::contact_library'), $this->translate('muni::location_' . $location . '_genitive')); ?>
                     <?=$this->escapeHtml($helperText)?>
                   </div>
                 <?php endif; ?>

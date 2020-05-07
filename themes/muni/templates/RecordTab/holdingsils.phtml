@@ -133,7 +133,8 @@
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>
 <?php $alephLanguages = ['cs' => 'cze', 'en' => 'eng']; ?>
-<?php $alephLang = $alephLanguages[$this->layout()->userLang]; ?>
+<?php $userLang = array_key_exists($this->layout()->userLang, $alephLanguages) ? $this->layout()->userLang : 'en'; ?>
+<?php $alephLang = $alephLanguages[$userLang]; ?>
 <script>showItemLocations('<?=$alephLang?>');</script>
 <script>showItemLinks('<?=$alephLang?>', '<?=$this->driver->getUniqueID()?>');</script>
 

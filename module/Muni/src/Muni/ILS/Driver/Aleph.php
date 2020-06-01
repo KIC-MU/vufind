@@ -557,9 +557,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $availability = false;
             $collection = (string)$z30->{'z30-collection'};
             $collection_desc = ['desc' => $collection];
-            $requested = false;
             $duedate = null;
             $status = (string)$item->{'status'};
+            $requested = $status == "Requested" || $status == "Zadán požadavek na výpůjčku";
+            if ($status == "Zadán požadavek na výpůjčku") {
+                $status = "Požadováno";
+            }
             $href = (string)$item["href"];
             if ($quick) {
                 $sub_library_code = $this->convertSublibraryId($sub_library_code);
@@ -567,7 +570,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
-            if (!preg_match($dueDateRegEx, $status)) {
+            if ($requested) {
+                $item_status = $status;
+            } elseif (!preg_match($dueDateRegEx, $status)) {
                 $params = ['loaned' => 'NO'];
                 if ($quick) {
                     $params['cache'] = 'true';

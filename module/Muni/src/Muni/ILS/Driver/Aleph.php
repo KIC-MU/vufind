@@ -559,7 +559,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $collection_desc = ['desc' => $collection];
             $duedate = null;
             $status = (string)$item->{'status'};
-            $requested = $status == "Requested" || $status == "Zadán požadavek na výpůjčku";
             if ($status == "Zadán požadavek na výpůjčku") {
                 $status = "Požadováno";
             }
@@ -567,10 +566,18 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             if ($quick) {
                 $sub_library_code = $this->convertSublibraryId($sub_library_code);
             }
+            $addLink = false;
+            if (!empty($patron)) {
+                $hold_request = $item->xpath('info[@type="HoldRequest"]/@allowed');
+                $addLink = ($hold_request[0] == 'Y');
+            }
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't loaned in Aleph.
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
-            if ($requested) {
+            if ($status == "Requested" || $status == "Požadováno") {
+                $item_status = $status;
+            } elseif ($status == "On Hold" || $status == "Rezervováno") {
+                $addLink = false;
                 $item_status = $status;
             } elseif (!preg_match($dueDateRegEx, $status)) {
                 $params = ['loaned' => 'NO'];
@@ -591,11 +598,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                         }
                     }
                 }
-            }
-            $addLink = false;
-            if (!empty($patron)) {
-                $hold_request = $item->xpath('info[@type="HoldRequest"]/@allowed');
-                $addLink = ($hold_request[0] == 'Y');
             }
             $matches = [];
             if (preg_match($dueDateRegEx, $status, $matches)) {
@@ -626,7 +628,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'callnumber_second' => (string)$z30->{'z30-call-no-2'},
                 'sub_lib_desc'      => (string)$sub_library_desc,
                 'no_of_loans'       => (string)$z30->{'$no_of_loans'},
-                'requested'         => (string)$requested
             ];
         }
         return $holding;

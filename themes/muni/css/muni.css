@@ -44,6 +44,11 @@ a, .search-hero a {
     text-decoration: underline;
 }
 
+.items-location a {
+    color: black;
+    text-decoration: none;
+}
+
 a:hover, .search-hero a:hover {
     color: black;
     text-decoration: underline;
@@ -446,31 +451,31 @@ tr.marc-row-CAT {
 }
 
 @media (min-width: 992px) {
-    #items {
+    table.items {
         table-layout: auto;
     }
 }
 
 @media (max-width: 992px) {
     
-    #items td, #items tr {
+    table.items td, table.items tr {
         display: block;
     }
     
-    #items-head {
+    table.items tr:first-child {
         position: absolute;
         top: -9999px;
         left: -9999px;
         display: none;
     }
 
-    #items tr {
+    table.items tr {
         border-top: 2px solid black;
         margin-bottom: 2rem;
         border-bottom: 1px solid black;
     }
 
-    #items td {
+    table.items td {
         border: none;
         border-bottom: 1px solid #ddd;
         position: relative;
@@ -480,11 +485,11 @@ tr.marc-row-CAT {
         min-height: 30px;
     }
     
-    #items td:nth-child(odd) {
+    table.items td:nth-child(odd) {
         background-color: #f9f9f9;
     }
 
-    #items td:before {
+    table.items td:before {
         position: absolute;
         top: 0px;
         left: 0px;
@@ -496,7 +501,7 @@ tr.marc-row-CAT {
         font-weight: bold;
     }
 
-    #items td:before {
+    table.items td:before {
         content: attr(label-title);
     }
 

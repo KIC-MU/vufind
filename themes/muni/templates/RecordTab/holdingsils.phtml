@@ -62,18 +62,36 @@
 <div id="eprez"></div>
 <script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
 
-<table class="table" id="items">
-  <tr id="items-head">
-    <th><?=$this->transEsc("Description")?></th>
-    <th><?=$this->transEsc("Status")?></th>
-    <th class="th-library"><?=$this->transEsc("Library")?></th>
-    <th><?=$this->transEsc("Collection")?></th>
-    <th><?=$this->transEsc("Call Number")?></th>
-    <th><?=$this->transEsc("Holdings_notes")?></th>
-    <th><?=$this->transEsc("Barcode")?></th>
-  </tr>
-  <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
-    <?php foreach ($holding['items'] as $item): ?>
+<?php
+    $locationHoldings = [];
+    foreach ($holdings['holdings'] ?? [] as $holding):
+        foreach ($holding['items'] as $item):
+            $location = $item['location'];
+            if (!array_key_exists($location, $locationHoldings)):
+                $locationHoldings[$location] = [];
+            endif;
+            $locationHoldings[$location][] = $item;
+        endforeach;
+    endforeach;
+?>
+<?php foreach ($locationHoldings as $location => $items): ?>
+  <?php $locationText = $this->transEsc('location_' . $location, [], $location); ?>
+  <?php if (count($locationHoldings) > 1): ?>
+    <h3 id="items-<?=$location?>" class="items-location">
+      <a href="#items-<?=$location?>"><?=$locationText?></a>
+    </h3>
+  <?php endif; ?>
+  <table class="table items">
+    <tr>
+      <th><?=$this->transEsc("Description")?></th>
+      <th><?=$this->transEsc("Status")?></th>
+      <th class="th-library"><?=$this->transEsc("Library")?></th>
+      <th><?=$this->transEsc("Collection")?></th>
+      <th><?=$this->transEsc("Call Number")?></th>
+      <th><?=$this->transEsc("Holdings_notes")?></th>
+      <th><?=$this->transEsc("Barcode")?></th>
+    </tr>
+    <?php foreach ($items as $item): ?>
       <tr>
         <td label-title="<?=$this->transEsc("Description")?>:">
           <?php if (isset($item['description'])): ?>
@@ -96,7 +114,6 @@
           ?>
         </td>
         <td class="library" label-title="<?=$this->transEsc("Library")?>:">
-          <?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
           <?php if (isset($item['locationhref']) && $item['locationhref']): ?>
             <a href="<?=$item['locationhref']?>" target="_blank"><?=$locationText?></a>
           <?php else: ?>
@@ -128,8 +145,8 @@
         </td>
       </tr>
     <?php endforeach; ?>
-  <?php endforeach; ?>
-</table>
+  </table>
+<?php endforeach; ?>
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>
 <?php $alephLanguages = ['cs' => 'cze', 'en' => 'eng']; ?>

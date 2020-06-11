@@ -25,8 +25,21 @@
     return str.replace(/^\s*/g, '').replace(/\s*$/g, '');
   }
 
+  var items = (function() {
+    var items = [];
+    var tables = document.getElementById('items');
+    for (var i = 0; i < tables.length; i++) {
+      var table = tables[i];
+      var rows = table.getElementsByTagName('tr');
+      for (var j = 0; j < rows.length; j++) {
+        var item = rows[j];
+        items.push(item);
+      }
+    }
+    return itemRows;
+  })();
+
   function showItemLocations(language) {
-    var items = document.getElementById('items').getElementsByTagName('tr');
     for (var i = 1; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];
@@ -147,7 +160,6 @@
       }
     }
 
-    var items = document.getElementById('items').getElementsByTagName('tr');
     for (var i = 1; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];

@@ -31,7 +31,7 @@
     for (var i = 0; i < tables.length; i++) {
       var table = tables[i];
       var rows = table.getElementsByTagName('tr');
-      for (var j = 0; j < rows.length; j++) {
+      for (var j = 1; j < rows.length; j++) {
         var item = rows[j];
         items.push(item);
       }

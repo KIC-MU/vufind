@@ -93,7 +93,14 @@
       <th><?=$this->transEsc("Barcode")?></th>
     </tr>
     <?php foreach ($items as $item): ?>
-      <tr>
+      <tr data-location="<?=$locationText?>"
+      <?php if (!empty($item['year'])): ?>
+        data-year="<?=$item['year']?>"
+      <?php endif; ?>
+      <?php if (!empty($item['volume'])): ?>
+        data-volume="<?=$item['volume']?>"
+      <?php endif; ?>
+      >
         <td label-title="<?=$this->transEsc("Description")?>:">
           <?php if (isset($item['description'])): ?>
             <?=$item['description']?>

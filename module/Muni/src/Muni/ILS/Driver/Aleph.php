@@ -627,6 +627,8 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'callnumber_second' => (string)$z30->{'z30-call-no-2'},
                 'sub_lib_desc'      => (string)$sub_library_desc,
                 'no_of_loans'       => (string)$z30->{'$no_of_loans'},
+                'volume'            => (string)$z30->{'z30-enumeration-a'},
+                'year'              => (string)$z30->{'z30-chronological-i'},
             ];
         }
         return $holding;

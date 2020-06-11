@@ -29,15 +29,15 @@
     var items = document.getElementById('items').getElementsByTagName('tr');
     for (var i = 1; i < items.length; i++) {
       var item = items[i];
-      var barcode = item.getElementsByClassName("barcode")[0];
+      var barcode = item.getElementsByClassName('barcode')[0];
       var barcodeText = strip(barcode.textContent);
-      var callNumber = item.getElementsByClassName("call_number")[0];
+      var callNumber = item.getElementsByClassName('call_number')[0];
       var callNumberText = strip(callNumber.textContent);
-      var collection = item.getElementsByClassName("collection")[0];
+      var collection = item.getElementsByClassName('collection')[0];
       var collectionText = strip(collection.textContent);
-      var library = item.getElementsByClassName("library")[0];
+      var library = item.getElementsByClassName('library')[0];
       var libraryText = strip(library.textContent);
-      var status = item.getElementsByClassName("status");
+      var status = item.getElementsByClassName('status');
       var statusText = status.length > 0 ? strip(status[0].textContent) : '';
 
       var text;
@@ -150,13 +150,13 @@
     var items = document.getElementById('items').getElementsByTagName('tr');
     for (var i = 1; i < items.length; i++) {
       var item = items[i];
-      var barcode = item.getElementsByClassName("barcode")[0];
+      var barcode = item.getElementsByClassName('barcode')[0];
       var barcodeText = strip(barcode.textContent);
-      var collection = item.getElementsByClassName("collection")[0];
+      var collection = item.getElementsByClassName('collection')[0];
       var collectionText = strip(collection.textContent);
-      var library = item.getElementsByClassName("library")[0];
+      var library = item.getElementsByClassName('library')[0];
       var libraryText = strip(library.textContent);
-      var status = item.getElementsByClassName("status");
+      var status = item.getElementsByClassName('status');
       var statusText = status.length > 0 ? strip(status[0].textContent) : '';
       var sysno = vuFindId.replace(/.*MUB[0-9]{2}/, '');
 

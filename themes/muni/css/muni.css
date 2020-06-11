@@ -479,7 +479,7 @@ tr.marc-row-CAT {
         border: none;
         border-bottom: 1px solid #ddd;
         position: relative;
-        padding-left: 50%;
+        padding-left: 50% !important;
         white-space: normal;
         text-align: left;
         min-height: 30px;

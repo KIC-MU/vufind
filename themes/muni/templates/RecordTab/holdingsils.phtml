@@ -64,7 +64,7 @@
 
 <?php
     $locationHoldings = [];
-    foreach ($holdings['holdings'] ?? [] as $holding):
+    foreach ($holdings['holdings'] as $holding):
         foreach ($holding['items'] as $item):
             $location = $item['location'];
             if (!array_key_exists($location, $locationHoldings)):
@@ -73,10 +73,11 @@
             $locationHoldings[$location][] = $item;
         endforeach;
     endforeach;
+    $holdingCount = count($locationHoldings, COUNT_RECURSIVE);
 ?>
 <?php foreach ($locationHoldings as $location => $items): ?>
   <?php $locationText = $this->transEsc('location_' . $location, [], $location); ?>
-  <?php if (count($locationHoldings) > 1): ?>
+  <?php if (count($locationHoldings) > 1 && $holdingCount > 10): ?>
     <h3 id="items-<?=$location?>" class="items-location">
       <a href="#items-<?=$location?>"><?=$locationText?></a>
     </h3>

@@ -63,7 +63,7 @@
     function numberSorter(a, b) {
       if (isNaN(parseFloat(a)) || isNaN(parseFloat(a))) {
         return stringSorter(a, b);
-      else {
+      } else {
         a = parseFloat(a);
         b = parseFloat(b);
         if (a < b) {

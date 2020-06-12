@@ -89,21 +89,21 @@
       var locationHeadings = document.getElementsByClassName('items-location');
       if (numFilters == 0) {
         filteredItemTable.className = 'table hidden';
-        for (var i = 0; i < itemTables; i++) {
+        for (var i = 0; i < itemTables.length; i++) {
           var itemTable = itemTables[i];
           itemTable.className = 'table items';
         }
-        for (var i = 0; i < locationHeadings; i++) {
+        for (var i = 0; i < locationHeadings.length; i++) {
           var locationHeading = locationHeadings[i];
           locationHeading.className = 'items-location';
         }
       } else {
         filteredItemTable.className = 'table';
-        for (var i = 0; i < itemTables; i++) {
+        for (var i = 0; i < itemTables.length; i++) {
           var itemTable = itemTables[i];
           itemTable.className = 'table items hidden';
         }
-        for (var i = 0; i < locationHeadings; i++) {
+        for (var i = 0; i < locationHeadings.length; i++) {
           var locationHeading = locationHeadings[i];
           locationHeading.className = 'items-location hidden';
         }

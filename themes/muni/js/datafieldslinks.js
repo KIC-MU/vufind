@@ -113,18 +113,6 @@
           item.className = 'hidden';
         }
       }
-
-      var locationHeadingClassName;
-      if (numPassedItems > 10 && !('location' in itemFilterValues)) {
-        locationHeadingClassName = 'items-location';
-      } else {
-        locationHeadingClassName = 'items-location hidden';
-      }
-      var locationHeadings = document.getElementsByClassName('items-location');
-      for (var i = 0; i < locationHeadings.length; i++) {
-        var locationHeading = locationHeadings[i];
-        locationHeading.className = locationHeadingClassName;
-      }
     }
 
     function addItemFilter(type, sorter) {

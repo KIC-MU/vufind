@@ -44,11 +44,6 @@ a, .search-hero a {
     text-decoration: underline;
 }
 
-.items-location a {
-    color: black;
-    text-decoration: none;
-}
-
 a:hover, .search-hero a:hover {
     color: black;
     text-decoration: underline;

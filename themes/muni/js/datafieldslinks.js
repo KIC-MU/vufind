@@ -40,7 +40,7 @@
   })();
 
   function showItemLocations(language) {
-    for (var i = 1; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];
       var barcodeText = strip(barcode.textContent);
@@ -160,7 +160,7 @@
       }
     }
 
-    for (var i = 1; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];
       var barcodeText = strip(barcode.textContent);

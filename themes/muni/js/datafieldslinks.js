@@ -109,9 +109,10 @@
           locationHeading.className = 'items-location hidden';
         }
         var filteredItems = filteredItemTable.getElementsByTagName('tr');
+        filteredItems = Array.prototype.slice.call(filteredItems, 0);
         for (var i = 1; i < filteredItems.length; i++) {
           var filteredItem = filteredItems[i];
-          filteredItem.parentElement.removeChild(filteredItem);
+          filteredItemTableBody.removeChild(filteredItem);
         }
 
         var items = getItems();

@@ -451,14 +451,14 @@ tr.marc-row-CAT {
     }
 
     #item-filters {
-        padding-bottom: 65px;
+        padding-bottom: 90px;
     }
 }
 
 @media (max-width: 992px) {
 
     #item-filters {
-        padding-bottom: 30px;
+        padding-bottom: 35px;
     }
     
     table.items td, table.items tr {

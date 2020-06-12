@@ -44,10 +44,6 @@
   }
 
   function showItemFilters(vuFindId) {
-    if (vuFindId != 'MUB01000169910') {
-      return;  // FIXME
-    }
-
     var itemFilterHolder = document.getElementById('item-filters');
     var itemFilters = [];
 

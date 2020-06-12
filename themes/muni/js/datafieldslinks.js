@@ -25,19 +25,23 @@
     return str.replace(/^\s*/g, '').replace(/\s*$/g, '');
   }
 
-  var items = (function() {
-    var items = [];
-    var tables = document.getElementsByClassName('items');
-    for (var i = 0; i < tables.length; i++) {
-      var table = tables[i];
-      var rows = table.getElementsByTagName('tr');
-      for (var j = 1; j < rows.length; j++) {
-        var item = rows[j];
-        items.push(item);
+  var items;
+
+  function getItems() {
+    if (items == undefined) {
+      items = [];
+      var tables = document.getElementsByClassName('items');
+      for (var i = 0; i < tables.length; i++) {
+        var table = tables[i];
+        var rows = table.getElementsByTagName('tr');
+        for (var j = 1; j < rows.length; j++) {
+          var item = rows[j];
+          items.push(item);
+        }
       }
     }
     return items;
-  })();
+  }
 
   function showItemFilters(vuFindId) {
     if (vuFindId != 'MUB01000169910') {
@@ -65,6 +69,7 @@
         itemFilterSelect.appendChild(itemFilterOption);
       }
 
+      var items = getItems();
       values = [];
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
@@ -95,6 +100,7 @@
   }
 
   function showItemLocations(language) {
+    var items = getItems();
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];
@@ -215,6 +221,7 @@
       }
     }
 
+    var items = getItems();
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
       var barcode = item.getElementsByClassName('barcode')[0];

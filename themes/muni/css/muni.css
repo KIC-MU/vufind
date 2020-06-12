@@ -44,7 +44,7 @@ a, .search-hero a {
     text-decoration: underline;
 }
 
-.items-location a {
+.items-location a, .locationDetails a {
     color: black;
     text-decoration: none;
 }

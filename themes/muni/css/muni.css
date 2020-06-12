@@ -518,3 +518,7 @@ div.item-internet-links {
 .hidden {
     display: none;
 }
+
+#item-filters select {
+    width: 100%;
+}

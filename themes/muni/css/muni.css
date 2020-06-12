@@ -449,9 +449,17 @@ tr.marc-row-CAT {
     table.items {
         table-layout: auto;
     }
+
+    #item-filters {
+        padding-bottom: 65px;
+    }
 }
 
 @media (max-width: 992px) {
+
+    #item-filters {
+        padding-bottom: 30px;
+    }
     
     table.items td, table.items tr {
         display: block;
@@ -508,10 +516,6 @@ div.item-internet-links {
 
 .hidden {
     display: none;
-}
-
-#item-filters {
-    padding-bottom: 65px;
 }
 
 #item-filters select {

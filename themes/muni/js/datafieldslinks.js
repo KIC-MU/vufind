@@ -111,7 +111,7 @@
         var filteredItems = filteredItemTable.getElementsByTagName('tr');
         for (var i = 1; i < filteredItems.length; i++) {
           var filteredItem = filteredItems[i];
-          filteredItemTableBody.removeChild(filteredItem);
+          filteredItem.parentElement.removeChild(filteredItem);
         }
 
         var items = getItems();

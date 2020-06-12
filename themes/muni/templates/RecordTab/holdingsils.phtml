@@ -79,10 +79,12 @@
 ?>
 <?php foreach ($locationHoldings as $location => $items): ?>
   <?php $locationText = $this->transEsc('location_' . $location, [], $location); ?>
-  <?php if (count($locationHoldings) > 1 && $holdingCount > 10): ?>
+  <?php if (count($locationHoldings) > 1): ?>
     <h3 id="items-<?=$location?>" class="items-location">
       <a href="#items-<?=$location?>"><?=$locationText?></a>
     </h3>
+  <?php else: ?>
+    <a name="items-<?=$location?>"></a>
   <?php endif; ?>
   <table class="table items">
     <tr>

@@ -53,17 +53,20 @@ function displayItemStatus(result, $item) {
       locationListHTML += '<div class="groupLocation">';
       if (result.locationList[x].availability) {
         locationListHTML += '<span class="text-success"><i class="fa fa-check" aria-hidden="true"></i> '
-          + result.locationList[x].location + '</span> ';
+          + '<a href="/Record/' + result.id + '#items-' + locationId + '">'
+          + result.locationList[x].location + '</a></span> ';
       } else if (typeof(result.locationList[x].status_unknown) !== 'undefined'
           && result.locationList[x].status_unknown
       ) {
         if (result.locationList[x].location) {
           locationListHTML += '<span class="text-warning"><i class="fa fa-status-unknown" aria-hidden="true"></i> '
-            + result.locationList[x].location + '</span> ';
+            + '<a href="/Record/' + result.id + '#items-' + locationId + '">'
+            + result.locationList[x].location + '</a></span> ';
         }
       } else {
         locationListHTML += '<span class="text-danger"><i class="fa fa-remove" aria-hidden="true"></i> '
-          + result.locationList[x].location + '</span> ';
+          + '<a href="/Record/' + result.id + '#items-' + locationId + '">'
+          + result.locationList[x].location + '</a></span> ';
       }
       locationListHTML += '</div>';
       locationListHTML += '<div class="groupCallnumber">';

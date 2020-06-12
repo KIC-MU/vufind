@@ -45,7 +45,10 @@ a, .search-hero a {
 }
 
 .items-location a, .locationDetails a {
-    color: black;
+    color: inherit;
+}
+
+.items-location a {
     text-decoration: none;
 }
 

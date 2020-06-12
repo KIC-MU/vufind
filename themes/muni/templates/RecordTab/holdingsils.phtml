@@ -64,19 +64,37 @@
 
 <div id="item-filters" class="hidden"></div>
 
-<table class="table items">
-  <tr>
-    <th><?=$this->transEsc("Description")?></th>
-    <th><?=$this->transEsc("Status")?></th>
-    <th class="th-library"><?=$this->transEsc("Library")?></th>
-    <th><?=$this->transEsc("Collection")?></th>
-    <th><?=$this->transEsc("Call Number")?></th>
-    <th><?=$this->transEsc("Holdings_notes")?></th>
-    <th><?=$this->transEsc("Barcode")?></th>
-  </tr>
-  <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
-    <?php foreach ($holding['items'] as $item): ?>
-			<?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
+<?php
+    $locationHoldings = [];
+    foreach ($holdings['holdings'] as $holding):
+        foreach ($holding['items'] as $item):
+            $location = $item['location'];
+            if (!array_key_exists($location, $locationHoldings)):
+                $locationHoldings[$location] = [];
+            endif;
+            $locationHoldings[$location][] = $item;
+        endforeach;
+    endforeach;
+    $holdingCount = count($locationHoldings, COUNT_RECURSIVE);
+?>
+<?php foreach ($locationHoldings as $location => $items): ?>
+  <?php $locationText = $this->transEsc('location_' . $location, [], $location); ?>
+  <?php if (count($locationHoldings) > 1 && $holdingCount > 10): ?>
+    <h3 id="items-<?=$location?>" class="items-location">
+      <a href="#items-<?=$location?>"><?=$locationText?></a>
+    </h3>
+  <?php endif; ?>
+  <table class="table items">
+    <tr>
+      <th><?=$this->transEsc("Description")?></th>
+      <th><?=$this->transEsc("Status")?></th>
+      <th class="th-library"><?=$this->transEsc("Library")?></th>
+      <th><?=$this->transEsc("Collection")?></th>
+      <th><?=$this->transEsc("Call Number")?></th>
+      <th><?=$this->transEsc("Holdings_notes")?></th>
+      <th><?=$this->transEsc("Barcode")?></th>
+    </tr>
+    <?php foreach ($items as $item): ?>
       <tr data-location="<?=$locationText?>"
       <?php if (!empty($item['year'])): ?>
         data-year="<?=$item['year']?>"
@@ -137,7 +155,18 @@
         </td>
       </tr>
     <?php endforeach; ?>
-  <?php endforeach; ?>
+  </table>
+<?php endforeach; ?>
+<table class="table hidden" id="filtered-item-table">
+    <tr>
+      <th><?=$this->transEsc("Description")?></th>
+      <th><?=$this->transEsc("Status")?></th>
+      <th class="th-library"><?=$this->transEsc("Library")?></th>
+      <th><?=$this->transEsc("Collection")?></th>
+      <th><?=$this->transEsc("Call Number")?></th>
+      <th><?=$this->transEsc("Holdings_notes")?></th>
+      <th><?=$this->transEsc("Barcode")?></th>
+    </tr>
 </table>
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>

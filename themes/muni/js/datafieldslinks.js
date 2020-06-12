@@ -84,29 +84,46 @@
         }
       }
 
-      var items = getItems();
-      var numPassedItems = 0;
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var numPassedFilters = 0;
-        for (var type in itemFilterValues) {
-          var itemFilterValue = itemFilterValues[type];
-          if (itemFilterValue == '') {
-            numPassedFilters++;
-          } else {
-            var itemValue = item.getAttribute('data-' + type);
-            if (itemFilterValue != itemValue) {
-              break;
-            } else {
+      var filteredItemTable = document.getElementById('filtered-item-table');
+      var locationHeadings = document.getElementsByClassName('items-location');
+      if (numFilters == 0) {
+        filteredItemTable.className = 'table hidden';
+        for (var i = 0; i < locationHeadings; i++) {
+          var locationHeading = locationHeadings[i];
+          locationHeading.className = 'items-location';
+        }
+      } else {
+        filteredItemTable.className = 'table';
+        for (var i = 0; i < locationHeadings; i++) {
+          var locationHeading = locationHeadings[i];
+          locationHeading.className = 'items-location hidden';
+        }
+        var filteredItems = filteredItemTable.getElementsByTagName('tr');
+        for (var i = 1; i < filteredItems.length; i++) {
+          var filteredItem = filteredItems[i];
+          filteredItemTable.removeChild(filteredItem);
+        }
+
+        var items = getItems();
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i];
+          var numPassedFilters = 0;
+          for (var type in itemFilterValues) {
+            var itemFilterValue = itemFilterValues[type];
+            if (itemFilterValue == '') {
               numPassedFilters++;
+            } else {
+              var itemValue = item.getAttribute('data-' + type);
+              if (itemFilterValue != itemValue) {
+                break;
+              } else {
+                numPassedFilters++;
+              }
             }
           }
-        }
-        if (numPassedFilters == numFilters) {
-          item.className = '';
-          numPassedItems++;
-        } else {
-          item.className = 'hidden';
+          if (numPassedFilters == numFilters) {
+            filteredItemTable.appendChild(item.cloneNode(true));
+          }
         }
       }
     }

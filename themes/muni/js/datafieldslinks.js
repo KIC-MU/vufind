@@ -94,7 +94,7 @@
       itemFilterLabel.appendChild(document.createTextNode(VuFind.translate('muni::Filter by ' + type) + ': '));
       var itemFilterSelect = document.createElement('select');
       itemFilterSelect.setAttribute('name', type);
-      itemFilterSelect.onchanged = refilterItems;
+      itemFilterSelect.onchange = refilterItems;
 
       function addOption(text, value, selected) {
         var itemFilterOption = document.createElement('option')

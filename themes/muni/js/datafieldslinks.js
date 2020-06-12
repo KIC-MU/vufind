@@ -45,7 +45,7 @@
 
   function showItemFilters(vuFindId) {
     if (vuFindId != 'MUB01000169910') {
-      return;  # FIXME
+      return;  // FIXME
     }
 
     var itemFilterHolder = document.getElementById('item-filters');
@@ -83,7 +83,7 @@
         var itemFilter = itemFilters[i];
         itemFilterValues[itemFilter.getAttribute('name')] = itemFilter.value;
       }
-      console.log(itemFilterValues);  # FIXME
+      console.log(itemFilterValues);  // FIXME
     }
 
     function addItemFilter(type, sorter) {

@@ -62,6 +62,8 @@
 <div id="eprez"></div>
 <script>eprez_tag("<?=$this->driver->getUniqueID()?>");</script>
 
+<div id="item-filters"></div>
+
 <?php
     $locationHoldings = [];
     foreach ($holdings['holdings'] as $holding):
@@ -162,6 +164,7 @@
 <?php $alephLang = $alephLanguages[$userLang]; ?>
 <script>showItemLocations('<?=$alephLang?>');</script>
 <script>showItemLinks('<?=$alephLang?>', '<?=$this->driver->getUniqueID()?>');</script>
+<script>showItemFilters('<?=$this->driver->getUniqueID()?>');</script>
 
 <?php $history = $this->driver->getRealTimeHistory(); ?>
 <?php if (is_array($history) && !empty($history)): ?>

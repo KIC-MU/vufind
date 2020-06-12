@@ -39,6 +39,61 @@
     return itemRows;
   })();
 
+  function showItemFilters(vuFindId) {
+    if (vuFindId != 'MUB01000169910') {
+      return;
+    }
+
+    var itemFilterHolder = document.getElementById('item-filters');
+
+    function addItemFilter(type) {
+      var itemFilter = document.createElement('form');
+      itemFilter.className = 'col-md-4';
+      var itemFilterLabel = document.createElement('label');
+      itemFilterLabel.setAttribute('for', type);
+      itemFilterLabel.appendChild(document.createTextNode(VuFind.translate('muni::Filter by ' + type)));
+      var itemFilterSelect = document.createElement('select');
+      itemFilterSelect.setAttribute('name', type);
+
+      function addOption(text, value, selected) {
+        var itemFilterOption = document.createElement('option')
+        itemFilterOption.setAttribute('value', value);
+        if (selected) {
+          itemFilterOption.setAttribute('selected', 'selected');
+        }
+        itemFilterOption.appendChild(document.createTextNode(text));
+        itemFilterSelect.appendChild(itemFilterOption);
+      }
+
+      values = [];
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.hasAttribute('data-' + type)) {
+          var value = item.getAttribute('data-' + type);
+          if (values.indexOf(value) == -1) {
+            values.push(value);
+          }
+        }
+      }
+
+      if (values.length > 1) {
+        addOption(VuFind.translate('muni::No filters'), '', true);
+        for (var i = 0; i < values.length; i++) {
+          var value = values[i];
+          addOption(value, value, false);
+        }
+
+        itemFilter.appendChild(itemFilterLabel);
+        itemFilter.appendChild(itemFilterSelect);
+        itemFilterHolder.appendChild(itemFilter);
+      }
+    }
+
+    addItemFilter('location');
+    addItemFilter('year');
+    addItemFilter('volume');
+  }
+
   function showItemLocations(language) {
     for (var i = 0; i < items.length; i++) {
       var item = items[i];

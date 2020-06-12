@@ -91,6 +91,7 @@
         itemFilter.appendChild(itemFilterLabel);
         itemFilter.appendChild(itemFilterSelect);
         itemFilterHolder.appendChild(itemFilter);
+        itemFilterHolder.className = '';
       }
     }
 

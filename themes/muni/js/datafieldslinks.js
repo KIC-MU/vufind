@@ -50,7 +50,33 @@
 
     var itemFilterHolder = document.getElementById('item-filters');
 
-    function addItemFilter(type) {
+    function stringSorter(a, b) {
+      if (a < b) {
+        return -1;
+      } else if(a > b) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+
+    function numberSorter(a, b) {
+      if (isNaN(parseFloat(a)) || isNaN(parseFloat(a))) {
+        return stringSorter(a, b);
+      else {
+        a = parseFloat(a);
+        b = parseFloat(b);
+        if (a < b) {
+          return -1;
+        } else if(a > b) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    }
+
+    function addItemFilter(type, sorter) {
       var itemFilter = document.createElement('form');
       itemFilter.className = 'col-md-4';
       var itemFilterLabel = document.createElement('label');
@@ -80,7 +106,7 @@
           }
         }
       }
-      values.sort();
+      values.sort(sorter);
 
       if (values.length > 1) {
         addOption(VuFind.translate('muni::No filters'), '', true);
@@ -96,9 +122,9 @@
       }
     }
 
-    addItemFilter('location');
-    addItemFilter('year');
-    addItemFilter('volume');
+    addItemFilter('location', stringSorter);
+    addItemFilter('year', numberSorter);
+    addItemFilter('volume', numberSorter);
   }
 
   function showItemLocations(language) {

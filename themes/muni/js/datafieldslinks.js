@@ -36,7 +36,7 @@
         items.push(item);
       }
     }
-    return itemRows;
+    return items;
   })();
 
   function showItemFilters(vuFindId) {

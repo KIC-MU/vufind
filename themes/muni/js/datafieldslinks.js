@@ -174,7 +174,7 @@
         var shelf;
         if (callNumberText in fssShelfHardMap) {
           shelf = fssShelfHardMap[callNumberText][language];
-        } else {
+        } else if(callNumberText != '') {
           var callNumberIdParts = callNumberText.match(/^([^\d]*)(\d*)-.*$/);
           var callNumberId = callNumberIdParts[1] + pad(callNumberIdParts[2], 'l', '0', 2);
           for (var from in fssShelfMap) {

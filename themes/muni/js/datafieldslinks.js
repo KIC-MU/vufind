@@ -45,10 +45,11 @@
 
   function showItemFilters(vuFindId) {
     if (vuFindId != 'MUB01000169910') {
-      return;
+      return;  # FIXME
     }
 
     var itemFilterHolder = document.getElementById('item-filters');
+    var itemFilters = [];
 
     function stringSorter(a, b) {
       if (a < b) {
@@ -76,6 +77,15 @@
       }
     }
 
+    function refilterItems() {
+      var itemFilterValues = {};
+      for (var i = 0; i < itemFilters.length; i++) {
+        var itemFilter = itemFilters[i];
+        itemFilterValues[itemFilter.getAttribute('name')] = itemFilter.value;
+      }
+      console.log(itemFilterValues);  # FIXME
+    }
+
     function addItemFilter(type, sorter) {
       var itemFilter = document.createElement('form');
       itemFilter.className = 'col-md-4';
@@ -84,6 +94,7 @@
       itemFilterLabel.appendChild(document.createTextNode(VuFind.translate('muni::Filter by ' + type) + ': '));
       var itemFilterSelect = document.createElement('select');
       itemFilterSelect.setAttribute('name', type);
+      itemFilterSelect.onchanged = refilterItems;
 
       function addOption(text, value, selected) {
         var itemFilterOption = document.createElement('option')
@@ -117,6 +128,7 @@
 
         itemFilter.appendChild(itemFilterLabel);
         itemFilter.appendChild(itemFilterSelect);
+        itemFilters.push(itemFilter);
         itemFilterHolder.appendChild(itemFilter);
         itemFilterHolder.className = '';
       }

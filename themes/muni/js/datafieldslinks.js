@@ -27,7 +27,7 @@
 
   var items = (function() {
     var items = [];
-    var tables = document.getElementById('items');
+    var tables = document.getElementsByClassName('items');
     for (var i = 0; i < tables.length; i++) {
       var table = tables[i];
       var rows = table.getElementsByTagName('tr');

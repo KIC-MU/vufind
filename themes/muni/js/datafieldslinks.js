@@ -85,15 +85,24 @@
       }
 
       var filteredItemTable = document.getElementById('filtered-item-table');
+      var itemTables = document.getElementByClassName('items');
       var locationHeadings = document.getElementsByClassName('items-location');
       if (numFilters == 0) {
         filteredItemTable.className = 'table hidden';
+        for (var i = 0; i < itemTables; i++) {
+          var itemTable = itemTables[i];
+          itemTable.className = 'table items';
+        }
         for (var i = 0; i < locationHeadings; i++) {
           var locationHeading = locationHeadings[i];
           locationHeading.className = 'items-location';
         }
       } else {
         filteredItemTable.className = 'table';
+        for (var i = 0; i < itemTables; i++) {
+          var itemTable = itemTables[i];
+          itemTable.className = 'table items hidden';
+        }
         for (var i = 0; i < locationHeadings; i++) {
           var locationHeading = locationHeadings[i];
           locationHeading.className = 'items-location hidden';

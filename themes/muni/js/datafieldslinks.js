@@ -85,6 +85,7 @@
       }
 
       var filteredItemTable = document.getElementById('filtered-item-table');
+      var filteredItemTableBody = filteredItemTable.getElementsByTagName('tr')[0].parentElement;
       var itemTables = document.getElementsByClassName('items');
       var locationHeadings = document.getElementsByClassName('items-location');
       if (numFilters == 0) {
@@ -110,7 +111,7 @@
         var filteredItems = filteredItemTable.getElementsByTagName('tr');
         for (var i = 1; i < filteredItems.length; i++) {
           var filteredItem = filteredItems[i];
-          filteredItemTable.removeChild(filteredItem);
+          filteredItemTableBody.removeChild(filteredItem);
         }
 
         var items = getItems();
@@ -131,7 +132,7 @@
             }
           }
           if (numPassedFilters == numFilters) {
-            filteredItemTable.appendChild(item.cloneNode(true));
+            filteredItemTableBody.appendChild(item.cloneNode(true));
           }
         }
       }

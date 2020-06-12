@@ -158,15 +158,15 @@
   </table>
 <?php endforeach; ?>
 <table class="table items hidden" id="filtered-item-table">
-    <tr>
-      <th><?=$this->transEsc("Description")?></th>
-      <th><?=$this->transEsc("Status")?></th>
-      <th class="th-library"><?=$this->transEsc("Library")?></th>
-      <th><?=$this->transEsc("Collection")?></th>
-      <th><?=$this->transEsc("Call Number")?></th>
-      <th><?=$this->transEsc("Holdings_notes")?></th>
-      <th><?=$this->transEsc("Barcode")?></th>
-    </tr>
+  <tr>
+    <th><?=$this->transEsc("Description")?></th>
+    <th><?=$this->transEsc("Status")?></th>
+    <th class="th-library"><?=$this->transEsc("Library")?></th>
+    <th><?=$this->transEsc("Collection")?></th>
+    <th><?=$this->transEsc("Call Number")?></th>
+    <th><?=$this->transEsc("Holdings_notes")?></th>
+    <th><?=$this->transEsc("Barcode")?></th>
+  </tr>
 </table>
 <?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>

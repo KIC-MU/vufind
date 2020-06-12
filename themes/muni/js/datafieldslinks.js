@@ -80,7 +80,7 @@
     function refilterItems() {
       var itemFilterValues = {};
       for (var i = 0; i < itemFilters.length; i++) {
-        var itemFilter = itemFilters[i];
+        var itemFilter = itemFilters[i].childNodes[1];
         itemFilterValues[itemFilter.getAttribute('name')] = itemFilter.value;
       }
       console.log(itemFilterValues);  // FIXME

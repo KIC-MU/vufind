@@ -271,4 +271,5 @@
 
   window.showItemLocations = showItemLocations;
   window.showItemLinks = showItemLinks;
+  window.showItemFilters = showItemFilters;
 })();

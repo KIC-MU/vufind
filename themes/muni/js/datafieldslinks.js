@@ -79,11 +79,52 @@
 
     function refilterItems() {
       var itemFilterValues = {};
+      var numFilters = 0;
       for (var i = 0; i < itemFilters.length; i++) {
         var itemFilter = itemFilters[i].childNodes[1];
-        itemFilterValues[itemFilter.getAttribute('name')] = itemFilter.value;
+        if (itemFilter.value != '') {
+          itemFilterValues[itemFilter.getAttribute('name')] = itemFilter.value;
+          numFilters++;
+        }
       }
-      console.log(itemFilterValues);  // FIXME
+
+      var items = getItems();
+      var numPassedItems = 0;
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var numPassedFilters = 0;
+        for (var type in itemFilterValues) {
+          var itemFilterValue = itemFilterValues[type];
+          if (itemFilterValue == '') {
+            numPassedFilters++;
+          } else {
+            var itemValue = item.getAttribute('data-' + type);
+            if (itemFilterValue != itemValue) {
+              break;
+            } else {
+              numPassedFilters++;
+            }
+          }
+        }
+        if (numPassedFilters == numFilters) {
+          item.className = '';
+          numPassedItems++;
+        } else {
+          item.className = 'hidden';
+        }
+      }
+
+      var locationHeadingClassName;
+      if (numPassedItems > 10 && 'location' not in itemFilterValues) {
+        locationHeadingClassName = 'items-location';
+      } else {
+        locationHeadingClassName = 'items-location hidden';
+      }
+      var locationHeadings = document.getElementsByClassName('items-location');
+      for (var i = 0; i < locationHeadings.length; i++) {
+        var locationHeading = locationHeadings[i];
+        locationHeading.className = locationHeadingClassName;
+      }
     }
 
     function addItemFilter(type, sorter) {

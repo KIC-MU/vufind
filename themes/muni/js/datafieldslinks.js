@@ -88,7 +88,7 @@
       var itemTables = document.getElementsByClassName('items');
       var locationHeadings = document.getElementsByClassName('items-location');
       if (numFilters == 0) {
-        filteredItemTable.className = 'table hidden';
+        filteredItemTable.className = 'table items hidden';
         for (var i = 0; i < itemTables.length; i++) {
           var itemTable = itemTables[i];
           itemTable.className = 'table items';
@@ -98,7 +98,7 @@
           locationHeading.className = 'items-location';
         }
       } else {
-        filteredItemTable.className = 'table';
+        filteredItemTable.className = 'table items';
         for (var i = 0; i < itemTables.length; i++) {
           var itemTable = itemTables[i];
           itemTable.className = 'table items hidden';

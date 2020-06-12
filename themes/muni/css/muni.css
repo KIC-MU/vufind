@@ -451,7 +451,7 @@ tr.marc-row-CAT {
 }
 
 @media (min-width: 992px) {
-    table.items, table#filtered-item-table {
+    table.items {
         table-layout: auto;
     }
 
@@ -466,24 +466,24 @@ tr.marc-row-CAT {
         padding-bottom: 35px;
     }
     
-    table.items td, table.items tr, table#filtered-item-table td, table#filtered-item-table tr {
+    table.items td, table.items tr {
         display: block;
     }
     
-    table.items tr:first-child, table#filtered-item-table tr:first-child {
+    table.items tr:first-child {
         position: absolute;
         top: -9999px;
         left: -9999px;
         display: none;
     }
 
-    table.items tr, table#filtered-item-table tr {
+    table.items tr {
         border-top: 2px solid black;
         margin-bottom: 2rem;
         border-bottom: 1px solid black;
     }
 
-    table.items td, table#filtered-item-table td {
+    table.items td {
         border: none;
         border-bottom: 1px solid #ddd;
         position: relative;
@@ -493,11 +493,11 @@ tr.marc-row-CAT {
         min-height: 30px;
     }
     
-    table.items td:nth-child(odd), table#filtered-item-table td:nth-child(odd) {
+    table.items td:nth-child(odd) {
         background-color: #f9f9f9;
     }
 
-    table.items td:before, table#filtered-item-table td:before {
+    table.items td:before {
         position: absolute;
         top: 0px;
         left: 0px;
@@ -509,7 +509,7 @@ tr.marc-row-CAT {
         font-weight: bold;
     }
 
-    table.items td:before, table#filtered-item-table td:before {
+    table.items td:before {
         content: attr(label-title);
     }
 

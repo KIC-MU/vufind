@@ -81,7 +81,7 @@
       itemFilter.className = 'col-md-4';
       var itemFilterLabel = document.createElement('label');
       itemFilterLabel.setAttribute('for', type);
-      itemFilterLabel.appendChild(document.createTextNode(VuFind.translate('muni::Filter by ' + type)));
+      itemFilterLabel.appendChild(document.createTextNode(VuFind.translate('muni::Filter by ' + type) + ': '));
       var itemFilterSelect = document.createElement('select');
       itemFilterSelect.setAttribute('name', type);
 

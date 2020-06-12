@@ -85,7 +85,7 @@
       }
 
       var filteredItemTable = document.getElementById('filtered-item-table');
-      var itemTables = document.getElementByClassName('items');
+      var itemTables = document.getElementsByClassName('items');
       var locationHeadings = document.getElementsByClassName('items-location');
       if (numFilters == 0) {
         filteredItemTable.className = 'table hidden';

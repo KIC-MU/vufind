@@ -80,7 +80,7 @@
           }
         }
       }
-      sort(values);
+      values.sort();
 
       if (values.length > 1) {
         addOption(VuFind.translate('muni::No filters'), '', true);

@@ -115,7 +115,7 @@
       }
 
       var locationHeadingClassName;
-      if (numPassedItems > 10 && 'location' not in itemFilterValues) {
+      if (numPassedItems > 10 && !('location' in itemFilterValues)) {
         locationHeadingClassName = 'items-location';
       } else {
         locationHeadingClassName = 'items-location hidden';

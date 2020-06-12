@@ -77,14 +77,14 @@
   <?php foreach ($holdings['holdings'] ?? [] as $holding): ?>
     <?php foreach ($holding['items'] as $item): ?>
 			<?php $locationText = $this->transEsc('location_' . $item['location'], [], $item['location']); ?>
--     <tr data-location="<?=$locationText?>"
--     <?php if (!empty($item['year'])): ?>
--       data-year="<?=$item['year']?>"
--     <?php endif; ?>
--     <?php if (!empty($item['volume'])): ?>
--       data-volume="<?=$item['volume']?>"
--     <?php endif; ?>
--     >
+      <tr data-location="<?=$locationText?>"
+      <?php if (!empty($item['year'])): ?>
+        data-year="<?=$item['year']?>"
+      <?php endif; ?>
+      <?php if (!empty($item['volume'])): ?>
+        data-volume="<?=$item['volume']?>"
+      <?php endif; ?>
+      >
         <td label-title="<?=$this->transEsc("Description")?>:">
           <?php if (isset($item['description'])): ?>
             <?=$item['description']?>

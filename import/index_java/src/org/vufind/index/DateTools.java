@@ -53,8 +53,10 @@ public class DateTools
         }
 
         // Now track down relevant RDA-style 264c dates; we only care about
-        // copyright and publication dates (and ignore copyright dates if
-        // publication dates are present).
+        // copyright, publication, and production dates (and ignore copyright
+        // dates if publication dates are present and ignore publication dates
+        // if production dates are present).
+        Set<String> prodDates = new LinkedHashSet<String>();
         Set<String> pubDates = new LinkedHashSet<String>();
         Set<String> copyDates = new LinkedHashSet<String>();
         List<VariableField> list264 = record.getVariableFields("264");
@@ -66,6 +68,9 @@ public class DateTools
                 char ind2 = df.getIndicator2();
                 switch (ind2)
                 {
+                    case '0':
+                        if (currentDateStr != null) prodDates.add(currentDateStr);
+                        break;
                     case '1':
                         if (currentDateStr != null) pubDates.add(currentDateStr);
                         break;
@@ -75,7 +80,9 @@ public class DateTools
                 }
             }
         }
-        if (pubDates.size() > 0) {
+        if (prodDates.size() > 0) {
+            dates.addAll(prodDates);
+        } else if (pubDates.size() > 0) {
             dates.addAll(pubDates);
         } else if (copyDates.size() > 0) {
             dates.addAll(copyDates);

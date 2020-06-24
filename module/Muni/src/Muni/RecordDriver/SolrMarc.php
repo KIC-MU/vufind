@@ -43,5 +43,5 @@ class SolrMarc extends \VuFind\RecordDriver\SolrDefault
 {
     use \VuFind\RecordDriver\IlsAwareTrait;
     use MarcReaderTrait;
-    use \VuFind\RecordDriver\MarcAdvancedTrait;
+    use MarcAdvancedTrait;
 }

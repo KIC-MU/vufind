@@ -1,21 +1,7 @@
 <?php
 $encodings = [];
-$fields = $this->driver->getMarcRecord()->getFields("347");
-if (!is_array($fields)) {
-  return $encodings;
-}
-foreach ($fields as $currentField) {
-  $allSubfields = $currentField->getSubfields();
-  if (!empty($allSubfields)) {
-    foreach ($allSubfields as $currentSubfield) {
-      if (in_array($currentSubfield->getCode(), ['b'])) {
-        $data = trim($currentSubfield->getData());
-        if (!empty($data)) {
-          $encodings[] = $this->escapeHtml($data);
-        }
-      }
-    }
-  }
+foreach ($this->driver->getEncodings() as $encoding) {
+  $encodings[] = $this->escapeHtml($encoding);
 }
 ?>
 <?php if (!empty($encodings)): ?>

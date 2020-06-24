@@ -2,15 +2,6 @@
 namespace Muni\Module\Configuration;
 
 $config = [
-    'router' => [
-        'recorddriver_tabs' => [
-            'VuFind\RecordDriver\SolrMarc' => [
-                'tabs' => [
-                    'Similar' => null,
-                ],
-            ],
-        ],
-    ],
     'service_manager' => [
         'factories' => [
             'Muni\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
@@ -49,6 +40,31 @@ $config = [
                 'factories' => [
                     'Muni\Recommend\AuthorityRecommend' => 'Muni\Recommend\Factory::getAuthorityRecommend',
                 ],
+            ],
+            'recorddriver' => [
+                'aliases' => [
+                    'solrmarc' => 'Muni\RecordDriver\SolrMarc',
+                ],
+                'delegators' => [
+                    'Muni\RecordDriver\SolrMarc' =>
+                        ['VuFind\RecordDriver\IlsAwareDelegatorFactory'],
+                ],
+                'factories' => [
+                    'Muni\RecordDriver\SolrMarc' => 'VuFind\RecordDriver\SolrDefaultFactory',
+                ],
+            ],
+        ],
+        'recorddriver_tabs' => [
+            'Muni\RecordDriver\SolrMarc' => [
+                'tabs' => [
+                    'Holdings' => 'HoldingsILS', 'Description' => 'Description',
+                    'TOC' => 'TOC', 'UserComments' => 'UserComments',
+                    'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
+                    'HierarchyTree' => 'HierarchyTree', 'Map' => 'Map',
+                    'Details' => 'StaffViewMARC',
+                ],
+                'defaultTab' => null,
             ],
         ],
     ],

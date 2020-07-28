@@ -77,7 +77,7 @@
     endforeach;
     $holdingCount = count($locationHoldings, COUNT_RECURSIVE);
 ?>
-<?php if ($holdingCount = 1): ?>
+<?php if ($holdingCount == 1): ?>
   <p>
     <?=$this->transEsc("muni::No holdings")?>
   </p>

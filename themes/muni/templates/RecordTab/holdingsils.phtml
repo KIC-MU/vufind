@@ -77,6 +77,9 @@
     endforeach;
     $holdingCount = count($locationHoldings, COUNT_RECURSIVE);
 ?>
+<?php if ($holdingCount = 1): ?>
+  <?=$this->transEsc("muni::No holdings")?>
+<?php endif; ?>
 <?php foreach ($locationHoldings as $location => $items): ?>
   <?php $locationText = $this->transEsc('location_' . $location, [], $location); ?>
   <?php if (count($locationHoldings) > 1): ?>

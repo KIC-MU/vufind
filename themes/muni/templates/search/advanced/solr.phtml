@@ -29,8 +29,10 @@
               ?>
               <?php if (isset($sticky[$field])): ?>
                 <?php foreach ($sticky[$field] as $value): ?>
-                  <option value="<?=$field?>:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
-                  <?php unset($list['list'][$listKeys[$value]]); ?>
+                  <?php if (isset($listKeys[$value])): ?>
+                    <option value="<?=$field?>:&quot;<?=$value?>&quot;"><?=$this->transEsc($value)?></option>
+                    <?php unset($list['list'][$listKeys[$value]]); ?>
+                  <?php endif; ?>
                 <?php endforeach; ?>
                 <option disabled="disabled">=================</option>
               <?php endif; ?>

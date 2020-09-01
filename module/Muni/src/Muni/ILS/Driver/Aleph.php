@@ -578,6 +578,14 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $item_status = $status;
             } elseif ($status == "On Hold" || $status == "Rezervováno") {
                 $item_status = $status;
+            } elseif ($status == null || $status == "On Shelf") {
+                if ($status == null) {
+                    $item_status = "Volný výběr";
+                } else {
+                    $item_status = $status;
+                }
+                $availability = true;
+                $addLink = false;
             } elseif (!preg_match($dueDateRegEx, $status)) {
                 $params = ['loaned' => 'NO'];
                 if ($quick) {

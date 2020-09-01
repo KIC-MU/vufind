@@ -572,11 +572,11 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $addLink = ($hold_request[0] == 'Y');
             }
             // If the item status is a datetime, make the item unavailable.
-            // Otherwise, make the item available iff it isn't loaned in Aleph.
+            // Otherwise, make the item available iff it isn't reserved / requested / on shelf.
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
-            if ($status == "Requested" || $status == "Požadováno") {
-                $item_status = $status;
-            } elseif ($status == "On Hold" || $status == "Rezervováno") {
+            $reservedStatusRegEx = '#Requested|Požadováno#';
+            $requestedStatusRegEx = '#On Hold|Rezervováno#';
+            if (preg_match($reservedStatusRegEx, $status) || preg_match($requestedStatusRegEx, $status)) {
                 $item_status = $status;
             } elseif ($status == null || $status == "On Shelf") {
                 if ($status == null) {

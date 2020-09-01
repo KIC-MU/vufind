@@ -559,9 +559,6 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $collection_desc = ['desc' => $collection];
             $duedate = null;
             $status = (string)$item->{'status'};
-            if ($status == "Zadán požadavek na výpůjčku") {
-                $status = "Požadováno";
-            }
             $href = (string)$item["href"];
             if ($quick) {
                 $sub_library_code = $this->convertSublibraryId($sub_library_code);
@@ -574,9 +571,10 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             // If the item status is a datetime, make the item unavailable.
             // Otherwise, make the item available iff it isn't reserved / requested / on shelf.
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
-            $reservedStatusRegEx = '#Requested|Požadováno#';
+            $reservedStatusRegEx = '#Requested|Zadán požadavek na výpůjčku#';
             $requestedStatusRegEx = '#On Hold|Rezervováno#';
             if (preg_match($reservedStatusRegEx, $status) || preg_match($requestedStatusRegEx, $status)) {
+                $status = preg_replace('#Zadán požadavek na výpůjčku#', 'Požadováno', $status);
                 $item_status = $status;
             } elseif ($status == null || $status == "On Shelf") {
                 if ($status == null) {

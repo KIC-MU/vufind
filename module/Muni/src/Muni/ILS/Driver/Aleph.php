@@ -554,11 +554,12 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $item_status = (string)$z30->{'z30-item-status'};
             $sub_library_code = (string)$item->{'z30-sub-library-code'};
             $sub_library_desc = (string)$z30->{'z30-sub-library'};
-            $availability = false;
+            $availability = true;
             $collection = (string)$z30->{'z30-collection'};
             $collection_desc = ['desc' => $collection];
             $duedate = null;
             $status = (string)$item->{'status'};
+            $substatuses = explode("; ", $status);
             $href = (string)$item["href"];
             if ($quick) {
                 $sub_library_code = $this->convertSublibraryId($sub_library_code);
@@ -568,15 +569,26 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 $hold_request = $item->xpath('info[@type="HoldRequest"]/@allowed');
                 $addLink = ($hold_request[0] == 'Y');
             }
-            // If the item status is a datetime, make the item unavailable.
-            // Otherwise, make the item available iff it isn't reserved / requested / on shelf.
+
             $dueDateRegEx = '#(\d{2}/\d{2}/\d{2}) \d{2}:\d{2}#';
             $reservedStatusRegEx = '#Requested|Zadán požadavek na výpůjčku#';
             $requestedStatusRegEx = '#On Hold|Rezervováno#';
-            if (preg_match($reservedStatusRegEx, $status) || preg_match($requestedStatusRegEx, $status)) {
-                $status = preg_replace('#Zadán požadavek na výpůjčku#', 'Požadováno', $status);
-                $item_status = $status;
-            } elseif (!preg_match($dueDateRegEx, $status)) {
+            foreach ($substatuses as $substatus) {
+                // If the item status is a datetime, make the item unavailable.
+                $matches = [];
+                if (preg_match($dueDateRegEx, $substatus, $matches)) {
+                    $duedate = $this->parseDate($matches[1]);
+                    $availability = false;
+                // If the item is reserved or requested, make the item unavailable.
+                } elseif (preg_match($reservedStatusRegEx, $substatus) || preg_match($requestedStatusRegEx, $substatus)) {
+                    $substatus = preg_replace('#Zadán požadavek na výpůjčku#', 'Požadováno', $substatus);
+                    $item_status = $substatus . ", " . $item_status;
+                    $availability = false;
+                }
+            }
+            // If the item is neither a datetime, nor reserved or requested,
+            // but it is on loan, make the item unavailable.
+            if ($availability) {
                 $params = ['loaned' => 'NO'];
                 if ($quick) {
                     $params['cache'] = 'true';
@@ -588,18 +600,14 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                     );
                 }
                 if (!empty($non_loaned_xml->{'items'})) {
-                    foreach ($non_loaned_xml->{'items'}->{'item'}
-                        as $non_loaned_item) {
-                        if ((string)$non_loaned_item["href"] == $href) {
-                            $availability = true;
-                        }
+                    $non_loaned_hrefs = [];
+                    foreach ($non_loaned_xml->{'items'}->{'item'} as $non_loaned_item) {
+                        $non_loaned_hrefs[] = (string)$non_loaned_item["href"];
                     }
+                    $availability = in_array($href, $non_loaned_hrefs);
                 }
             }
-            $matches = [];
-            if (preg_match($dueDateRegEx, $status, $matches)) {
-                $duedate = $this->parseDate($matches[1]);
-            }
+
             $item_id = $item->attributes()->href;
             $item_id = substr($item_id, strrpos($item_id, '/') + 1);
             $note    = (string)$z30->{'z30-note-opac'};

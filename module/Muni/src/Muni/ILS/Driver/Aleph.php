@@ -559,6 +559,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $collection_desc = ['desc' => $collection];
             $duedate = null;
             $status = (string)$item->{'status'};
+            $item_substatus = [];
             $substatuses = explode("; ", $status);
             $href = (string)$item["href"];
             if ($quick) {
@@ -582,10 +583,11 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 // If the item is reserved or requested, make the item unavailable.
                 } elseif (preg_match($reservedStatusRegEx, $substatus) || preg_match($requestedStatusRegEx, $substatus)) {
                     $substatus = preg_replace('#Zadán požadavek na výpůjčku#', 'Požadováno', $substatus);
-                    $item_status = $substatus . ", " . $item_status;
+                    $item_substatus[] = $substatus;
                     $availability = false;
                 }
             }
+            $item_substatus = implode(", ", $item_substatus);
             // If the item is neither a datetime, nor reserved or requested,
             // but it is on loan, make the item unavailable.
             if ($availability) {
@@ -616,6 +618,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
                 'item_id'           => $item_id,
                 'availability'      => $availability,
                 'status'            => $item_status,
+                'substatus'         => $item_substatus,
                 'location'          => $sub_library_code,
                 'reserve'           => 'N',
                 'callnumber'        => (string)$z30->{'z30-call-no'},

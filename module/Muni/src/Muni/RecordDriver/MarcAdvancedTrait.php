@@ -930,4 +930,39 @@ trait MarcAdvancedTrait
         }
         return $encodings;
     }
+
+    /**
+     * Return the list of article sources for this record.
+     *
+     * @return array
+     */
+    public function getSources()
+    {
+        $sources = [];
+        $fields = $this->getMarcRecord()->getFields('LKR');
+        if (is_array($fields)) {
+            foreach ($fields as $currentField) {
+                $id_head = null;
+                $id_tail = null;
+                $text = null;
+                $allSubfields = $currentField->getSubfields();
+                if (!empty($allSubfields)) {
+                    foreach ($allSubfields as $currentSubfield) {
+                        if (in_array($currentSubfield->getCode(), ['l'])) {
+                            $id_head = trim($currentSubfield->getData());
+                        } elseif (in_array($currentSubfield->getCode(), ['b'])) {
+                            $id_tail = trim($currentSubfield->getData());
+                        } elseif (in_array($currentSubfield->getCode(), ['n'])) {
+                            $text = trim($currentSubfield->getData());
+                        }
+                    }
+                }
+                if (!is_null($id_head) && !is_null($id_tail) && !is_null($text)) {
+                    $id = $id_head . $id_tail;
+                    $sources[] = array("id" => $id, "text" => $text);
+                }
+            }
+        }
+        return $sources;
+    }
 }

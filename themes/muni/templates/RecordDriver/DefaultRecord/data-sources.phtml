@@ -1,0 +1,12 @@
+<?php
+  $raw_sources = $this->driver->getSources();
+  $sources = [];
+  if (!empty($raw_sources)):
+    foreach ($raw_sources as $raw_source):
+      $sources[] = '<a href="/Record/' . $raw_source['id'] . '">' . $this->escapeHtml($raw_source['text']) . "</a>";
+    endforeach;
+  endif;
+?>
+<?php if (!empty($sources)): ?>
+  <?=implode("<br />", $sources)?>
+<?php endif; ?>

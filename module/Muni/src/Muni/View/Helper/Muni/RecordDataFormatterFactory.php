@@ -233,6 +233,7 @@ class RecordDataFormatterFactory implements FactoryInterface
             'Related Items', 'getAllRecordLinks', 'data-allRecordLinks.phtml'
         );
         $spec->setTemplateLine('Tags', true, 'data-tags.phtml');
+        $spec->setTemplateLine('muni::Uplink', true, 'data-sources.phtml');
         return $spec->getArray();
     }
 

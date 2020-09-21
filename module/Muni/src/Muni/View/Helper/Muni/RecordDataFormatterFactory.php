@@ -227,7 +227,7 @@ class RecordDataFormatterFactory implements FactoryInterface
             ['allowZero' => false]
         );
         $spec->setTemplateLine('muni::Encodings', true, 'data-encodings.phtml');
-        $spec->setTemplateLine('Source', true, 'data-source.phtml');
+        $spec->setTemplateLine('Source', true, 'data-sources.phtml');
         $spec->setTemplateLine('Online Access', true, 'data-onlineAccess.phtml');
         $spec->setTemplateLine(
             'Related Items', 'getAllRecordLinks', 'data-allRecordLinks.phtml'

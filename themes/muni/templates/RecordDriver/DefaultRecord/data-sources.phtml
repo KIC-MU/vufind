@@ -1,9 +1,9 @@
 <?php
   $sources = [];
   foreach ($this->driver->getSources() as $source):
-    $title = '<a href="/Record/' . $source['id'] . '">' . $this->escapeHtml($source['text']) . "</a>";
+    $title = '<a href="/Record/' . $source['id'] . '">' . $this->escapeHtml($source['title']) . "</a>";
     $details = [$title];
-    foreach ($raw_source['details'] as $detail):
+    foreach ($source['details'] as $detail):
       $details[] = $this->escapeHtml($detail);
     endforeach;
     $sources[] = implode("<br />", $details);

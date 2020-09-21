@@ -939,20 +939,19 @@ trait MarcAdvancedTrait
     public function getSources()
     {
         $sources = [];
-        $fields = $this->getMarcRecord()->getFields('LKR');
+        $fields = $this->getMarcRecord()->getFields('773');
         if (is_array($fields)) {
             foreach ($fields as $currentField) {
-                $id_head = null;
+                $id_head = 'MUB01';
                 $id_tail = null;
                 $text = null;
                 $allSubfields = $currentField->getSubfields();
                 if (!empty($allSubfields)) {
                     foreach ($allSubfields as $currentSubfield) {
-                        if (in_array($currentSubfield->getCode(), ['l'])) {
-                            $id_head = trim($currentSubfield->getData());
-                        } elseif (in_array($currentSubfield->getCode(), ['b'])) {
+                        if (in_array($currentSubfield->getCode(), ['w'])) {
                             $id_tail = trim($currentSubfield->getData());
-                        } elseif (in_array($currentSubfield->getCode(), ['n'])) {
+                            $id_tail = str_replace('(CZ-BrMU)', '', $id_tail);
+                        } elseif (in_array($currentSubfield->getCode(), ['t'])) {
                             $text = trim($currentSubfield->getData());
                         }
                     }

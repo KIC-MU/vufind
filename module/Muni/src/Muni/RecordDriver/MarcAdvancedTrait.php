@@ -944,7 +944,8 @@ trait MarcAdvancedTrait
             foreach ($fields as $currentField) {
                 $id_head = 'MUB01';
                 $id_tail = null;
-                $text = null;
+                $title = null;
+                $details = [];
                 $allSubfields = $currentField->getSubfields();
                 if (!empty($allSubfields)) {
                     foreach ($allSubfields as $currentSubfield) {
@@ -952,13 +953,15 @@ trait MarcAdvancedTrait
                             $id_tail = trim($currentSubfield->getData());
                             $id_tail = str_replace('(CZ-BrMU)', '', $id_tail);
                         } elseif (in_array($currentSubfield->getCode(), ['t'])) {
-                            $text = trim($currentSubfield->getData());
+                            $title = trim($currentSubfield->getData());
+                        } elseif (!in_array($currentSubfield->getCode(), ['q', '0', '9', 'w'])) {
+                            $details[] = trim($currentSubfield->getData());
                         }
                     }
                 }
-                if (!is_null($id_head) && !is_null($id_tail) && !is_null($text)) {
+                if (!is_null($id_head) && !is_null($id_tail) && !is_null($title)) {
                     $id = $id_head . $id_tail;
-                    $sources[] = array("id" => $id, "text" => $text);
+                    $sources[] = array("id" => $id, "title" => $title, "details" => $details);
                 }
             }
         }

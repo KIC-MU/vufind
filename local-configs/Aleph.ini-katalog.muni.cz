@@ -88,7 +88,7 @@ HMACKeys = id:item_id
 ; You may prefix this string with "driver:" to attempt to load a default date from
 ; the ILS based on internal rules instead of calculating one in VuFind; if the ILS
 ; calls, the relative rules will still be used (e.g. "driver:0:1:0")
-defaultRequiredDate = 0:1:0
+defaultRequiredDate = 0:4:0
 
 ; extraHoldFields - A colon-separated list used to display extra visible fields in the
 ; place holds form. Supported values are "comments", "requiredByDate" and

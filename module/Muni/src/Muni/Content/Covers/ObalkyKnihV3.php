@@ -51,6 +51,8 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
         $this->supportsIssn = true;
         $this->supportsOclc = true;
         $this->cacheAllowed = true;
+
+        $this->timeout = 60;
     }
 
     /**
@@ -65,7 +67,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
         if (null === $this->httpService) {
             throw new \Exception('HTTP service missing.');
         }
-        return $this->httpService->createClient($url);
+        return $this->httpService->createClient($url, 'GET', $this->timeout);
     }
 
     /**
@@ -86,10 +88,9 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
         $details = array('url' => false, 'backlink' => false);
 
         // Implement failover
-        $client = $this->httpService->createClient(
+        $client = $this->getHttpClient(
             'http://cache.obalkyknih.cz/api/runtime/alive'
         );
-        $client->setMethod('GET');
         $result = $client->send();
         $answer = $result->getBody();
         if ($answer == 'ALIVE') {
@@ -118,8 +119,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
 
         // Request information from the server
         $this->debug('Querying the following ObalkyKnihV3 URL: ' . $queryUrl);
-        $client = $this->httpService->createClient($queryUrl);
-        $client->setMethod('GET');
+        $client = $this->getHttpClient($queryUrl);
         $result = $client->send();
         $answer = json_decode($result->getBody(), true);
 
@@ -144,6 +144,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
             // Produce the backlink URL
             if (isset($answer[0]['backlink_url'])) {
                 $details['backlink'] = $answer[0]['backlink_url'];
+                $this->debug('Produced the following ObalkyKnihV3 backlink: ' . $details['backlink']);
             }
         }
 

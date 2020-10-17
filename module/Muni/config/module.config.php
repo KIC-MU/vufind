@@ -64,6 +64,19 @@ $config = [
                 ],
                 'defaultTab' => null,
             ],
+            'Muni\RecordDriver\DefaultRecord' => [
+                'tabs' => [
+                    'Holdings' => 'HoldingsILS', 'Description' => 'Description',
+                    'TOC' => 'TOC', 'UserComments' => 'UserComments',
+                    'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
+                    'HierarchyTree' => 'HierarchyTree', 'Map' => 'Map',
+                    'Similar' => 'SimilarItemsCarousel',
+                    'Details' => 'StaffViewArray',
+                ],
+                'defaultTab' => null,
+                // 'backgroundLoadedTabs' => ['UserComments', 'Details']
+            ],
         ],
     ],
     'controllers' => [

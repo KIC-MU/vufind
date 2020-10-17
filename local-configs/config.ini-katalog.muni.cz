@@ -737,7 +737,7 @@ database         = "mysql://vufind:correct horse battery staple@localhost/vufind
 ;          %vufind-home%      - The VUFIND_HOME environment variable
 ;          %vufind-local-dir% - The VUFIND_LOCAL_DIR environment variable
 ;        Example: LocalFile:%vufind-local-dir%/path/to/file/%size%/issn/%issn%.%anyimage%
-coverimages     = ObalkyKnihV3,Google
+coverimages     = ObalkyKnihV3
 
 ; This setting controls which services will have images cached on your local disk.
 ; Set to true to cache all applicable services. Set to false to disable caching. Set

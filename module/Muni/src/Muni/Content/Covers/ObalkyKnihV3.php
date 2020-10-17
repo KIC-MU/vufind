@@ -36,7 +36,7 @@ namespace Muni\Content\Covers;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class ObalkyKnihV3 extends \VuFind\Content\AbstractCover
+class ObalkyKnihV3 extends \Muni\Content\AbstractCover
     implements \VuFindHttp\HttpServiceAwareInterface, \Zend\Log\LoggerAwareInterface
 {
     use \VuFindHttp\HttpServiceAwareTrait;

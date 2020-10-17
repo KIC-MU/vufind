@@ -29,7 +29,7 @@
  */
 namespace Muni\Cover;
 
-use VuFind\Content\Covers\PluginManager as ApiManager;
+use Muni\Content\Covers\PluginManager as ApiManager;
 use VuFindCode\ISBN;
 
 /**

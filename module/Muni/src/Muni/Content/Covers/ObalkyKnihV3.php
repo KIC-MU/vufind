@@ -87,7 +87,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
 
         // Implement failover
         $client = $this->httpService->createClient(
-            'https://cache.obalkyknih.cz/api/runtime/alive'
+            'http://cache.obalkyknih.cz/api/runtime/alive'
         );
         $client->setMethod('GET');
         $result = $client->send();
@@ -112,7 +112,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
         }
 
         // Construct the URL
-        $queryUrl = 'https://' . $server . '/api/books?multi=';
+        $queryUrl = 'http://' . $server . '/api/books?multi=';
         $queryUrl .= urlencode('[' . json_encode($identifiers) . ']');
         $queryUrl .= '&keywords=';
 

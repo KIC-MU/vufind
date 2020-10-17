@@ -175,7 +175,7 @@
     <th><?=$this->transEsc("Barcode")?></th>
   </tr>
 </table>
-<?php $this->headScript()->appendFile("datafieldslinks-" . $this->layout()->userLang . ".js"); ?>
+<?php $this->headScript()->appendFile("datafieldslinks-" . ($this->layout()->userLang == 'cs' ? 'cs' : 'en')  . ".js"); ?>
 <?php $this->headScript()->appendFile("datafieldslinks.js"); ?>
 <?php $alephLanguages = ['cs' => 'cze', 'en' => 'eng']; ?>
 <?php $userLang = array_key_exists($this->layout()->userLang, $alephLanguages) ? $this->layout()->userLang : 'en'; ?>

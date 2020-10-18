@@ -1,35 +1,12 @@
 <div class="media" vocab="http://schema.org/" resource="#record" typeof="<?=$this->driver->getSchemaOrgFormats()?> Product">
   <?php
-    $QRCode = $this->record($this->driver)->getQRCode("core");
-    $coverDetails = $this->record($this->driver)->getCoverDetails('core', 'medium', $this->driver->getThumbnailBacklink());
+    $QRCode = $this->record($this->driver)->getQRCode('core');
+    $coverUrls = $this->driver->getCoverDetails();
+    $coverDetails = $this->record($this->driver)->getCoverDetails('core', 'large', $coverUrls['cover_backlink_url']);
     $cover = $coverDetails['html'];
+    $coverSize = $coverDetails['size'];
     $preview = $this->record($this->driver)->getPreviews();
   ?>
-  <?php if ($QRCode || $cover || $preview): ?>
-    <div class="media-left <?=$this->escapeHtmlAttr($coverDetails['size'])?> img-col">
-      <?php /* Display thumbnail if appropriate: */ ?>
-      <?php if($cover): ?>
-        <?=$cover?>
-      <?php endif; ?>
-
-      <?php /* Display qrcode if appropriate: */ ?>
-      <?php if($QRCode): ?>
-        <span class="hidden-xs">
-          <br/><img alt="<?=$this->transEsc('QR Code')?>" class="qrcode" src="<?=$this->escapeHtmlAttr($QRCode);?>"/>
-        </span>
-      <?php endif; ?>
-
-      <?php // if you have a preview tab but want to move or remove the preview link
-         // from this area of the record view, this can be split into
-         // getPreviewData() (should stay here) and
-         // getPreviewLink() (can go in your desired tab) ?>
-      <?php if ($preview): ?>
-        <div class="record-previews">
-          <?=$preview?>
-        </div>
-      <?php endif; ?>
-    </div>
-  <?php endif; ?>
   <div class="media-body">
 
     <h3 property="name"><?=$this->escapeHtml($this->driver->getShortTitle() . ' ' . $this->driver->getSubtitle() . ' ' . $this->driver->getTitleSection())?></h3>
@@ -75,4 +52,34 @@
     <?php endif; ?>
     <?php /* End Main Details */ ?>
   </div>
+  <?php if ($QRCode || $cover || $preview): ?>
+    <div class="media-right <?=$this->escapeHtmlAttr($coverSize)?> img-col">
+      <?php /* Display thumbnail if appropriate: */ ?>
+      <?php if($cover): ?>
+        <?=$cover?>
+        <?php if ($coverUrls['toc_url']): ?>
+          <a href="<?=$this->escapeHtmlAttr($coverUrls['toc_backlink_url'])?>" data-failover-href="<?=$this->escapeHtmlAttr($coverUrls['toc_failover_backlink_url']); ?>" target="_blank">
+            <img alt="<?=$this->transEsc('Table of Contents')?>" src="<?=$this->escapeHtmlAttr($coverUrls['toc_url']); ?>" data-failover-src="<?=$this->escapeHtmlAttr($coverUrls['toc_failover_url']); ?>" onerror="this.onerror = null; this.src = this.getAttribute('data-failover-src'); this.parentNode.href = this.parentNode.getAttribute('data-failover-href');"/>
+          </a>
+        <?php endif; ?>
+      <?php endif; ?>
+
+      <?php /* Display qrcode if appropriate: */ ?>
+      <?php if($QRCode): ?>
+        <span class="hidden-xs">
+          <br/><img alt="<?=$this->transEsc('QR Code')?>" class="qrcode" src="<?=$this->escapeHtmlAttr($QRCode);?>"/>
+        </span>
+      <?php endif; ?>
+
+      <?php // if you have a preview tab but want to move or remove the preview link
+         // from this area of the record view, this can be split into
+         // getPreviewData() (should stay here) and
+         // getPreviewLink() (can go in your desired tab) ?>
+      <?php if ($preview): ?>
+        <div class="record-previews">
+          <?=$preview?>
+        </div>
+      <?php endif; ?>
+    </div>
+  <?php endif; ?>
 </div>

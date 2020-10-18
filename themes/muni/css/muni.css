@@ -529,3 +529,19 @@ div.item-internet-links {
 #item-filters select {
     width: 100%;
 }
+
+.record .media-left.large > a,
+.result .media-left.large > a,
+.record .media-right.large > a,
+.result .media-right.large > a,
+.record .media-left.large > img,
+.result .media-left.large > img,
+.record .media-right.large > img,
+.result .media-right.large > img {
+    width: 170px;
+}
+
+.record .media,
+.result .media {
+    padding-bottom: 10px;
+}

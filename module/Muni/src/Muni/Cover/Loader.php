@@ -512,6 +512,17 @@ class Loader extends \VuFind\ImageLoader
         if (!($imageGD = @imagecreatefromstring($imageData))) {
             return false;
         }
+        $width = imagesx($imageGD);
+        $height = imagesy($imageGD);
+        $bg = imagecreatetruecolor($width, $height);
+        $white = imagecolorallocate($bg, 255, 255, 255);
+        imagefill($bg, 0, 0, $white);
+        imagecopyresampled(
+            $bg, $imageGD,
+            0, 0, 0, 0,
+            $width, $height,
+            $width, $height);
+        $imageGD = $bg;
         if (!@imagejpeg($imageGD, $jpeg)) {
             return false;
         }

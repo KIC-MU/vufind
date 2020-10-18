@@ -111,17 +111,4 @@ abstract class AbstractCover
      * @return string|bool
      */
     abstract public function getUrl($key, $size, $ids);
-
-    /**
-     * Get backlink URL for a particular API key and set of IDs (or false if invalid).
-     *
-     * @param string $key  API key
-     * @param string $size Size of image to load (small/medium/large)
-     * @param array  $ids  Associative array of identifiers (keys may include 'isbn'
-     * pointing to an ISBN object, 'issn' pointing to a string and 'oclc' pointing
-     * to an OCLC number string)
-     *
-     * @return string|bool
-     */
-    abstract public function getBacklink($key, $ids);
 }

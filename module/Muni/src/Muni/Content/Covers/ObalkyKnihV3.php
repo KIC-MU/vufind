@@ -73,7 +73,6 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
     /**
      * Get details for a particular API key and set of IDs (or false if invalid).
      *
-     * @param string $key  API key
      * @param string $size Size of image to load (small/medium/large)
      * @param array  $ids  Associative array of identifiers (keys may include 'isbn'
      * pointing to an ISBN object, 'issn' pointing to a string, and 'oclc' pointing
@@ -83,19 +82,23 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function getDetails($key, $ids, $size = 'small')
+    protected function getDetails($ids, $size)
     {
-        $details = array('url' => false, 'backlink' => false);
+        $details = array('cover_url' => false);
 
         // Implement failover
         $client = $this->getHttpClient(
             'http://cache.obalkyknih.cz/api/runtime/alive'
-        );
-        $result = $client->send();
-        $answer = $result->getBody();
-        if ($answer == 'ALIVE') {
-            $server = 'cache.obalkyknih.cz';
-        } else {
+          );
+        try {
+            $result = $client->send();
+            $answer = $result->getBody();
+            if ($answer == 'ALIVE') {
+                $server = 'cache.obalkyknih.cz';
+            } else {
+                $server = 'cache2.obalkyknih.cz';
+            }
+        } catch(Exception $e) {
             $server = 'cache2.obalkyknih.cz';
         }
 
@@ -110,6 +113,10 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
 
         if (isset($ids['oclc'])) {
             $identifiers['oclc'] = '(OCoLC)' . $ids['oclc'];
+        }
+
+        if (empty($identifiers)) {
+            return $details;
         }
 
         // Construct the URL
@@ -128,23 +135,15 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
             $options = [];
             if ($size == 'small') {
                 $options = ['cover_icon_url', 'cover_thumbnail_url'];
-            } elseif ($size == 'medium') {
+            } elseif ($size == 'medium' || $size == 'large') {
                 $options = ['cover_medium_url', 'cover_icon_url', 'cover_thumbnail_url'];
-            } elseif ($size == 'large') {
-                $options = ['cover_preview510_url', 'cover_medium_url', 'cover_icon_url', 'cover_thumbnail_url'];
             }
             foreach ($options as $option) {
                 if (isset($answer[0][$option])) {
-                    $details['url'] = $answer[0][$option];
-                    $this->debug('Produced the following ObalkyKnihV3 URL: ' . $details['url']);
+                    $details['cover_url'] = $answer[0][$option];
+                    $this->debug('Produced the following ObalkyKnihV3 URL: ' . $details['cover_url']);
                     break;
                 }
-            }
-
-            // Produce the backlink URL
-            if (isset($answer[0]['backlink_url'])) {
-                $details['backlink'] = $answer[0]['backlink_url'];
-                $this->debug('Produced the following ObalkyKnihV3 backlink: ' . $details['backlink']);
             }
         }
 
@@ -166,25 +165,7 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
      */
     public function getUrl($key, $size, $ids)
     {
-        $details = $this->getDetails($key, $ids, $size);
-        return $details['url'];
-    }
-
-    /**
-     * Get backlink URL for a particular API key and set of IDs (or false if invalid).
-     *
-     * @param string $key  API key
-     * @param array  $ids  Associative array of identifiers (keys may include 'isbn'
-     * pointing to an ISBN object, 'issn' pointing to a string, and 'oclc' pointing
-     * to an OCLC number string)
-     *
-     * @return string|bool
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function getBacklink($key, $ids)
-    {
-        $details = $this->getDetails($key, $ids);
-        return $details['backlink'];
+        $details = $this->getDetails($ids, $size);
+        return $details['cover_url'];
     }
 }

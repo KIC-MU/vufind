@@ -1247,23 +1247,45 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
      *
      * @return string|bool
      */
-    public function getThumbnailBacklink()
+    public function getCoverDetails()
     {
-        $arr = [];
+        $details = array(
+            'cover_backlink_url' => false,
+            'toc_url' => false,
+            'toc_backlink_url' => false,
+            'toc_failover_url' => false,
+          );
+
+        $identifiers = [];
         if ($isbn = $this->getCleanISBN()) {
-            $arr['isbn'] = $isbn;
+            $identifiers['isbn'] = $isbn;
         }
-        if ($issn = $this->getCleanISSN()) {
-            $arr['issn'] = $issn;
+        elseif ($issn = $this->getCleanISSN()) {
+            $identifiers['isbn'] = $issn;
         }
+
         if ($oclc = $this->getCleanOCLCNum()) {
-            $arr['oclc'] = '(OCoLC)' . $oclc;
+            $identifiers['oclc'] = $oclc;
         }
-        if (empty($arr)) {
-            return false;
+
+        if (empty($identifiers)) {
+            return $details;
         }
-        $url = 'https://www.obalkyknih.cz/view?' . http_build_query($arr);
-        return $url;
+
+        $host = 'https://www.obalkyknih.cz';
+        $query = '?' . http_build_query($identifiers);
+        $details['cover_backlink_url'] = $host . '/view' . $query;
+
+        $host = 'https://cache.obalkyknih.cz';
+        $query = '?multi=' . urlencode(json_encode($identifiers));
+        $details['toc_url'] = $host . '/api/toc/thumbnail' . $query;
+        $details['toc_backlink_url'] = $host . '/api/toc/pdf' . $query;
+
+        $host = 'https://cache2.obalkyknih.cz';
+        $details['toc_failover_url'] = $host . '/api/toc/thumbnail' . $query;
+        $details['toc_failover_backlink_url'] = $host . '/api/toc/pdf' . $query;
+
+        return $details;
     }
 
     /**

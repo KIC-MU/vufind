@@ -63,7 +63,7 @@
           </a>
         <?php endif; ?>
         <?php if ($coverUrls['cover_backlink_url']): ?>
-          <a href="<?=$this->escapeHtmlAttr($coverUrls['cover_backlink_url'])?>" target="_blank"><?=$this->transEsc('muni::Open ObalkyKnih')?></a>
+          <a href="<?=$this->escapeHtmlAttr($coverUrls['cover_backlink_url'])?>" style="white-space: inherit" target="_blank"><?=$this->transEsc(!strcmp($this->driver->getBibliographicLevel(), "Serial") ? 'muni::See covers and contents of previous issues at ObalkyKnih' : 'muni::Open ObalkyKnih')?></a>
         <?php endif; ?>
       <?php endif; ?>
 

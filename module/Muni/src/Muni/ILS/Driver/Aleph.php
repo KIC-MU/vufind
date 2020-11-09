@@ -1440,6 +1440,7 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             $pickupLocation = $this->getDefaultPickUpLocation($patron, $details);
         }
         $comment = $details['comment'];
+        $comment = trim(preg_replace('/\s\s+/', ' ', $comment));
         if (strlen($comment) <= 50) {
             $comment1 = $comment;
         } else {
@@ -1476,12 +1477,9 @@ class Aleph extends AbstractBase implements \Zend\Log\LoggerAwareInterface,
             );
         } catch (AlephRestfulException $exception) {
             $message = $exception->getMessage();
-            $note = $exception->getXmlResponse()
-                ->xpath('/put-item-hold/create-hold/note[@type="error"]');
-            $note = $note[0];
             return [
                 'success' => false,
-                'sysMessage' => "$message ($note)"
+                'sysMessage' => "$message"
             ];
         }
         return ['success' => true];

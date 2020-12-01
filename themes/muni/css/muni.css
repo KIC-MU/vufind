@@ -329,6 +329,10 @@ div.search-controls {
 }
 
 @media (max-width: 767px) {
+    .bulkActionButtons, #datevispublishDatexWrapper, .result .checkbox {
+        display: inherit;
+    }
+
     #searchForm button.btn-primary {
         margin-top: .5rem;
     }

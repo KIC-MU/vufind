@@ -51,9 +51,9 @@ class ObalkyKnihV3 extends \Muni\Content\AbstractCover
         $this->supportsIssn = true;
         $this->supportsOclc = true;
         $this->cacheAllowed = true;
-
-        $this->timeout = 60;
     }
+
+    private $timeout = 60;
 
     /**
      * Get an HTTP client

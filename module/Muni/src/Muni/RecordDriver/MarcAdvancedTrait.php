@@ -905,34 +905,87 @@ trait MarcAdvancedTrait
     }
 
     /**
-     * Return the list of "encodings" for this record.
+     * Get the CNB number.
+     *
+     * @return string
+     */
+    public function getCNB()
+    {
+        $cnbs = [];
+        $fields = $this->getFieldArray('015', ['a'], false);
+        foreach ($fields as $currentField) {
+            if (substr($currentField, 0, 3) === 'cnb') {
+                $cnbs[] = $currentField;
+            }
+        }
+    }
+
+    /**
+     * Get an array of all ISMNs associated with the record (may be empty).
      *
      * @return array
      */
-    public function getEncodings()
+    public function getISMNs()
     {
-        $encodings = [];
-        $fields = $this->getMarcRecord()->getFields('347');
+        $ismns = [];
+        $fields = $this->getMarcRecord()->getFields('024');
         if (is_array($fields)) {
             foreach ($fields as $currentField) {
+                if ($currentField->getIndicator('1') == '2') {
+                    continue;
+                }
                 $allSubfields = $currentField->getSubfields();
                 if (!empty($allSubfields)) {
                     foreach ($allSubfields as $currentSubfield) {
-                        if (in_array($currentSubfield->getCode(), ['b'])) {
-                            $data = trim($currentSubfield->getData());
-                            if (!empty($data)) {
-                                $encodings[] = $data;
-                            }
+                        if (in_array($currentSubfield->getCode(), ['a'])) {
+                            $ismns[] = trim($currentSubfield->getData());
                         }
                     }
                 }
             }
         }
-        return $encodings;
+        return $ismns;
     }
 
     /**
-     * Return the list of article sources for this record.
+     * Get an array of all EANs associated with the record (may be empty).
+     *
+     * @return array
+     */
+    public function getEANs()
+    {
+        $eans = [];
+        $fields = $this->getMarcRecord()->getFields('024');
+        if (is_array($fields)) {
+            foreach ($fields as $currentField) {
+                if ($currentField->getIndicator('1') == '3') {
+                    continue;
+                }
+                $allSubfields = $currentField->getSubfields();
+                if (!empty($allSubfields)) {
+                    foreach ($allSubfields as $currentSubfield) {
+                        if (in_array($currentSubfield->getCode(), ['a'])) {
+                            $eans[] = trim($currentSubfield->getData());
+                        }
+                    }
+                }
+            }
+        }
+        return $eans;
+    }
+
+    /**
+     * Get an array of all encodings associated with the record (may be empty).
+     *
+     * @return array
+     */
+    public function getEncodings()
+    {
+        return $this->getFieldArray('347', ['b'], false);
+    }
+
+    /**
+     * Get an array of all article sources associated with the record (may be empty).
      *
      * @return array
      */

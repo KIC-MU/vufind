@@ -1378,7 +1378,7 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
 
         $identifiers = [];
         if ($isbn = $this->getCleanISBN()) {
-            $identifiers['isbn'] = $isbn;
+            $identifiers['isbn'] = new ISBN($isbn)->get13();
         }
         elseif ($issn = $this->getCleanISSN()) {
             $identifiers['isbn'] = $issn;

@@ -330,21 +330,6 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
     }
 
     /**
-     * Get just the base portion of the first listed EAN (or false if no EANs).
-     *
-     * @return mixed
-     */
-    public function getCleanEAN()
-    {
-        $eans = $this->getEANs();
-        if (empty($eans)) {
-            return false;
-        }
-        $ean = $eans[0];
-        return $ean;
-    }
-
-    /**
      * Get just the first listed OCLC Number (or false if none available).
      *
      * @return mixed
@@ -362,7 +347,7 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
      */
     public function getCleanEAN()
     {
-        $nums = $this->getEAN();
+        $nums = $this->getEANs();
         return empty($nums) ? false : $nums[0];
     }
 
@@ -1378,7 +1363,7 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
 
         $identifiers = [];
         if ($isbn = $this->getCleanISBN()) {
-            $identifiers['isbn'] = new ISBN($isbn)->get13();
+            $identifiers['isbn'] = (new ISBN($isbn))->get13();
         }
         elseif ($issn = $this->getCleanISSN()) {
             $identifiers['isbn'] = $issn;
@@ -1867,5 +1852,16 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
     {
         return isset($this->fields['long_lat_label'])
             ? $this->fields['long_lat_label'] : [];
+    }
+
+    /**
+     * Return whether this record is an e-loan.
+     *
+     * @return bool
+     */
+    public function isELoan()
+    {
+        // Unsupported by default
+        return false;
     }
 }

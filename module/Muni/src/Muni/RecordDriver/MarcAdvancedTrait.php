@@ -932,7 +932,7 @@ trait MarcAdvancedTrait
         $fields = $this->getMarcRecord()->getFields('024');
         if (is_array($fields)) {
             foreach ($fields as $currentField) {
-                if ($currentField->getIndicator('1') == '2') {
+                if ($currentField->getIndicator('1') != '2') {
                     continue;
                 }
                 $allSubfields = $currentField->getSubfields();
@@ -959,7 +959,7 @@ trait MarcAdvancedTrait
         $fields = $this->getMarcRecord()->getFields('024');
         if (is_array($fields)) {
             foreach ($fields as $currentField) {
-                if ($currentField->getIndicator('1') == '3') {
+                if ($currentField->getIndicator('1') != '3') {
                     continue;
                 }
                 $allSubfields = $currentField->getSubfields();

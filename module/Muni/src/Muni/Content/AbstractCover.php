@@ -67,6 +67,27 @@ abstract class AbstractCover
     protected $supportsUpc = false;
 
     /**
+     * Does this plugin support national bibliography numbers (NBNs)?
+     *
+     * @var bool
+     */
+    protected $supportsNbn = false;
+
+    /**
+     * Does this plugin support ISMNs?
+     *
+     * @var bool
+     */
+    protected $supportsIsmn = false;
+
+    /**
+     * Does this plugin support EANs?
+     *
+     * @var bool
+     */
+    protected $supportsEan = false;
+
+    /**
      * Are we allowed to cache images from this source?
      *
      * @var bool
@@ -96,7 +117,10 @@ abstract class AbstractCover
             ($this->supportsIsbn && isset($ids['isbn']))
             || ($this->supportsIssn && isset($ids['issn']))
             || ($this->supportsOclc && isset($ids['oclc']))
-            || ($this->supportsUpc && isset($ids['upc']));
+            || ($this->supportsUpc && isset($ids['upc']))
+            || ($this->supportsNbn && isset($ids['nbn']))
+            || ($this->supportsIsmn && isset($ids['ismn']))
+            || ($this->supportsEan && isset($ids['ean']));
     }
 
     /**

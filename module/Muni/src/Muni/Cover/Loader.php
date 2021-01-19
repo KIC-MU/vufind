@@ -376,6 +376,12 @@ class Loader extends \VuFind\ImageLoader
             return $this->getCachePath($this->size, 'OCLC' . $ids['oclc']);
         } elseif (isset($ids['upc'])) {
             return $this->getCachePath($this->size, 'UPC' . $ids['upc']);
+        } elseif (isset($ids['nbn'])) {
+            return $this->getCachePath($this->size, $ids['nbn']);
+        } elseif (isset($ids['ismn'])) {
+            return $this->getCachePath($this->size, $ids['ismn']);
+        } elseif (isset($ids['ean'])) {
+            return $this->getCachePath($this->size, $ids['ean']);
         } elseif (isset($ids['recordid']) && isset($ids['source'])) {
             return $this->getCachePath(
                 $this->size,
@@ -404,6 +410,15 @@ class Loader extends \VuFind\ImageLoader
         }
         if ($this->upc && strlen($this->upc) > 0) {
             $ids['upc'] = $this->upc;
+        }
+        if ($this->nbn && strlen($this->nbn) > 0) {
+            $ids['nbn'] = $this->nbn;
+        }
+        if ($this->ismn && strlen($this->ismn) > 0) {
+            $ids['ismn'] = $this->ismn;
+        }
+        if ($this->ean && strlen($this->ean) > 0) {
+            $ids['ean'] = $this->ean;
         }
         if ($this->recordid && strlen($this->recordid) > 0) {
             $ids['recordid'] = $this->recordid;

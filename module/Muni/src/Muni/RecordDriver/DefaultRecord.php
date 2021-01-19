@@ -300,6 +300,21 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
     }
 
     /**
+     * Get the first listed NBN (or false if no NBNs).
+     *
+     * @return mixed
+     */
+    public function getCleanNBN()
+    {
+        $nbns = $this->getNBNs();
+        if (empty($nbns)) {
+            return false;
+        }
+        $nbn = $nbns[0];
+        return $nbn;
+    }
+
+    /**
      * Get just the base portion of the first listed ISMN (or false if no ISMNs).
      *
      * @return mixed
@@ -616,11 +631,11 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
     }
 
     /**
-     * Get the CNB number.
+     * Get the national bibliography number (NBN).
      *
      * @return string
      */
-    public function getCNB()
+    public function getNBNs()
     {
         // Not supported by the default index schema -- implement in child classes.
         return [];
@@ -1325,10 +1340,19 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
         if ($upc = $this->getCleanUPC()) {
             $arr['upc'] = $upc;
         }
+        if ($nbn = $this->getCleanNBN()) {
+            $arr['nbn'] = $nbn;
+        }
+        if ($ismn = $this->getCleanISMN()) {
+            $arr['ismn'] = $ismn;
+        }
+        if ($ean = $this->getCleanEAN()) {
+            $arr['ean'] = $ean;
+        }
         // If an ILS driver has injected extra details, check for IDs in there
         // to fill gaps:
         if ($ilsDetails = $this->getExtraDetail('ils_details')) {
-            foreach (['isbn', 'issn', 'oclc', 'upc'] as $key) {
+            foreach (['isbn', 'issn', 'oclc', 'upc', 'nbn', 'ismn', 'ean'] as $key) {
                 if (!isset($arr[$key]) && isset($ilsDetails[$key])) {
                     $arr[$key] = $ilsDetails[$key];
                 }
@@ -1362,6 +1386,15 @@ class DefaultRecord extends \VuFind\RecordDriver\AbstractBase
 
         if ($oclc = $this->getCleanOCLCNum()) {
             $identifiers['oclc'] = $oclc;
+        }
+        if ($nbn = $this->getCleanNBN()) {
+            $identifiers['nbn'] = $nbn;
+        }
+        if ($ismn = $this->getCleanISMN()) {
+            $identifiers['ismn'] = $ismn;
+        }
+        if ($ean = $this->getCleanEAN()) {
+            $identifiers['ean'] = $ean;
         }
 
         if (empty($identifiers)) {

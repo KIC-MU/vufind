@@ -905,19 +905,20 @@ trait MarcAdvancedTrait
     }
 
     /**
-     * Get the CNB number.
+     * Get the national bibliography number (NBN).
      *
      * @return string
      */
-    public function getCNB()
+    public function getNBNs()
     {
-        $cnbs = [];
+        $nbns = [];
         $fields = $this->getFieldArray('015', ['a'], false);
         foreach ($fields as $currentField) {
             if (substr($currentField, 0, 3) === 'cnb') {
-                $cnbs[] = $currentField;
+                $nbns[] = $currentField;
             }
         }
+        return $nbns;
     }
 
     /**

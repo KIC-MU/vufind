@@ -549,3 +549,7 @@ div.item-internet-links {
 .result .media {
     padding-bottom: 10px;
 }
+
+.form-control {
+  max-width: inherit;
+}

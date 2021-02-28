@@ -1,0 +1,46 @@
+<div class="form-group">
+  <?php if ($this->maxRecipients != 1): ?>
+    <?=$this->transEsc('email_multiple_recipients_note')?>
+    <?php if ($this->maxRecipients > 1): ?>
+      <?=$this->transEsc('email_maximum_recipients_note', ['%%max%%' => $this->maxRecipients])?>
+    <?php endif; ?>
+    <br /><br />
+  <?php endif; ?>
+  <div class="input-group">
+    <input type="<?=$this->maxRecipients != 1 ? 'text' : 'email'?>" id="email_to" placeholder="<?=$this->transEsc('To')?>" class="form-control" oninvalid="$('#modal .fa-spinner').remove()" name="to" value="<?=isset($this->to) ? $this->to : ''?>"/>
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?=$this->transEsc('muni::email_prompt')?> <span class="caret"></span></button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <?php foreach (['ECO50', 'INF50', 'SOC50', 'FIL50', 'MED50', 'PED50', 'LAW50', 'SCI50', 'MUB50', 'TEL50'] as $base): ?>
+          <li><a href="#" onclick="email_to.value = '<?=$this->transEsc('muni::email_' . $base)?>';"><?=$this->transEsc('muni::admbase_' . $base)?></a></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  </div>
+</div>
+<?php if (!$this->disableFrom): ?>
+  <div class="form-group">
+    <input type="email" id="email_from" oninvalid="$('#modal .fa-spinner').remove()" placeholder="<?=$this->transEsc('From')?>" name="from" value="<?=isset($this->from) ? $this->from : ''?>" size="40" class="form-control"/>
+  </div>
+<?php endif; ?>
+<?php if ($this->editableSubject): ?>
+  <div class="form-group">
+    <input type="text" id="email_subject" oninvalid="$('#modal .fa-spinner').remove()" name="subject" placeholder="<?=$this->transEsc('email_subject')?>" value="<?=isset($this->subject) ? $this->subject : ''?>" size="40" class="form-control"/>
+  </div>
+<?php endif; ?>
+<div class="form-group">
+  <textarea id="email_message" class="form-control" name="message" placeholder="<?=$this->transEsc('Message')?>" rows="4"><?=isset($this->message) ? $this->message : ''?></textarea>
+</div>
+<?php if ($this->disableFrom && $this->userEmailInFrom): ?>
+  <div class="form-group">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="ccself"/> <?=$this->translate('send_email_copy_to_me'); ?>
+      </label>
+    </div>
+  </div>
+<?php endif ?>
+<?=$this->recaptcha()->html($this->useRecaptcha) ?>
+<div class="form-group">
+  <input type="submit" class="btn btn-primary" name="submit" value="<?=$this->transEsc('Send')?>"/>
+</div>

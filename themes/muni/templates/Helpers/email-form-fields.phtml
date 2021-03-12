@@ -1,3 +1,8 @@
+<?php
+  $account = $this->auth()->getManager();
+  $user = $account->isLoggedIn();
+  $email = $user->cat_username;
+?>
 <div class="form-group">
   <?php if ($this->maxRecipients != 1): ?>
     <?=$this->transEsc('email_multiple_recipients_note')?>
@@ -20,7 +25,11 @@
 </div>
 <?php if (!$this->disableFrom): ?>
   <div class="form-group">
-    <input type="email" id="email_from" oninvalid="$('#modal .fa-spinner').remove()" placeholder="<?=$this->transEsc('From')?>" name="from" value="<?=isset($this->from) ? $this->from : ''?>" size="40" class="form-control"/>
+    <?php if (preg_match('/\.|@/', $email)): ?>
+      <input type="email" id="email_from" oninvalid="$('#modal .fa-spinner').remove()" placeholder="<?=$this->transEsc('From')?>" name="from" value="<?=$email?>" size="40" class="form-control" disabled/>
+    <?php else: ?>
+      <input type="email" id="email_from" oninvalid="$('#modal .fa-spinner').remove()" placeholder="<?=$this->transEsc('From')?>" name="from" value="<?=isset($this->from) ? $this->from : ''?>" size="40" class="form-control"/>
+    <?php endif; ?>
   </div>
 <?php endif; ?>
 <?php if ($this->editableSubject): ?>

@@ -57,7 +57,7 @@ download_dumps() {
       cd "$DUMP_DIRECTORY"/$TYPE
 
       case $TYPE in
-        biblio)     BASENAMES=(mu-aleph-mub{02,01}.dump) ;;
+        biblio)     BASENAMES=(mu-aleph-mub{03..01}.dump) ;;
         authority)  BASENAMES=(mu-vufind-{msh11,nkp10}.dump) ;;
         *)          BASENAMES=() ;;
       esac

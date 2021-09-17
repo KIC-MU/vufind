@@ -9,7 +9,7 @@ function cod_tag(sysno) {
   }
 
   sysno = sysno.replace(/^MUB0[1-3]/, '');
-  var url = 'https://newknihomol.phil.muni.cz/system/include/copy-available/' + sysno + '?url=katalog';
+  var url = 'https://knihomol.phil.muni.cz/system/include/copy-available/' + sysno + '?url=katalog';
   var script = document.createElement('script');
   script.src = url;
   document.body.appendChild(script);

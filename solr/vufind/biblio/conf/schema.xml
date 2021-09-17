@@ -151,6 +151,7 @@
    <field name="url" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="thumbnail" type="string" indexed="false" stored="true"/>
    <!-- Catalog Specific Fields -->
+   <field name="availability" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="barcode" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="short_id" type="long" indexed="true" stored="true" multiValued="true"/>
    <field name="item_callnumber" type="caseInsensitiveString" indexed="true" stored="true" multiValued="true"/>
